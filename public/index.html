@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pickup — Find a game near you</title>
+  <meta name="description" content="Pickup is the easiest way to find and join local pickup sports games. Basketball, soccer, tennis, volleyball — games near you, right now." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Pickup — Find a game near you" />
+  <meta property="og:description" content="The easiest way to find and join local pickup sports games. Join thousands of players playing right now." />
+  <meta property="og:image" content="https://pickupcg.com/assets/og-image.png" />
+  <meta property="og:url" content="https://pickupcg.com" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Pickup — Find a game near you" />
+  <meta name="twitter:description" content="The easiest way to find and join local pickup sports games." />
+  <meta name="twitter:image" content="https://pickupcg.com/assets/og-image.png" />
+
+  <!-- Apple Smart App Banner -->
+  <meta name="apple-itunes-app" content="app-id=YOUR_APP_STORE_ID" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #070706;
+      --surface: #111110;
+      --card:    #1a1a18;
+      --accent:  #3dba5e;
+      --accent2: #2ea04e;
+      --text:    #f0efe8;
+      --muted:   #888880;
+      --border:  rgba(255,255,255,0.08);
+      --radius:  16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 32px;
+      background: rgba(7,7,6,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 20px; text-decoration: none; color: var(--text);
+    }
+    .nav-logo img { width: 32px; height: 32px; border-radius: 8px; }
+    .nav-cta {
+      background: var(--accent); color: #000;
+      font-weight: 700; font-size: 14px;
+      padding: 10px 20px; border-radius: 100px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .nav-cta:hover { background: var(--accent2); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 10%, rgba(61,186,94,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(61,186,94,0.12);
+      border: 1px solid rgba(61,186,94,0.3);
+      color: var(--accent);
+      font-size: 13px; font-weight: 600;
+      padding: 6px 14px; border-radius: 100px;
+      margin-bottom: 28px;
+    }
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 8vw, 80px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+      max-width: 800px;
+    }
+    .hero h1 span { color: var(--accent); }
+
+    .hero p {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    .hero-buttons {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      align-items: center; justify-content: center;
+      margin-bottom: 56px;
+    }
+    .btn-primary {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #000;
+      font-weight: 700; font-size: 16px;
+      padding: 14px 28px; border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.15s;
+      box-shadow: 0 0 40px rgba(61,186,94,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--accent2);
+      box-shadow: 0 0 60px rgba(61,186,94,0.4);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--card); color: var(--text);
+      font-weight: 600; font-size: 16px;
+      padding: 14px 28px; border-radius: 100px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all 0.15s;
+    }
+    .btn-secondary:hover {
+      background: var(--surface);
+      transform: translateY(-1px);
+    }
+
+    .social-proof {
+      display: flex; flex-wrap: wrap; gap: 24px;
+      align-items: center; justify-content: center;
+    }
+    .proof-item {
+      text-align: center;
+    }
+    .proof-number {
+      font-size: 28px; font-weight: 800;
+      color: var(--text);
+    }
+    .proof-label {
+      font-size: 13px; color: var(--muted); font-weight: 500;
+    }
+    .proof-divider {
+      width: 1px; height: 36px;
+      background: var(--border);
+    }
+
+    /* ── MOCKUP ── */
+    .mockup-section {
+      padding: 40px 24px 80px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .phone-frame {
+      width: min(320px, 85vw);
+      background: var(--card);
+      border-radius: 44px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+      position: relative;
+    }
+    .phone-screen {
+      background: var(--bg);
+      aspect-ratio: 9/19.5;
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      padding: 16px;
+    }
+    .phone-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px;
+    }
+    .phone-title { font-weight: 800; font-size: 22px; }
+    .phone-sub { font-size: 11px; color: var(--muted); }
+    .game-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 8px;
+      border: 1px solid var(--border);
+      display: flex; gap: 10px; align-items: center;
+    }
+    .game-sport-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(61,186,94,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .game-info { flex: 1; min-width: 0; }
+    .game-name { font-weight: 700; font-size: 12px; }
+    .game-detail { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .game-spots {
+      font-size: 11px; font-weight: 600;
+      color: var(--accent);
+      background: rgba(61,186,94,0.1);
+      padding: 4px 8px; border-radius: 100px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* ── SPORTS GRID ── */
+    .section { padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 13px; font-weight: 600; color: var(--accent);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800; letter-spacing: -1px;
+      line-height: 1.1; margin-bottom: 16px;
+    }
+    .section-subtitle {
+      font-size: 17px; color: var(--muted);
+      line-height: 1.6; max-width: 520px;
+    }
+
+    .sports-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 12px;
+      margin-top: 40px;
+    }
+    .sport-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 8px;
+      text-align: center;
+      cursor: default;
+      transition: all 0.15s;
+    }
+    .sport-chip:hover {
+      border-color: rgba(61,186,94,0.4);
+      background: rgba(61,186,94,0.05);
+      transform: translateY(-2px);
+    }
+    .sport-emoji { font-size: 28px; display: block; margin-bottom: 6px; }
+    .sport-name { font-size: 12px; font-weight: 600; color: var(--muted); }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: all 0.2s;
+    }
+    .feature-card:hover {
+      border-color: rgba(61,186,94,0.3);
+      transform: translateY(-2px);
+    }
+    .feature-icon {
+      width: 44px; height: 44px;
+      background: rgba(61,186,94,0.12);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 16px;
+    }
+    .feature-title { font-weight: 700; font-size: 17px; margin-bottom: 8px; }
+    .feature-text { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* ── HOW IT WORKS ── */
+    .steps { margin-top: 48px; display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex; gap: 20px; align-items: flex-start;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(61,186,94,0.12);
+      border: 1px solid rgba(61,186,94,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 14px; color: var(--accent);
+    }
+    .step-content { flex: 1; }
+    .step-title { font-weight: 700; font-size: 17px; margin-bottom: 6px; }
+    .step-text { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px; margin-top: 48px;
+    }
+    .testimonial {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .testimonial-stars { color: #fbbf24; font-size: 14px; margin-bottom: 12px; }
+    .testimonial-text { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
+    .testimonial-author { display: flex; align-items: center; gap: 10px; }
+    .testimonial-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: #fff;
+    }
+    .testimonial-name { font-size: 13px; font-weight: 600; }
+    .testimonial-city { font-size: 12px; color: var(--muted); }
+
+    /* ── OPERATORS ── */
+    .operator-card {
+      background: linear-gradient(135deg, rgba(61,186,94,0.08) 0%, transparent 60%);
+      border: 1px solid rgba(61,186,94,0.2);
+      border-radius: 20px;
+      padding: 40px;
+      margin-top: 48px;
+      display: flex; flex-wrap: wrap;
+      gap: 40px; align-items: center; justify-content: space-between;
+    }
+    .operator-text { max-width: 480px; }
+    .operator-title { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 12px; }
+    .operator-sub { font-size: 16px; color: var(--muted); line-height: 1.6; }
+    .operator-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #000;
+      font-weight: 700; font-size: 16px;
+      padding: 14px 28px; border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .operator-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+
+    /* ── FINAL CTA ── */
+    .final-cta {
+      text-align: center;
+      padding: 100px 24px;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(61,186,94,0.08) 0%, transparent 70%);
+    }
+    .final-cta h2 {
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 800; letter-spacing: -1.5px;
+      line-height: 1.1; margin-bottom: 16px;
+    }
+    .final-cta p {
+      font-size: 18px; color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 32px;
+      display: flex; flex-wrap: wrap;
+      gap: 20px; justify-content: space-between; align-items: center;
+    }
+    .footer-brand { font-weight: 700; font-size: 16px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 20px; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: 14px; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { color: var(--muted); font-size: 13px; }
+
+    /* ── DEEP LINK REDIRECT OVERLAY ── */
+    #deeplink-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      background: var(--bg);
+      flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
+    }
+    #deeplink-overlay.active { display: flex; }
+    .deeplink-icon { font-size: 64px; margin-bottom: 20px; }
+    .deeplink-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    .deeplink-sub { font-size: 16px; color: var(--muted); margin-bottom: 32px; }
+    .deeplink-open {
+      background: var(--accent); color: #000;
+      font-weight: 700; font-size: 16px;
+      padding: 16px 32px; border-radius: 100px;
+      border: none; cursor: pointer; margin-bottom: 12px;
+      width: 100%; max-width: 280px;
+    }
+    .deeplink-store {
+      color: var(--muted); font-size: 14px;
+      text-decoration: none; display: block;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 12px 16px; }
+      .section { padding: 60px 16px; }
+      .operator-card { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Deep link redirect overlay -->
+<div id="deeplink-overlay">
+  <div class="deeplink-icon">🏀</div>
+  <div class="deeplink-title" id="deeplink-title">Opening Pickup…</div>
+  <div class="deeplink-sub" id="deeplink-sub">You're being taken to the app</div>
+  <button class="deeplink-open" onclick="openApp()">Open in App</button>
+  <a href="https://apps.apple.com/app/pickup/idYOUR_APP_STORE_ID" class="deeplink-store">
+    Don't have the app? Download it →
+  </a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/assets/icon.png" alt="Pickup" onerror="this.style.display='none'" />
+    Pickup
+  </a>
+  <a href="https://apps.apple.com/app/pickup/idYOUR_APP_STORE_ID" class="nav-cta">Download</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">
+    <span class="badge-dot"></span>
+    Games happening near you right now
+  </div>
+  <h1>Find your next<br/><span>game</span>, today.</h1>
+  <p>Pickup connects you with local players for basketball, soccer, tennis, volleyball, and more — no teams, no leagues, just game.</p>
+  <div class="hero-buttons">
+    <a href="https://apps.apple.com/app/pickup/idYOUR_APP_STORE_ID" class="btn-primary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Download for iOS
+    </a>
+    <a href="#how-it-works" class="btn-secondary">See how it works</a>
+  </div>
+  <div class="social-proof">
+    <div class="proof-item">
+      <div class="proof-number" id="games-count">—</div>
+      <div class="proof-label">games live</div>
+    </div>
+    <div class="proof-divider"></div>
+    <div class="proof-item">
+      <div class="proof-number" id="players-count">—</div>
+      <div class="proof-label">players on now</div>
+    </div>
+    <div class="proof-divider"></div>
+    <div class="proof-item">
+      <div class="proof-number">10+</div>
+      <div class="proof-label">sports supported</div>
+    </div>
+  </div>
+</section>
+
+<!-- PHONE MOCKUP -->
+<div class="mockup-section">
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="phone-header">
+        <div>
+          <div class="phone-title">Explore</div>
+          <div class="phone-sub">📍 Near you</div>
+        </div>
+        <div style="font-size:20px">🔔</div>
+      </div>
+      <div class="game-card">
+        <div class="game-sport-icon">🏀</div>
+        <div class="game-info">
+          <div class="game-name">4v4 Basketball</div>
+          <div class="game-detail">Rucker Park · Starting now</div>
+        </div>
+        <div class="game-spots">2 spots</div>
+      </div>
+      <div class="game-card">
+        <div class="game-sport-icon">⚽</div>
+        <div class="game-info">
+          <div class="game-name">Open Soccer</div>
+          <div class="game-detail">Riverside Field · 3:30 PM</div>
+        </div>
+        <div class="game-spots">5 spots</div>
+      </div>
+      <div class="game-card">
+        <div class="game-sport-icon">🎾</div>
+        <div class="game-info">
+          <div class="game-name">Singles Tennis</div>
+          <div class="game-detail">Central Courts · 4:00 PM</div>
+        </div>
+        <div class="game-spots">1 spot</div>
+      </div>
+      <div class="game-card" style="opacity:0.5">
+        <div class="game-sport-icon">🏐</div>
+        <div class="game-info">
+          <div class="game-name">Beach Volleyball</div>
+          <div class="game-detail">East Beach · Tomorrow 9 AM</div>
+        </div>
+        <div class="game-spots">4 spots</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SPORTS -->
+<section class="section">
+  <p class="section-label">Every sport</p>
+  <h2 class="section-title">Whatever you play,<br/>we've got a game.</h2>
+  <p class="section-subtitle">Browse games by sport or let Pickup show you everything happening near you right now.</p>
+  <div class="sports-grid">
+    <div class="sport-chip"><span class="sport-emoji">🏀</span><span class="sport-name">Basketball</span></div>
+    <div class="sport-chip"><span class="sport-emoji">⚽</span><span class="sport-name">Soccer</span></div>
+    <div class="sport-chip"><span class="sport-emoji">🎾</span><span class="sport-name">Tennis</span></div>
+    <div class="sport-chip"><span class="sport-emoji">🏐</span><span class="sport-name">Volleyball</span></div>
+    <div class="sport-chip"><span class="sport-emoji">🏈</span><span class="sport-name">Football</span></div>
+    <div class="sport-chip"><span class="sport-emoji">⚾</span><span class="sport-name">Baseball</span></div>
+    <div class="sport-chip"><span class="sport-emoji">🏒</span><span class="sport-name">Hockey</span></div>
+    <div class="sport-chip"><span class="sport-emoji">🏸</span><span class="sport-name">Badminton</span></div>
+    <div class="sport-chip"><span class="sport-emoji">🏓</span><span class="sport-name">Ping Pong</span></div>
+    <div class="sport-chip"><span class="sport-emoji">🏋️</span><span class="sport-name">Fitness</span></div>
+    <div class="sport-chip"><span class="sport-emoji">🥊</span><span class="sport-name">Boxing</span></div>
+    <div class="sport-chip"><span class="sport-emoji">🤸</span><span class="sport-name">More</span></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section">
+  <p class="section-label">Why Pickup</p>
+  <h2 class="section-title">Built for players<br/>who just want to play.</h2>
+  <p class="section-subtitle">No season commitments, no team tryouts. Just open a map, find a game, and show up.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📍</div>
+      <div class="feature-title">Find games on a map</div>
+      <div class="feature-text">Every game pinned on a live map. See exactly where it's happening, how far away, and how many spots are left.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Join in one tap</div>
+      <div class="feature-text">No forms, no approval. See a game you like — tap Join. The organizer and players are notified instantly.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📣</div>
+      <div class="feature-title">Post your own game</div>
+      <div class="feature-text">Set a time, place, and sport. Pickup broadcasts it to nearby players. Fill your spots in minutes.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <div class="feature-title">Message players</div>
+      <div class="feature-text">Chat with players before the game — coordinate meetups, confirm spots, or set up a rematch.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <div class="feature-title">Track your wins</div>
+      <div class="feature-text">Log game results, build your record, and see how your stats stack up across every sport you play.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎬</div>
+      <div class="feature-title">Share your moments</div>
+      <div class="feature-text">Drop clips and highlights from your best games. React, follow, and build your player reputation.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+  <p class="section-label">How it works</p>
+  <h2 class="section-title">From install to game<br/>in under 2 minutes.</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Download the app and set your sports</div>
+        <div class="step-text">Pick the sports you play. Pickup immediately shows you every open game nearby, sorted by distance and start time.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Browse the live map</div>
+        <div class="step-text">See pins for every game happening near you right now — tap any pin for details, player list, and skill level.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Join a game (or post your own)</div>
+        <div class="step-text">Tap Join and you're in. Or tap the + button to post a new game — tell the community what you're running.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">Show up and play</div>
+        <div class="step-text">Get a push notification 15 minutes before tip-off. Show up, run your game, and come back to log the result.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <p class="section-label">Players love it</p>
+  <h2 class="section-title">Real players,<br/>real games.</h2>
+  <div class="testimonials">
+    <div class="testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">"Moved to a new city and had no one to play with. Found a full 5v5 basketball game my first week. This app is incredible."</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar" style="background:#3dba5e">MR</div>
+        <div>
+          <div class="testimonial-name">Marcus R.</div>
+          <div class="testimonial-city">Chicago, IL</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">"I run 3v3 basketball every weekend now. Used to spend hours texting people. Pickup fills my spots in 20 minutes."</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar" style="background:#6366f1">JT</div>
+        <div>
+          <div class="testimonial-name">Jordan T.</div>
+          <div class="testimonial-city">Brooklyn, NY</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">"The messaging feature is clutch. Coordinated a whole soccer tournament with 6 people I met on Pickup. They're my regular crew now."</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar" style="background:#f59e0b">AS</div>
+        <div>
+          <div class="testimonial-name">Ana S.</div>
+          <div class="testimonial-city">Los Angeles, CA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPERATORS -->
+<section class="section">
+  <p class="section-label">For venues & operators</p>
+  <h2 class="section-title">Own a court or club?<br/>Grow it with Pickup.</h2>
+  <p class="section-subtitle">List your facility, manage sessions, and get discovered by thousands of active players in your city.</p>
+  <div class="operator-card">
+    <div class="operator-text">
+      <div class="operator-title">Turn your facility into a<br/>community hub.</div>
+      <div class="operator-sub">Courts, gyms, clubs, and complexes use Pickup to fill sessions, manage bookings, and grow their player base. Starter plan is free.</div>
+    </div>
+    <a href="mailto:venues@pickupcg.com" class="operator-cta">
+      Get listed →
+    </a>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2>Ready to find<br/>your next game?</h2>
+  <p>Thousands of players near you. Open games, every day.</p>
+  <div class="hero-buttons" style="justify-content:center">
+    <a href="https://apps.apple.com/app/pickup/idYOUR_APP_STORE_ID" class="btn-primary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Download for iOS
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Pickup</div>
+  <div class="footer-links">
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+    <a href="mailto:hello@pickupcg.com">Contact</a>
+    <a href="mailto:venues@pickupcg.com">For Venues</a>
+  </div>
+  <div class="footer-copy">© 2025 Pickup. All rights reserved.</div>
+</footer>
+
+<script>
+  // ── Live game/player counts from Supabase ─────────────────────────────────
+  const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
+  const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+
+  async function loadStats() {
+    try {
+      const [gamesRes, playersRes] = await Promise.all([
+        fetch(`${SUPABASE_URL}/rest/v1/games?select=id&limit=1000`, {
+          headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+        }),
+        fetch(`${SUPABASE_URL}/rest/v1/players?select=id&limit=1000`, {
+          headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+        })
+      ]);
+      const games = await gamesRes.json();
+      const players = await playersRes.json();
+      if (Array.isArray(games) && games.length > 0)
+        document.getElementById('games-count').textContent = games.length + '+';
+      if (Array.isArray(players) && players.length > 0)
+        document.getElementById('players-count').textContent = players.length + '+';
+    } catch {
+      // silently fail — static text is fine
+    }
+  }
+  loadStats();
+
+  // ── Deep link handling ────────────────────────────────────────────────────
+  function parseDeepLink() {
+    const path = window.location.pathname;
+    const params = new URLSearchParams(window.location.search);
+
+    if (path.startsWith('/game/') || path.startsWith('/player/') ||
+        path.startsWith('/court/') || path.startsWith('/join/')) {
+      return { scheme: 'pickup:/' + path, path };
+    }
+    const deeplink = params.get('deeplink') || params.get('link');
+    if (deeplink) return { scheme: deeplink, path };
+    return null;
+  }
+
+  function openApp() {
+    const dl = parseDeepLink();
+    if (dl) window.location.href = dl.scheme;
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const dl = parseDeepLink();
+    if (!dl) return;
+
+    const overlay = document.getElementById('deeplink-overlay');
+    const title = document.getElementById('deeplink-title');
+    const sub = document.getElementById('deeplink-sub');
+
+    if (dl.path.includes('/game/')) {
+      title.textContent = 'Opening game…';
+      sub.textContent = 'Taking you to this game in the Pickup app';
+    } else if (dl.path.includes('/player/')) {
+      title.textContent = 'Opening player profile…';
+      sub.textContent = 'Taking you to this player in the Pickup app';
+    } else if (dl.path.includes('/join/')) {
+      title.textContent = 'You\'re invited!';
+      sub.textContent = 'Open Pickup to join this game';
+    }
+
+    overlay.classList.add('active');
+
+    // Attempt to auto-open the app after 600ms
+    setTimeout(() => {
+      window.location.href = dl.scheme;
+    }, 600);
+  });
+</script>
+
+</body>
+</html>

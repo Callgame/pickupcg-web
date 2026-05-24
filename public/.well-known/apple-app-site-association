@@ -1,0 +1,31 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["W2K4C5M9A8.co.callgame.pickup"],
+        "components": [
+          {
+            "/": "/game/*",
+            "comment": "Open game deep links"
+          },
+          {
+            "/": "/player/*",
+            "comment": "Open player profile deep links"
+          },
+          {
+            "/": "/court/*",
+            "comment": "Open court deep links"
+          },
+          {
+            "/": "/join/*",
+            "comment": "Join game invites"
+          }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["W2K4C5M9A8.co.callgame.pickup"]
+  }
+}
