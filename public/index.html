@@ -160,7 +160,7 @@
     .phone-title { font-weight: 800; font-size: 20px; }
     .phone-sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
     .sport-filter-row { display: flex; gap: 6px; margin-bottom: 12px; overflow: hidden; }
-    .sport-pill { background: var(--card); border: 1px solid var(--border); border-radius: 100px; padding: 4px 10px; font-size: 10px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+    .sport-pill { background: var(--card); border: 1px solid var(--border); border-radius: 100px; padding: 4px 10px; font-size: 10px; font-weight: 600; color: var(--muted); white-space: nowrap; display: flex; align-items: center; gap: 4px; }
     .sport-pill.active { background: rgba(61,186,94,.15); border-color: rgba(61,186,94,.4); color: var(--accent); }
     .game-card { background: var(--card); border-radius: 12px; padding: 10px; margin-bottom: 7px; border: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
     .game-sport-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -300,6 +300,18 @@
     .testimonial-name { font-size: 13px; font-weight: 600; }
     .testimonial-city { font-size: 12px; color: var(--muted); }
 
+    /* ── LAUNCH COMMUNITY ──────────────────────────────────────── */
+    .launch-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 16px; margin-top: 48px; }
+    .launch-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+    .launch-card-primary { background: linear-gradient(135deg, rgba(61,186,94,.10) 0%, transparent 70%); border-color: rgba(61,186,94,.30); }
+    .launch-card-title { font-weight: 700; font-size: 17px; margin-bottom: 10px; }
+    .launch-card-text  { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .launch-progress { margin-top: 24px; }
+    .launch-progress-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
+    .launch-bar-track { height: 6px; background: rgba(255,255,255,.08); border-radius: 3px; overflow: hidden; }
+    .launch-bar-fill  { height: 100%; background: var(--accent); border-radius: 3px; width: 0%; transition: width .8s ease; box-shadow: 0 0 8px rgba(61,186,94,.5); }
+    @media (max-width: 800px) { .launch-grid { grid-template-columns: 1fr; } }
+
     /* ── OPERATOR ──────────────────────────────────────────────── */
     .operator-card { background: linear-gradient(135deg, rgba(61,186,94,.08) 0%, transparent 60%); border: 1px solid rgba(61,186,94,.2); border-radius: 20px; padding: 40px; margin-top: 48px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; justify-content: space-between; }
     .operator-title { font-size: 28px; font-weight: 800; letter-spacing: -.5px; margin-bottom: 12px; }
@@ -431,9 +443,9 @@
       </div>
       <div class="sport-filter-row">
         <div class="sport-pill active">All</div>
-        <div class="sport-pill">🏓 Pickle</div>
-        <div class="sport-pill">🏀 Ball</div>
-        <div class="sport-pill">🎾 Tennis</div>
+        <div class="sport-pill"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#2fb86b" stroke-width="2.5"/><circle cx="9" cy="9" r="1.5" fill="#2fb86b"/><circle cx="15" cy="9" r="1.5" fill="#2fb86b"/><circle cx="12" cy="15" r="1.5" fill="#2fb86b"/></svg>Pickle</div>
+        <div class="sport-pill"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#e8743a" stroke-width="2.5"/><path d="M12 2C12 2 8 7 8 12C8 17 12 22 12 22" stroke="#e8743a" stroke-width="2"/><path d="M12 2C12 2 16 7 16 12C16 17 12 22 12 22" stroke="#e8743a" stroke-width="2"/><path d="M2 12H22" stroke="#e8743a" stroke-width="2"/></svg>Ball</div>
+        <div class="sport-pill"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c9a227" stroke-width="2.5"/><path d="M5.5 5.5C7.5 8 7.5 16 5.5 18.5" stroke="#c9a227" stroke-width="2" stroke-linecap="round"/><path d="M18.5 5.5C16.5 8 16.5 16 18.5 18.5" stroke="#c9a227" stroke-width="2" stroke-linecap="round"/></svg>Tennis</div>
       </div>
       <div class="game-card">
         <div class="game-sport-icon" style="background:rgba(47,184,107,0.15)">
@@ -576,9 +588,9 @@
     <div class="feature-card"><div class="feature-icon">⚡</div><div class="feature-title">Join in one tap</div><div class="feature-text">No forms, no approvals. Tap Join — your spot is reserved, the host is notified, and the group chat opens automatically.</div></div>
     <div class="feature-card"><div class="feature-icon">📣</div><div class="feature-title">Sport-specific game posting</div><div class="feature-text">NTRP minimums for tennis. DUPR ratings and kitchen rules for pickleball. Format chips and house rules for basketball. Every sport gets its own fields.</div><span class="feature-tag">NTRP · DUPR · Format chips</span></div>
     <div class="feature-card"><div class="feature-icon">🏟️</div><div class="feature-title">Court check-in</div><div class="feature-text">Tap "I'm here" when you arrive and see exactly who else is on the court right now. Real-time presence — no more "you here yet?" texts.</div></div>
-    <div class="feature-card"><div class="feature-icon">🏆</div><div class="feature-title">Scores, records & leaderboards</div><div class="feature-text">Track results across 20 sports, build your W/L record, maintain a streak, and climb the local leaderboard.</div><span class="feature-tag">20 sports · Streak · Leaderboard</span></div>
-    <div class="feature-card"><div class="feature-icon">💬</div><div class="feature-title">Message, challenge & league up</div><div class="feature-text">DM players directly, send formal challenges, and create or join local leagues. Your crew, your rules.</div></div>
-    <div class="feature-card"><div class="feature-icon">🎬</div><div class="feature-title">Go Live & share moments</div><div class="feature-text">Stream live from the court with one tap, or post shout-outs and highlights from your best games.</div></div>
+    <div class="feature-card"><div class="feature-icon">🏆</div><div class="feature-title">Scores, records & leaderboards</div><div class="feature-text">Track results across 12+ sports, build your W/L record, maintain a streak, and climb the local leaderboard.</div><span class="feature-tag">12+ sports · Streak · Leaderboard</span></div>
+    <div class="feature-card"><div class="feature-icon">💬</div><div class="feature-title">Message players directly</div><div class="feature-text">DM any player from their profile or from a game. Formal challenges and league creation are coming in an upcoming update.</div><span class="feature-tag">Challenges &amp; leagues coming soon</span></div>
+    <div class="feature-card"><div class="feature-icon">🎬</div><div class="feature-title">Share moments from the court</div><div class="feature-text">Post shout-outs and game highlights to your feed. Live streaming from the court is coming in an upcoming update.</div><span class="feature-tag">Live streaming coming soon</span></div>
     <div class="feature-card"><div class="feature-icon">🔁</div><div class="feature-title">Recurring games</div><div class="feature-text">Post once as a recurring game — Pickup auto-reposts it weekly and keeps your regular crew notified.</div></div>
   </div>
 </section>
@@ -620,14 +632,45 @@
   </div>
 </section>
 
-<!-- ── TESTIMONIALS ──────────────────────────────────────────────── -->
+<!-- ── LAUNCH COMMUNITY ───────────────────────────────────────────── -->
 <section class="section">
-  <p class="section-label">Players love it</p>
-  <h2 class="section-title">Real players,<br/>real games.</h2>
-  <div class="testimonials">
-    <div class="testimonial"><div class="testimonial-stars">★★★★★</div><div class="testimonial-text">"Moved to a new city and had no one to play with. Found a full 5v5 basketball game my first week. This app is incredible."</div><div class="testimonial-author"><div class="testimonial-avatar" style="background:#3dba5e">MR</div><div><div class="testimonial-name">Marcus R.</div><div class="testimonial-city">Fort Lauderdale, FL</div></div></div></div>
-    <div class="testimonial"><div class="testimonial-stars">★★★★★</div><div class="testimonial-text">"The pickleball features are exactly right. DUPR filter, kitchen rules toggle — someone actually talked to real pickleball players before building this."</div><div class="testimonial-author"><div class="testimonial-avatar" style="background:#2fb86b">DP</div><div><div class="testimonial-name">Diana P.</div><div class="testimonial-city">Davie, FL</div></div></div></div>
-    <div class="testimonial"><div class="testimonial-stars">★★★★★</div><div class="testimonial-text">"I run 3v3 basketball every weekend now. Used to spend hours texting to fill a game. Pickup fills my spots in 20 minutes flat."</div><div class="testimonial-author"><div class="testimonial-avatar" style="background:#6366f1">JT</div><div><div class="testimonial-name">Jordan T.</div><div class="testimonial-city">Miami, FL</div></div></div></div>
+  <p class="section-label">South Florida launch</p>
+  <h2 class="section-title">Be among the<br/>founding players.</h2>
+  <p class="section-subtitle">Pickup is live now in South Florida. The first players in a city define its pickup culture — the courts, the regulars, the crews.</p>
+  <div class="launch-grid">
+
+    <!-- Progress card -->
+    <div class="launch-card launch-card-primary">
+      <div style="font-size:32px;margin-bottom:14px">🏟️</div>
+      <div class="launch-card-title">South Florida is just getting started</div>
+      <div class="launch-card-text">The first players in a city make games happen faster for everyone. Join early and help build South Florida's pickup scene from the ground up.</div>
+      <div class="launch-progress">
+        <div class="launch-progress-row">
+          <span><span id="community-count" style="font-weight:800;color:var(--text)">—</span> players registered</span>
+          <span class="launch-goal">Early access goal: 25</span>
+        </div>
+        <div class="launch-bar-track"><div class="launch-bar-fill" id="community-bar"></div></div>
+      </div>
+      <a href="https://apps.apple.com/app/id6769906203" class="nav-cta" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-size:15px;padding:12px 24px">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Join the founding crew
+      </a>
+    </div>
+
+    <!-- Info card 1 -->
+    <div class="launch-card">
+      <div class="feature-icon">🆓</div>
+      <div class="launch-card-title">Free to join, always</div>
+      <div class="launch-card-text">Finding and joining games is always free. No subscription, no paywall, no catch. Pickup earns through venue partnerships — not your wallet.</div>
+    </div>
+
+    <!-- Info card 2 -->
+    <div class="launch-card">
+      <div class="feature-icon">🎯</div>
+      <div class="launch-card-title">Skill-matched games only</div>
+      <div class="launch-card-text">Every game shows the skill level before you commit — NTRP for tennis, DUPR for pickleball, ability levels for everything else. No more showing up to the wrong game.</div>
+    </div>
+
   </div>
 </section>
 
@@ -799,7 +842,14 @@ async function loadStats() {
     const count = (res) => { const cr = res.headers.get('content-range'); if (!cr) return null; const n = parseInt(cr.split('/')[1], 10); return isNaN(n) ? null : n; };
     const gc = count(gr), pc = count(pr);
     if (gc !== null && gc > 0) document.getElementById('games-count').textContent   = gc + '+';
-    if (pc !== null && pc > 0) document.getElementById('players-count').textContent = pc + '+';
+    if (pc !== null && pc > 0) {
+      document.getElementById('players-count').textContent = pc + '+';
+      // Launch community progress bar (goal: 25 founding players)
+      const cc = document.getElementById('community-count');
+      const bar = document.getElementById('community-bar');
+      if (cc) cc.textContent = pc;
+      if (bar) bar.style.width = Math.min(100, Math.round((pc / 25) * 100)) + '%';
+    }
   } catch {}
 }
 loadStats();
