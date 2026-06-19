@@ -1,76 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy — Pickup</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --bg:#070706; --text:#f0efe8; --muted:#888880; --border:rgba(255,255,255,0.08); --accent:#3dba5e; }
-    body { background:var(--bg); color:var(--text); font-family:'DM Sans',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
-    nav { position:fixed;top:0;left:0;right:0;z-index:100; display:flex;align-items:center;justify-content:space-between; padding:16px 32px; background:rgba(7,7,6,0.85); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); }
-    .nav-logo { font-weight:700;font-size:18px;text-decoration:none;color:var(--text); }
-    main { max-width:720px; margin:0 auto; padding:120px 24px 80px; }
-    h1 { font-size:36px;font-weight:800;letter-spacing:-1px;margin-bottom:8px; }
-    .date { color:var(--muted);font-size:14px;margin-bottom:48px; }
-    h2 { font-size:20px;font-weight:700;margin:36px 0 12px; }
-    p { font-size:16px;line-height:1.7;color:rgba(240,239,232,0.8);margin-bottom:16px; }
-    ul { padding-left:20px;margin-bottom:16px; }
-    li { font-size:16px;line-height:1.7;color:rgba(240,239,232,0.8);margin-bottom:6px; }
-    a { color:var(--accent); }
-  </style>
-</head>
-<body>
-<nav><a href="/" class="nav-logo">Pickup</a></nav>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy · Pickup</title><meta name="robots" content="index,follow">
+<style>
+  :root { --accent:#2ea050; --ink:#16181c; --sub:#4a4f57; --line:#e6e8ec; --bg:#ffffff; }
+  *{box-sizing:border-box;}
+  body{margin:0;background:#f6f7f9;color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  header{background:#070706;color:#fff;padding:18px 20px;}
+  header .wrap{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:10px;}
+  header .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);}
+  header a{color:#fff;text-decoration:none;font-weight:700;letter-spacing:-.3px;font-size:18px;}
+  main{max-width:760px;margin:0 auto;background:var(--bg);padding:32px 24px 64px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+  h1{font-size:26px;letter-spacing:-.6px;margin:0 0 4px;}
+  h2{font-size:19px;letter-spacing:-.3px;margin:32px 0 8px;padding-top:8px;}
+  h3{font-size:16px;margin:20px 0 6px;}
+  p,li{color:var(--sub);} p{margin:10px 0;} li{margin:6px 0;}
+  ul{margin:8px 0;padding-left:22px;} strong{color:var(--ink);}
+  hr{border:none;border-top:1px solid var(--line);margin:28px 0;} a{color:var(--accent);}
+  footer{max-width:760px;margin:0 auto;padding:24px;color:#9aa0a8;font-size:13px;text-align:center;}
+</style></head><body>
+<header><div class="wrap"><span class="dot"></span><a href="https://pickupcg.com">Pickup</a></div></header>
 <main>
-  <h1>Privacy Policy</h1>
-  <p class="date">Last updated: January 2025</p>
-
-  <p>Pickup ("we," "our," or "us") is committed to protecting your privacy. This policy describes how we collect, use, and share information when you use the Pickup mobile app and website (pickupcg.com).</p>
-
-  <h2>Information We Collect</h2>
-  <p>We collect information you provide directly, including:</p>
-  <ul>
-    <li>Name, username, and profile photo</li>
-    <li>Sports preferences and skill levels</li>
-    <li>Game posts, messages, and content you create</li>
-    <li>Sign-in credentials (email/password or Sign in with Apple)</li>
-  </ul>
-  <p>We also collect information automatically:</p>
-  <ul>
-    <li>Location data (when you grant permission) to show nearby games</li>
-    <li>Device type, OS version, and app usage data</li>
-    <li>Push notification tokens</li>
-  </ul>
-
-  <h2>How We Use Your Information</h2>
-  <ul>
-    <li>To show you nearby games and players</li>
-    <li>To enable messaging between players</li>
-    <li>To send push notifications about games you've joined</li>
-    <li>To improve the app via analytics (PostHog)</li>
-  </ul>
-
-  <h2>Data Sharing</h2>
-  <p>We do not sell your personal data. We share data with:</p>
-  <ul>
-    <li><strong>Supabase</strong> — our backend database and real-time infrastructure</li>
-    <li><strong>PostHog</strong> — product analytics (anonymized usage data)</li>
-    <li><strong>Expo/Apple</strong> — push notification delivery</li>
-  </ul>
-
-  <h2>Location Data</h2>
-  <p>Location is used only to show you nearby games and courts. We do not track your location in the background. You can revoke location permission at any time in your device settings.</p>
-
-  <h2>Data Retention</h2>
-  <p>Your account data is retained as long as your account is active. You may delete your account at any time by contacting <a href="mailto:hello@pickupcg.com">hello@pickupcg.com</a>.</p>
-
-  <h2>Children</h2>
-  <p>Pickup is not directed to children under 13. We do not knowingly collect personal information from children under 13.</p>
-
-  <h2>Contact</h2>
-  <p>Questions about this policy? Email <a href="mailto:hello@pickupcg.com">hello@pickupcg.com</a>.</p>
+<h1>PRIVACY POLICY</h1>
+<p><strong>Pickup — A Service of Callgame Co.</strong></p>
+<p><strong>Effective Date: June 1, 2026</strong></p>
+<p><strong>Last Updated: June 2026</strong></p>
+<hr>
+<h2>1. INTRODUCTION</h2>
+<p>Callgame Co. (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), doing business as &quot;Pickup,&quot; operates the Pickup mobile application and website at <a href="https://pickupcg.com" target="_blank" rel="noopener">pickupcg.com</a> (collectively, the &quot;Service&quot;). We are committed to protecting the privacy of all users of the Service.</p>
+<p>This Privacy Policy explains what information we collect, how we use it, with whom we share it, and the choices you have regarding your information. By using the Service, you agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy is incorporated by reference into our Terms of Service.</p>
+<p>If you do not agree with this Privacy Policy, please do not use the Service.</p>
+<hr>
+<h2>2. INFORMATION WE COLLECT</h2>
+<h3>2.1 Information You Provide Directly</h3>
+<p>When you create an account or use the Service, you may provide us with:</p>
+<ul>
+<li><strong>Name:</strong> Your first name, last name, or display name as entered during registration.</li>
+<li><strong>Email Address:</strong> Used for account creation, authentication, and communications.</li>
+<li><strong>Profile Photo:</strong> An optional image you upload to identify yourself to other users.</li>
+<li><strong>Sport Preferences:</strong> Sports, activities, and skill levels you select to help us match you with relevant games.</li>
+<li><strong>Location (Approximate at Registration):</strong> A general location (e.g., city or region) you may optionally provide at account setup to help surface relevant content.</li>
+<li><strong>Messages:</strong> Content of in-app messages you send to other users through the Service&#x27;s messaging features.</li>
+<li><strong>Game Posts and Activity:</strong> Games you create, join, or express interest in, including game descriptions, times, locations, and related notes you enter.</li>
+<li><strong>Scores and Stats:</strong> Game results and personal statistics you voluntarily submit through the Service.</li>
+</ul>
+<h3>2.2 Information Collected Automatically</h3>
+<p>When you use the Service, we automatically collect certain information:</p>
+<ul>
+<li><strong>Precise Location Data (When App is Active):</strong> With your permission, we collect precise GPS location data while you are actively using the app. This is used solely to show you nearby games, courts, and players. We do not collect location data in the background when you are not using the app. You can revoke location permission at any time in your device settings.</li>
+<li><strong>Approximate Location (When App is Inactive or Permission Denied):</strong> If precise location is unavailable or permission has not been granted, we may derive an approximate location from your IP address or a location you have previously set in your profile.</li>
+<li><strong>Device Information:</strong> We may collect information about your device, including device model, operating system version, unique device identifiers, and mobile network information.</li>
+<li><strong>Usage Data:</strong> We collect information about how you interact with the Service, such as features used, screens viewed, time spent in the app, and actions taken (e.g., games joined, searches performed). This data is used in aggregate form for analytics purposes.</li>
+<li><strong>Log Data:</strong> Our servers automatically record information when you use the Service, including your IP address, browser type (if accessing via web), referring URLs, and timestamps.</li>
+</ul>
+<h3>2.3 Information from Third Parties</h3>
+<p>If you choose to sign in through a third-party authentication provider (such as Apple Sign-In or Google Sign-In), we receive limited profile information from that provider (typically name and email address) in accordance with your permissions and the provider&#x27;s privacy policy. We do not receive or store your third-party account password.</p>
+<hr>
+<h2>3. HOW WE USE YOUR INFORMATION</h2>
+<p>We use the information we collect for the following purposes:</p>
+<h3>3.1 Providing and Improving the Service</h3>
+<ul>
+<li>Creating and maintaining your account.</li>
+<li>Displaying your profile to other users for game organization and social networking purposes.</li>
+<li>Matching you with nearby games and other players based on your location, sport preferences, and availability.</li>
+<li>Enabling you to create, join, and manage pickup games.</li>
+<li>Powering the venue discovery features to surface relevant courts and facilities near you.</li>
+<li>Responding to your requests, questions, and technical support inquiries.</li>
+<li>Improving, testing, and developing new features for the Service.</li>
+</ul>
+<h3>3.2 Communications</h3>
+<ul>
+<li>Sending you service-related communications such as account confirmations, game reminders, and notifications about activities relevant to you (subject to your notification preferences).</li>
+<li>Sending you push notifications about nearby games, messages from other users, and updates relevant to your activity on the Service (opt-in only; see Section 7).</li>
+<li>Sending you important legal or policy-related notices.</li>
+</ul>
+<h3>3.3 Analytics</h3>
+<p>We use aggregated, non-personally-identifiable usage data to understand how the Service is used, measure feature performance, and inform product development decisions. Individual user data is not shared in analytics outputs.</p>
+<h3>3.4 Safety and Enforcement</h3>
+<ul>
+<li>Detecting, investigating, and preventing fraudulent, abusive, or illegal activity.</li>
+<li>Enforcing our Terms of Service and this Privacy Policy.</li>
+<li>Complying with applicable legal obligations.</li>
+</ul>
+<hr>
+<h2>4. LOCATION DATA — SPECIFIC PRACTICES</h2>
+<p>Because location data is particularly sensitive, we describe our practices in greater detail here.</p>
+<ul>
+<li><strong>Precise Location:</strong> Collected only while the app is open and in use in the foreground, and only with your explicit permission. We use precise location to show you games and courts within a relevant distance.</li>
+<li><strong>Purpose Limitation:</strong> Location data is never used for advertising targeting. It is used solely to enable the core functionality of the Service (proximity-based game and venue discovery).</li>
+<li><strong>No Sale of Location Data:</strong> We do not sell, rent, license, or otherwise commercially transfer your precise or approximate location data to any third party under any circumstances.</li>
+<li><strong>Storage:</strong> Location data is processed and stored using Supabase infrastructure. Supabase is a data platform committed to data security and compliance. For information on how Supabase handles data, please review the Supabase Privacy Policy at <a href="https://supabase.com/privacy" target="_blank" rel="noopener">supabase.com/privacy</a>.</li>
+<li><strong>Retention:</strong> Precise location data from individual sessions is not indefinitely retained as a historical log. We retain only what is necessary to operate the Service.</li>
+<li><strong>Revocation:</strong> You may revoke location permission at any time through your device&#x27;s settings. Revoking permission will limit certain location-dependent features of the Service.</li>
+</ul>
+<hr>
+<h2>5. HOW WE SHARE YOUR INFORMATION</h2>
+<p>We do not sell your personal data. We do not share your personal data with third parties for their own marketing or advertising purposes. We may share information as described below.</p>
+<h3>5.1 With Other Users (By Design)</h3>
+<p>Certain information you provide is inherently visible to other users of the Service as part of its core functionality. This includes your display name, profile photo, sport preferences, games you have created or joined, and scores you have submitted. You should be thoughtful about what you choose to share publicly on the Service.</p>
+<p>Messages you send to other users are visible to those users. Callgame Co. may access message content for safety, moderation, and legal compliance purposes.</p>
+<h3>5.2 With Venue Partners</h3>
+<p>We may share <strong>aggregated and anonymized</strong> data with venue partners listed on the Service. For example, we may tell a venue partner how many Pickup users checked in or expressed interest in their facility during a given period, or provide aggregate demographic or activity-level information. <strong>We do not share individual user identity, contact information, precise location history, or any personally identifiable information with venue partners.</strong></p>
+<h3>5.3 With Service Providers</h3>
+<p>We engage trusted third-party companies and individuals to perform services on our behalf, such as data hosting, infrastructure, analytics, and customer support. These service providers have access to your information only to the extent necessary to perform their functions and are contractually obligated to maintain its confidentiality and security. Our primary infrastructure provider is Supabase. Other service providers may include cloud hosting, email delivery, and crash-reporting services.</p>
+<h3>5.4 Legal Requirements and Safety</h3>
+<p>We may disclose your information if we believe in good faith that such disclosure is necessary to: (a) comply with applicable law, regulation, legal process, or enforceable governmental request; (b) enforce our Terms of Service; (c) detect, prevent, or address fraud, security, or technical issues; or (d) protect the rights, property, or safety of Callgame Co., our users, or the public.</p>
+<h3>5.5 Business Transfers</h3>
+<p>If Callgame Co. is involved in a merger, acquisition, financing, reorganization, bankruptcy, or sale of all or substantially all of its assets, your information may be transferred as part of that transaction. We will notify you via email or prominent notice within the Service before your personal data is transferred and becomes subject to a materially different privacy policy.</p>
+<hr>
+<h2>6. DATA RETENTION</h2>
+<ul>
+<li><strong>Active Account Data:</strong> We retain your personal data for as long as your account is active and as needed to provide you with the Service.</li>
+<li><strong>Deleted Accounts:</strong> When you delete your account, we will purge your personal data from our primary systems within 30 days of the deletion request. After 30 days, your personally identifiable information will not be recoverable from our live systems.</li>
+<li><strong>Residual Copies:</strong> Certain data may persist in encrypted backup archives for a limited additional period (up to 90 days) before being purged from those archives as well. Aggregated, anonymized data derived from your account may be retained indefinitely as it cannot be used to identify you.</li>
+<li><strong>Legal Holds:</strong> We may retain certain data for longer periods if required by law, regulation, or a legal hold arising from an ongoing dispute, investigation, or legal proceeding.</li>
+</ul>
+<hr>
+<h2>7. PUSH NOTIFICATIONS</h2>
+<p>Push notifications from Pickup are opt-in only. We will request your permission to send push notifications when you first install the app or access relevant features. You may receive notifications about:</p>
+<ul>
+<li>New nearby games matching your preferences.</li>
+<li>Messages from other users.</li>
+<li>Games you have joined (reminders, updates, cancellations).</li>
+<li>App updates and important service notices.</li>
+</ul>
+<p><strong>To opt out:</strong> You may disable push notifications at any time through your device&#x27;s settings (iOS: Settings &gt; Notifications &gt; Pickup; Android: Settings &gt; Apps &gt; Pickup &gt; Notifications). Disabling push notifications will not affect your ability to use the Service, but you will not receive real-time alerts.</p>
+<hr>
+<h2>8. ANALYTICS</h2>
+<p>We collect anonymous usage analytics to understand how the Service is used and to improve it. Our analytics system is operated internally or through contracted service providers who process data on our behalf under data processing agreements. We do not use third-party advertising networks or behavioral tracking platforms (such as Google Analytics for advertising, Facebook Pixel, or similar ad-tech tools) to track your behavior across other websites or apps. We do not engage in interest-based advertising.</p>
+<hr>
+<h2>9. CHILDREN&#x27;S PRIVACY</h2>
+<p>The Service is intended for adults and is not directed to anyone under the age of 18. We do not knowingly collect personal information from anyone under 18. If we become aware that we have inadvertently collected personal information from a person under 18, we will take steps to delete such information as promptly as possible.</p>
+<p>If you are a parent or guardian and believe that a person under 18 has provided us with personal information, please contact us at <a href="mailto:info@callgame.co">info@callgame.co</a> so that we can take appropriate action.</p>
+<hr>
+<h2>10. YOUR RIGHTS AND CHOICES</h2>
+<p>You have the following rights with respect to your personal data:</p>
+<h3>10.1 Access</h3>
+<p>You may request a copy of the personal data we hold about you by contacting us at <a href="mailto:info@callgame.co">info@callgame.co</a>. We will respond to verified requests within 30 days.</p>
+<h3>10.2 Correction</h3>
+<p>If your personal data is inaccurate or incomplete, you may update it directly within the app&#x27;s profile settings, or contact us at <a href="mailto:info@callgame.co">info@callgame.co</a> to request a correction.</p>
+<h3>10.3 Deletion</h3>
+<p>You may request deletion of your account and associated personal data by using the account deletion feature within the app, or by contacting us at <a href="mailto:info@callgame.co">info@callgame.co</a>. See Section 6 for information on how data is handled after deletion.</p>
+<h3>10.4 Opt-Out of Notifications</h3>
+<p>You may opt out of push notifications as described in Section 7.</p>
+<h3>10.5 Location Permission</h3>
+<p>You may revoke location permission at any time through your device settings as described in Section 4.</p>
+<hr>
+<h2>11. CALIFORNIA RESIDENTS — CCPA RIGHTS</h2>
+<p>If you are a California resident, the California Consumer Privacy Act (CCPA) as amended by the California Privacy Rights Act (CPRA) provides you with specific rights regarding your personal information.</p>
+<h3>11.1 Right to Know</h3>
+<p>You have the right to request that we disclose the categories of personal information we collect, the purposes for which we use it, the categories of third parties with whom we share it, and the specific pieces of personal information we hold about you.</p>
+<h3>11.2 Right to Delete</h3>
+<p>You have the right to request deletion of personal information we have collected from you, subject to certain exceptions permitted by law (e.g., data we must retain to complete a transaction or comply with a legal obligation).</p>
+<h3>11.3 Right to Correct</h3>
+<p>You have the right to request correction of inaccurate personal information we maintain about you.</p>
+<h3>11.4 Right to Opt-Out of Sale or Sharing</h3>
+<p>We do not sell your personal information, and we do not share your personal information with third parties for cross-context behavioral advertising purposes. Accordingly, there is nothing to opt out of in this regard. If our practices change, we will update this policy and provide opt-out mechanisms as required by law.</p>
+<h3>11.5 Right to Non-Discrimination</h3>
+<p>We will not discriminate against you for exercising your CCPA rights. We will not deny you services, charge you different prices, or provide you a different quality of service because you exercised your rights.</p>
+<h3>11.6 How to Submit a CCPA Request</h3>
+<p>To exercise your rights, contact us at <a href="mailto:info@callgame.co">info@callgame.co</a> with the subject line &quot;CCPA Request.&quot; We may need to verify your identity before processing your request. We will respond within 45 days; if more time is needed, we will notify you of the extension in writing.</p>
+<hr>
+<h2>12. DATA SECURITY</h2>
+<p>We implement commercially reasonable administrative, technical, and physical security measures to protect your personal data from unauthorized access, disclosure, alteration, and destruction. Our data is stored using Supabase, which employs encryption at rest and in transit, access controls, and other industry-standard security measures.</p>
+<p>However, no method of transmission over the Internet or electronic storage is completely secure. We cannot guarantee absolute security. If you believe your account has been compromised, please contact us immediately at <a href="mailto:info@callgame.co">info@callgame.co</a>.</p>
+<hr>
+<h2>13. THIRD-PARTY LINKS AND SERVICES</h2>
+<p>The Service may contain links to third-party websites or integrate with third-party services (such as mapping providers). This Privacy Policy applies only to our Service. We are not responsible for the privacy practices of third-party sites or services. We encourage you to review the privacy policies of any third-party services you access through the Service.</p>
+<hr>
+<h2>14. CHANGES TO THIS PRIVACY POLICY</h2>
+<p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, legal requirements, or other factors. When we make material changes, we will update the &quot;Last Updated&quot; date at the top of this policy and notify you through the Service or via email. Your continued use of the Service after the effective date of the revised policy constitutes your acceptance of the changes.</p>
+<hr>
+<h2>15. CONTACT US</h2>
+<p>If you have any questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us at:</p>
+<p><strong>Callgame Co. (d/b/a Pickup)</strong></p>
+<p>Email: <a href="mailto:info@callgame.co">info@callgame.co</a></p>
+<p>Website: <a href="https://pickupcg.com" target="_blank" rel="noopener">pickupcg.com</a></p>
+<p>We aim to respond to all privacy-related inquiries within 30 days.</p>
+<hr>
+<p>*This Privacy Policy was last updated in June 2026.*</p>
 </main>
-</body>
-</html>
+<footer>© 2026 Callgame Co. · <a href="https://pickupcg.com/privacy">Privacy</a> · <a href="https://pickupcg.com/terms">Terms</a></footer>
+</body></html>

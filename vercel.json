@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/privacy",      "destination": "/privacy.html" },
     { "source": "/terms",        "destination": "/terms.html"   },
+    { "source": "/support",      "destination": "/support.html" },
     { "source": "/player/:slug", "destination": "/index.html"   },
     { "source": "/game/:id",     "destination": "/index.html"   },
     { "source": "/court/:id",    "destination": "/index.html"   },
