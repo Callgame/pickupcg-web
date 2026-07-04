@@ -4,7 +4,7 @@
     { "source": "/terms",        "destination": "/terms.html"   },
     { "source": "/support",      "destination": "/support.html" },
     { "source": "/player/:slug", "destination": "/index.html"   },
-    { "source": "/game/:id",     "destination": "/index.html"   },
+    { "source": "/game/:id",     "destination": "/game.html"    },
     { "source": "/court/:id",    "destination": "/index.html"   },
     { "source": "/join/:id",     "destination": "/index.html"   },
     { "source": "/download",     "destination": "/index.html"   }

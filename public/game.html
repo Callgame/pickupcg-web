@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>You're invited — Pickup</title>
+  <meta name="description" content="A friend invited you to a pickup game. Say you're in — no account needed." />
+  <meta name="robots" content="noindex" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="You're invited to a pickup game" />
+  <meta property="og:description" content="Tap to see the details and say you're in — no account needed." />
+  <meta property="og:image" content="https://pickupcg.com/assets/favicon-512.png" />
+  <meta property="og:type" content="website" />
+
+  <!-- Apple Smart App Banner -->
+  <meta name="apple-itunes-app" content="app-id=6769906203" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/assets/favicon-180.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:      #070706;
+      --surface: #111110;
+      --card:    #1a1a18;
+      --accent:  #3dba5e;
+      --accent2: #2ea04e;
+      --onaccent:#062611;
+      --text:    #f0efe8;
+      --muted:   #888880;
+      --border:  rgba(255,255,255,0.08);
+      --radius:  16px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px calc(40px + env(safe-area-inset-bottom));
+    }
+    a { color: var(--accent); text-decoration: none; }
+
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      margin: 18px 0 26px;
+    }
+    .brand img { width: 34px; height: 34px; border-radius: 9px; }
+    .brand span { font-weight: 800; font-size: 19px; letter-spacing: -0.3px; }
+
+    .wrap { width: 100%; max-width: 430px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 22px;
+    }
+    .kicker {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    .sport { font-size: 40px; line-height: 1; margin-bottom: 10px; }
+    h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 14px; }
+
+    .meta { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+    .meta-row { display: flex; align-items: baseline; gap: 8px; font-size: 14.5px; }
+    .meta-row .k { color: var(--muted); min-width: 58px; font-size: 12.5px; }
+    .meta-row .v { font-weight: 600; }
+
+    .spots {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 12px 14px; margin-bottom: 20px;
+    }
+    .spots .bar { height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+    .spots .fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .4s ease; }
+    .spots .label { font-size: 13px; color: var(--muted); }
+    .spots .label b { color: var(--text); }
+
+    label { display: block; font-size: 12.5px; color: var(--muted); margin: 0 0 6px 2px; }
+    input {
+      width: 100%; background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 13px 14px; color: var(--text);
+      font-family: inherit; font-size: 16px; outline: none; margin-bottom: 14px;
+    }
+    input:focus { border-color: var(--accent); }
+
+    .btn {
+      display: block; width: 100%; text-align: center;
+      background: var(--accent); color: var(--onaccent);
+      font-family: inherit; font-weight: 800; font-size: 16px;
+      border: none; border-radius: 999px; padding: 15px;
+      cursor: pointer; letter-spacing: -0.2px;
+    }
+    .btn:active { background: var(--accent2); }
+    .btn[disabled] { opacity: .55; cursor: default; }
+    .hint { font-size: 12px; color: var(--muted); text-align: center; margin-top: 10px; }
+    .err { color: #f87171; font-size: 13.5px; text-align: center; margin-top: 12px; display: none; }
+
+    .success { text-align: center; display: none; }
+    .success .big { font-size: 46px; margin-bottom: 12px; }
+    .success h2 { font-size: 21px; font-weight: 800; margin-bottom: 8px; }
+    .success p { font-size: 14px; color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
+
+    .appcta {
+      margin-top: 22px; text-align: center;
+      border-top: 1px solid var(--border); padding-top: 20px;
+    }
+    .appcta p { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+    .storebtn {
+      display: inline-block; background: var(--text); color: #0a0a09;
+      font-weight: 700; font-size: 14px; border-radius: 999px; padding: 11px 22px;
+    }
+
+    .skeleton { text-align: center; padding: 40px 0; color: var(--muted); font-size: 14px; }
+    .gone { text-align: center; padding: 30px 0; display: none; }
+    .gone .big { font-size: 40px; margin-bottom: 12px; }
+    .gone p { color: var(--muted); font-size: 14px; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <a class="brand" href="/">
+    <img src="/assets/icon.png" alt="Pickup" />
+    <span>Pickup</span>
+  </a>
+
+  <div class="wrap">
+    <div class="card">
+      <div id="loading" class="skeleton">Loading the game…</div>
+
+      <div id="gone" class="gone">
+        <div class="big">😕</div>
+        <h1 style="font-size:20px">This game is no longer available</h1>
+        <p>It may have been cancelled or already played.</p>
+      </div>
+
+      <div id="game" style="display:none">
+        <div class="kicker">You're invited</div>
+        <div class="sport" id="g-emoji">🏀</div>
+        <h1 id="g-title"></h1>
+        <div class="meta">
+          <div class="meta-row"><span class="k">When</span><span class="v" id="g-when"></span></div>
+          <div class="meta-row"><span class="k">Where</span><span class="v" id="g-where"></span></div>
+          <div class="meta-row"><span class="k">Host</span><span class="v" id="g-host"></span></div>
+          <div class="meta-row" id="g-fee-row" style="display:none"><span class="k">Fee</span><span class="v" id="g-fee"></span></div>
+        </div>
+
+        <div class="spots">
+          <div class="label"><b id="g-in"></b> <span id="g-of"></span></div>
+          <div class="bar"><div class="fill" id="g-fill" style="width:0%"></div></div>
+        </div>
+
+        <form id="rsvp">
+          <label for="name">Your first name</label>
+          <input id="name" type="text" maxlength="40" autocomplete="given-name" placeholder="e.g. Mike" required />
+          <label for="phone">Phone <span style="opacity:.6">(optional — so the host can reach you)</span></label>
+          <input id="phone" type="tel" maxlength="24" autocomplete="tel" placeholder="Optional" />
+          <button class="btn" id="submit" type="submit">I'm in 🎟</button>
+          <div class="hint">No account needed. The host gets a heads-up with your name.</div>
+          <div class="err" id="err"></div>
+        </form>
+
+        <div class="success" id="success">
+          <div class="big">🎟</div>
+          <h2>You're on the list!</h2>
+          <p id="success-sub">The host just got a heads-up that you're in.<br/>Show up and play.</p>
+        </div>
+
+        <div class="appcta">
+          <p>Playing regularly? Get the app — find games near you, track your record, run it back with your crew.</p>
+          <a class="storebtn" id="store" href="https://apps.apple.com/app/id6769906203">Get Pickup for iPhone</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var SUPA = 'https://pqwdmstmxwntuyityxin.supabase.co';
+      var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxd2Rtc3RteHdudHV5aXR5eGluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzODg0NDMsImV4cCI6MjA5Mzk2NDQ0M30.0l5dxQzu2XjCA09DV35b4VS8nwXDFpJbY03o5bvhHUE';
+      var EMOJI = { basketball:'🏀', soccer:'⚽', tennis:'🎾', volleyball:'🏐', football:'🏈', running:'🏃', pickleball:'🏓', badminton:'🏸', golf:'⛳', baseball:'⚾', softball:'🥎', hockey:'🏒', cycling:'🚴', swimming:'🏊', futsal:'⚽', padel:'🎾' };
+
+      var gameId = (location.pathname.match(/\/game\/([^\/?#]+)/) || [])[1] || '';
+      var $ = function (id) { return document.getElementById(id); };
+
+      function showGone() { $('loading').style.display = 'none'; $('gone').style.display = 'block'; }
+
+      if (!gameId) { showGone(); return; }
+
+      fetch(SUPA + '/rest/v1/games?id=eq.' + encodeURIComponent(gameId) +
+            '&select=id,sport,title,location,day,time,spots,max_spots,host_name,host_id,fee,cancelled', {
+        headers: { apikey: ANON, Authorization: 'Bearer ' + ANON }
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (rows) {
+        var g = rows && rows[0];
+        if (!g || g.cancelled) { showGone(); return; }
+
+        document.title = g.title + ' — Pickup';
+        $('g-emoji').textContent = EMOJI[(g.sport || '').toLowerCase()] || '🏟️';
+        $('g-title').textContent = g.title || 'Pickup game';
+        $('g-when').textContent = (g.day || '') + (g.time ? ' · ' + g.time : '');
+        $('g-where').textContent = g.location || 'See host for details';
+        $('g-host').textContent = g.host_name || 'Host';
+        if (g.fee > 0) { $('g-fee-row').style.display = 'flex'; $('g-fee').textContent = '$' + g.fee; }
+
+        var max = Number(g.max_spots) || 0, open = Number(g.spots) || 0;
+        var inCount = Math.max(0, max - open);
+        $('g-in').textContent = inCount + ' in';
+        $('g-of').textContent = max > 0 ? '· ' + open + ' of ' + max + ' spots open' : '';
+        $('g-fill').style.width = (max > 0 ? Math.min(100, (inCount / max) * 100) : 0) + '%';
+
+        if (g.host_id) $('store').href = 'https://apps.apple.com/app/id6769906203?ref=' + encodeURIComponent(g.host_id);
+
+        $('loading').style.display = 'none';
+        $('game').style.display = 'block';
+
+        $('rsvp').addEventListener('submit', function (e) {
+          e.preventDefault();
+          var name = $('name').value.trim();
+          if (!name) return;
+          $('submit').disabled = true;
+          $('submit').textContent = 'Saving…';
+          $('err').style.display = 'none';
+
+          fetch(SUPA + '/functions/v1/game-guest', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + ANON },
+            body: JSON.stringify({ gameId: gameId, name: name, phone: $('phone').value.trim() || undefined })
+          })
+          .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+          .then(function (res) {
+            if (res.ok && res.j && res.j.ok) {
+              $('rsvp').style.display = 'none';
+              $('success').style.display = 'block';
+              $('success-sub').innerHTML = (g.host_name || 'The host') + ' just got a heads-up that you\'re in.<br/>Show up and play.';
+            } else {
+              $('err').textContent = (res.j && res.j.error) || 'Something went wrong — try again.';
+              $('err').style.display = 'block';
+              $('submit').disabled = false;
+              $('submit').textContent = "I'm in 🎟";
+            }
+          })
+          .catch(function () {
+            $('err').textContent = 'Network hiccup — try again.';
+            $('err').style.display = 'block';
+            $('submit').disabled = false;
+            $('submit').textContent = "I'm in 🎟";
+          });
+        });
+      })
+      .catch(showGone);
+    })();
+  </script>
+</body>
+</html>
