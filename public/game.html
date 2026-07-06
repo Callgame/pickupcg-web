@@ -177,6 +177,7 @@
         <div class="appcta">
           <p>Playing regularly? Get the app — find games near you, track your record, run it back with your crew.</p>
           <a class="storebtn" id="store" href="https://apps.apple.com/app/id6769906203">Get Pickup for iPhone</a>
+          <p style="margin-top:12px"><a id="openapp" href="#" style="font-size:13px">Already have Pickup? Open this game →</a></p>
         </div>
       </div>
     </div>
@@ -222,6 +223,7 @@
 
         $('loading').style.display = 'none';
         $('game').style.display = 'block';
+        $('openapp').href = 'pickup://game/' + encodeURIComponent(gameId);
 
         $('rsvp').addEventListener('submit', function (e) {
           e.preventDefault();
