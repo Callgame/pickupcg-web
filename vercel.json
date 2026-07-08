@@ -3,11 +3,16 @@
     { "source": "/privacy",      "destination": "/privacy.html" },
     { "source": "/terms",        "destination": "/terms.html"   },
     { "source": "/support",      "destination": "/support.html" },
-    { "source": "/player/:slug", "destination": "/index.html"   },
-    { "source": "/game/:id",     "destination": "/game.html"    },
-    { "source": "/court/:id",    "destination": "/index.html"   },
-    { "source": "/join/:id",     "destination": "/index.html"   },
-    { "source": "/download",     "destination": "/index.html"   }
+    { "source": "/player/:slug",       "destination": "/open.html"  },
+    { "source": "/game/:id",           "destination": "/game.html"  },
+    { "source": "/court/:id",          "destination": "/index.html" },
+    { "source": "/join/:id",           "destination": "/index.html" },
+    { "source": "/group/:id",          "destination": "/open.html"  },
+    { "source": "/leaderboard/:sport", "destination": "/open.html"  },
+    { "source": "/live/:id",           "destination": "/open.html"  },
+    { "source": "/live",               "destination": "/open.html"  },
+    { "source": "/download",           "destination": "/index.html" },
+    { "source": "/poster",             "destination": "/qr.html"    }
   ],
   "headers": [
     {

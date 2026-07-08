@@ -7,11 +7,19 @@
   <meta name="description" content="A friend invited you to a pickup game. Say you're in — no account needed." />
   <meta name="robots" content="noindex" />
 
-  <!-- Open Graph -->
+  <!-- Open Graph — a designed 1200x630 invite card, not the square app icon.
+       Unfurl crawlers never run JS, so this static card is what every game link
+       looks like in a group chat (creator panel: "the envelope was a text blob"). -->
   <meta property="og:title" content="You're invited to a pickup game" />
   <meta property="og:description" content="Tap to see the details and say you're in — no account needed." />
-  <meta property="og:image" content="https://pickupcg.com/assets/favicon-512.png" />
+  <meta property="og:image" content="https://pickupcg.com/assets/og-game.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="You're invited to a pickup game" />
+  <meta name="twitter:description" content="Tap to see the details and say you're in — no account needed." />
+  <meta name="twitter:image" content="https://pickupcg.com/assets/og-game.png" />
 
   <!-- Apple Smart App Banner -->
   <meta name="apple-itunes-app" content="app-id=6769906203" />
@@ -219,7 +227,19 @@
         $('g-of').textContent = max > 0 ? '· ' + open + ' of ' + max + ' spots open' : '';
         $('g-fill').style.width = (max > 0 ? Math.min(100, (inCount / max) * 100) : 0) + '%';
 
-        if (g.host_id) $('store').href = 'https://apps.apple.com/app/id6769906203?ref=' + encodeURIComponent(g.host_id);
+        if (g.host_id) {
+          $('store').href = 'https://apps.apple.com/app/id6769906203?ref=' + encodeURIComponent(g.host_id);
+          // The App Store strips ?ref= — beacon the tap to ref_taps so the
+          // host's invite is credited (growth panel loop-break #1).
+          $('store').addEventListener('click', function () {
+            try {
+              var url = SUPA + '/rest/v1/ref_taps?apikey=' + encodeURIComponent(ANON);
+              var payload = JSON.stringify({ ref: String(g.host_id).slice(0, 64), path: ('/game/' + gameId).slice(0, 200) });
+              var sent = navigator.sendBeacon && navigator.sendBeacon(url, new Blob([payload], { type: 'application/json' }));
+              if (!sent) fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(function () {});
+            } catch (e) { /* best-effort */ }
+          });
+        }
 
         $('loading').style.display = 'none';
         $('game').style.display = 'block';

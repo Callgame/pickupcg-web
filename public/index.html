@@ -6,18 +6,20 @@
   <title>Pickup — Find a game near you</title><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png"><link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-180.png">
   <meta name="description" content="Pickup is the easiest way to find and join local pickup sports games. Basketball, pickleball, tennis, soccer, volleyball — games near you, right now." />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Pickup — Find a game near you" />
+  <!-- Open Graph — designed 1200x630 card (a square icon unfurls badly) -->
+  <meta property="og:title" content="Pickup — No group texts. Just games." />
   <meta property="og:description" content="Find and join local pickup sports games. No teams, no leagues — just game." />
-  <meta property="og:image" content="https://pickupcg.com/assets/icon.png?v=3" />
+  <meta property="og:image" content="https://pickupcg.com/assets/og-home.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:url" content="https://pickupcg.com" />
   <meta property="og:type" content="website" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Pickup — Find a game near you" />
+  <meta name="twitter:title" content="Pickup — No group texts. Just games." />
   <meta name="twitter:description" content="Find and join local pickup sports games. No teams, no leagues — just game." />
-  <meta name="twitter:image" content="https://pickupcg.com/assets/icon.png?v=3" />
+  <meta name="twitter:image" content="https://pickupcg.com/assets/og-home.png" />
 
   <!-- Apple Smart App Banner -->
   <meta name="apple-itunes-app" content="app-id=6769906203" />
@@ -489,8 +491,8 @@
 <div class="map-section" id="map">
   <div class="map-section-header section">
     <p class="section-label">Live near you</p>
-    <h2 class="section-title">Games on the map,<br/>right now.</h2>
-    <p class="section-subtitle">Every pin is an open game. Tap in — see the sport, skill level, and how many spots are left.</p>
+    <h2 class="section-title" id="map-title">Games on the map,<br/>right now.</h2>
+    <p class="section-subtitle" id="map-sub">Every pin is an open game. Tap in — see the sport, skill level, and how many spots are left.</p>
   </div>
   <div class="map-wrapper">
     <div id="pickup-map"></div>
@@ -764,8 +766,10 @@ const SPORT_COLORS = {
   badminton: '#a78bfa', padel: '#fbbf24', skateboarding: '#84cc16',
 };
 
-// ── Game data (South Florida — matches app's SEED_COURTS locations) ────
-const GAMES = [
+// ── Fallback venue pins (South Florida — matches app's SEED_COURTS locations).
+// Shown ONLY as *venues* ("where the metro plays") when no real upcoming games
+// exist — never as fake games with fake times/spots (investor panel fix #1). ──
+const FALLBACK_SPOTS = [
   { lat: 26.0606, lng: -80.2443, sport: 'pickleball',   title: 'Pickleball Open Play',  detail: 'Bergeron Park · Now',        spots: 3, level: 'All levels'  },
   { lat: 25.7370, lng: -80.3635, sport: 'basketball',   title: '5v5 Basketball',         detail: 'Tropical Park · 4:00 PM',    spots: 2, level: 'Intermediate' },
   { lat: 25.7854, lng: -80.1367, sport: 'tennis',       title: 'Doubles Tennis',         detail: 'Flamingo Park · 5:30 PM',    spots: 2, level: 'NTRP 3.5+'   },
@@ -785,8 +789,36 @@ const GAMES = [
   { lat: 25.8210, lng: -80.3560, sport: 'cycling',      title: 'Group Ride',             detail: 'Padel Club Miami · 7:00 AM', spots: 10, level: 'All levels' },
 ];
 
+// ── Real upcoming games — same anon REST the live stats use ────────────
+const SPORT_NAMES = {
+  basketball: 'Basketball', pickleball: 'Pickleball', tennis: 'Tennis',
+  soccer: 'Soccer', volleyball: 'Volleyball', flagfootball: 'Flag Football',
+  running: 'Running', cycling: 'Cycling', softball: 'Softball',
+  badminton: 'Badminton', padel: 'Padel', skateboarding: 'Skateboarding',
+};
+async function loadUpcomingGames() {
+  try {
+    const h = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` };
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/games?select=title,sport,location,day,time,spots,lat,lng,cancelled&order=created_at.desc&limit=60`, { headers: h });
+    if (!r.ok) return [];
+    const rows = await r.json();
+    const MONTHS = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 };
+    const now = Date.now();
+    return (Array.isArray(rows) ? rows : []).filter((g) => {
+      if (!g || !g.lat || !g.lng || g.cancelled) return false;
+      // Dated labels only ("Sat Jul 12") — weekday-only labels are legacy/stale.
+      const m = /^\w{3} (\w{3}) (\d{1,2})$/.exec(String(g.day || '').trim());
+      if (!m || MONTHS[m[1]] == null) return false;
+      let d = new Date(new Date().getFullYear(), MONTHS[m[1]], Number(m[2])).getTime();
+      if (now - d > 180 * 86400000) d = new Date(new Date().getFullYear() + 1, MONTHS[m[1]], Number(m[2])).getTime();
+      const diff = d - now;
+      return diff > -86400000 && diff < 14 * 86400000; // yesterday → two weeks out
+    });
+  } catch { return []; }
+}
+
 // ── Build Leaflet map ──────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
 
   // Init map centered on South Florida
   const map = L.map('pickup-map', {
@@ -803,11 +835,9 @@ window.addEventListener('DOMContentLoaded', () => {
     maxZoom: 19,
   }).addTo(map);
 
-  // Add game markers
-  GAMES.forEach((g) => {
-    const color = SPORT_COLORS[g.sport] || '#3dba5e';
-    const iconSvg = SPORT_ICONS[g.sport] ? SPORT_ICONS[g.sport](color) : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="${color}" stroke-width="2"/></svg>`;
-
+  function addMarker(lat, lng, sport, popupHtml) {
+    const color = SPORT_COLORS[sport] || '#3dba5e';
+    const iconSvg = SPORT_ICONS[sport] ? SPORT_ICONS[sport](color) : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="${color}" stroke-width="2"/></svg>`;
     const icon = L.divIcon({
       className: '',
       html: `
@@ -822,16 +852,35 @@ window.addEventListener('DOMContentLoaded', () => {
       iconAnchor: [19, 19],
       popupAnchor: [0, -22],
     });
+    L.marker([lat, lng], { icon }).bindPopup(popupHtml).addTo(map);
+  }
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-    const spotsLabel = g.spots === 1 ? '1 spot left' : `${g.spots} spots`;
-    L.marker([g.lat, g.lng], { icon })
-      .bindPopup(`
-        <div class="popup-title">${g.title}</div>
-        <div class="popup-sub">${g.detail} · ${g.level}</div>
+  // REAL games when they exist; honest venue pins when they don't.
+  const real = await loadUpcomingGames();
+  if (real.length > 0) {
+    real.forEach((g) => {
+      const spotsLabel = g.spots === 0 ? 'Full' : g.spots === 1 ? '1 spot left' : `${g.spots} spots`;
+      addMarker(g.lat, g.lng, g.sport, `
+        <div class="popup-title">${esc(g.title)}</div>
+        <div class="popup-sub">${esc(g.location)} · ${esc(g.day)}${g.time ? ' · ' + esc(g.time) : ''}</div>
         <span class="popup-spots">${spotsLabel}</span>
-      `)
-      .addTo(map);
-  });
+      `);
+    });
+  } else {
+    // No liquidity yet — say so honestly, and sell the courts instead.
+    const title = document.getElementById('map-title');
+    const sub = document.getElementById('map-sub');
+    if (title) title.innerHTML = 'Where South Florida<br/>plays.';
+    if (sub) sub.textContent = 'The metro’s home courts and parks. Games light up here as hosts post them — be the one who calls the first run.';
+    FALLBACK_SPOTS.forEach((g) => {
+      const venue = (g.detail.split('·')[0] || g.title).trim();
+      addMarker(g.lat, g.lng, g.sport, `
+        <div class="popup-title">${esc(venue)}</div>
+        <div class="popup-sub">${SPORT_NAMES[g.sport] || g.sport} spot</div>
+      `);
+    });
+  }
 });
 
 // ── Live stats from Supabase ───────────────────────────────────────────
@@ -862,6 +911,21 @@ loadStats();
 
 // ── Deep link handling ─────────────────────────────────────────────────
 const APP_STORE_URL = 'https://apps.apple.com/app/id6769906203';
+
+// Referral tap logging — the App Store strips ?ref=, so this is the LAST point
+// the inviter's id exists (growth panel loop-break #1). sendBeacon survives the
+// redirect; the apikey rides as a query param since beacons can't set headers.
+function logRefTap() {
+  try {
+    const ref = new URLSearchParams(window.location.search).get('ref');
+    if (!ref) return;
+    const url = `${SUPABASE_URL}/rest/v1/ref_taps?apikey=${encodeURIComponent(SUPABASE_ANON_KEY)}`;
+    const payload = JSON.stringify({ ref: ref.slice(0, 64), path: window.location.pathname.slice(0, 200) });
+    const sent = navigator.sendBeacon && navigator.sendBeacon(url, new Blob([payload], { type: 'application/json' }));
+    if (!sent) fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(() => {});
+  } catch { /* attribution is best-effort */ }
+}
+logRefTap();
 function parseDeepLink() {
   const path = window.location.pathname, p = new URLSearchParams(window.location.search);
   if (path.startsWith('/game/'))   return { scheme: 'pickup:/' + path, path, type: 'game' };

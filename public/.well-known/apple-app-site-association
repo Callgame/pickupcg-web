@@ -20,6 +20,18 @@
           {
             "/": "/join/*",
             "comment": "Join game invites"
+          },
+          {
+            "/": "/group/*",
+            "comment": "Crew invite links"
+          },
+          {
+            "/": "/leaderboard/*",
+            "comment": "Shared leaderboard links"
+          },
+          {
+            "/": "/live/*",
+            "comment": "Live broadcast links"
           }
         ]
       }

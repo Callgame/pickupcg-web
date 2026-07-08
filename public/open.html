@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Open in Pickup</title>
+  <meta name="description" content="This lives in the Pickup app — real players, real games, real close." />
+  <meta name="robots" content="noindex" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="See it on Pickup" />
+  <meta property="og:description" content="Real players. Real games. Real close." />
+  <meta property="og:image" content="https://pickupcg.com/assets/og-home.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://pickupcg.com/assets/og-home.png" />
+
+  <!-- Apple Smart App Banner -->
+  <meta name="apple-itunes-app" content="app-id=6769906203" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/assets/favicon-180.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #070706; --card: #14140f; --line: #23231d;
+      --ink: #f0f0eb; --sub: #96a098; --dim: #6e7670;
+      --accent: #3dba5e; --on-accent: #062611;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    .card {
+      width: 100%; max-width: 420px; background: var(--card);
+      border: 1px solid var(--line); border-radius: 24px; padding: 36px 28px;
+      text-align: center;
+    }
+    .mark { width: 72px; height: 72px; border-radius: 18px; margin: 0 auto 20px; display: block; }
+    h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 10px; }
+    p.sub { color: var(--sub); font-size: 15px; line-height: 1.55; margin-bottom: 28px; }
+    a.btn {
+      display: block; text-decoration: none; border-radius: 16px;
+      padding: 15px 16px; font-size: 16px; font-weight: 700; margin-bottom: 10px;
+    }
+    a.primary { background: var(--accent); color: var(--on-accent); }
+    a.ghost { border: 1px solid var(--line); color: var(--sub); font-weight: 500; font-size: 14px; }
+    .foot { margin-top: 22px; color: var(--dim); font-size: 12px; letter-spacing: 2px; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img class="mark" src="/assets/favicon-180.png" alt="Pickup" />
+    <h1 id="t">See it on Pickup</h1>
+    <p class="sub" id="s">Real players. Real games. Real close.</p>
+    <a class="btn primary" id="openapp" href="#">Open in Pickup</a>
+    <a class="btn ghost" id="store" href="https://apps.apple.com/app/id6769906203">Get the app — it’s free</a>
+    <div class="foot">PICKUP · CALL GAME.</div>
+  </div>
+
+  <script>
+    (function () {
+      var SUPA = 'https://pqwdmstmxwntuyityxin.supabase.co';
+      var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxd2Rtc3RteHdudHV5aXR5eGluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzODg0NDMsImV4cCI6MjA5Mzk2NDQ0M30.0l5dxQzu2XjCA09DV35b4VS8nwXDFpJbY03o5bvhHUE';
+      var path = window.location.pathname;
+      var params = new URLSearchParams(window.location.search);
+      var ref = params.get('ref');
+
+      // Per-destination copy — these links used to 404 (/leaderboard) or dead-end
+      // on the marketing homepage (/player), which is negative marketing in a
+      // group chat (creator panel fix #3).
+      var COPY = {
+        player:      ['This player runs on Pickup', 'See their record, W–L, and the runs they play. It all lives in the app.'],
+        group:       ['You’re invited to a crew', 'A friend wants you in their crew on Pickup — rallies, runs, and the group’s games, all in one thread.'],
+        leaderboard: ['The board lives in the app', 'City standings, week streaks, and who’s really got next — see the full leaderboard on Pickup.'],
+        live:        ['This run is live right now', 'Someone’s broadcasting from the court. Watch it live in the Pickup app.'],
+      };
+      var type = path.split('/')[1] || '';
+      var c = COPY[type];
+      if (c) {
+        document.getElementById('t').textContent = c[0];
+        document.getElementById('s').textContent = c[1];
+        document.title = c[0] + ' — Pickup';
+      }
+
+      // Deep link into the installed app (universal links normally intercept
+      // before this page even renders; the scheme is the manual fallback).
+      document.getElementById('openapp').href = 'pickup:/' + path;
+
+      // Referral logging — the App Store strips ?ref=, this is the last point it exists.
+      if (ref) {
+        var storeEl = document.getElementById('store');
+        storeEl.href = 'https://apps.apple.com/app/id6769906203';
+        var logTap = function () {
+          try {
+            var url = SUPA + '/rest/v1/ref_taps?apikey=' + encodeURIComponent(ANON);
+            var payload = JSON.stringify({ ref: String(ref).slice(0, 64), path: path.slice(0, 200) });
+            var sent = navigator.sendBeacon && navigator.sendBeacon(url, new Blob([payload], { type: 'application/json' }));
+            if (!sent) fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(function () {});
+          } catch (e) { /* best-effort */ }
+        };
+        logTap(); // page view with ref = an invite landed
+      }
+    })();
+  </script>
+</body>
+</html>
