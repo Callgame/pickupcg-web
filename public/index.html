@@ -499,7 +499,12 @@
 
 <!-- ── PHONE MOCKUP ──────────────────────────────────────────────── -->
 <div class="mockup-section">
-  <div class="phone-frame">
+  <div style="text-align:center; max-width:640px; margin:0 auto 30px">
+    <p class="section-label">The core loop</p>
+    <h2 class="section-title">See a game. Tap in. Done.</h2>
+    <p class="section-subtitle">Open games near you, one tap to join — you're on the roster before the group chat even starts.</p>
+  </div>
+  <div class="phone-frame" id="demoPhone">
     <div class="phone-notch"></div>
     <div class="phone-screen">
       <div class="phone-header">
@@ -562,6 +567,121 @@
 </div>
 
 <!-- ── LIVE MAP ───────────────────────────────────────────────────── -->
+<!-- ── ANIMATED DEMO (styles + loop for the mockup phone) ─────────── -->
+<style>
+  #demoPhone .game-card { transition: opacity .5s cubic-bezier(.22,1,.36,1), transform .5s cubic-bezier(.22,1,.36,1); will-change: opacity, transform; }
+  #demoPhone .phone-screen { position: relative; }
+  #demoPhone .game-card.joined { border-color: rgba(61,186,94,.55); box-shadow: 0 0 0 1px rgba(61,186,94,.5), 0 8px 22px rgba(61,186,94,.18); }
+  .demo-join {
+    font-family: inherit; font-size: 10px; font-weight: 700; color: #04120a;
+    background: var(--accent); border: none; border-radius: 100px;
+    padding: 4px 12px; white-space: nowrap; position: relative; overflow: hidden;
+    transition: background .25s ease, color .25s ease;
+  }
+  .demo-join.loading { opacity: .82; }
+  .demo-join.joined { background: rgba(61,186,94,.15); color: var(--accent); }
+  .demo-tap { position: absolute; inset: 0; border-radius: 100px; pointer-events: none; background: rgba(255,255,255,.55); opacity: 0; transform: scale(.4); }
+  .demo-tap.go { animation: demoTap .55s ease-out; }
+  @keyframes demoTap { 0% { opacity: .5; transform: scale(.35); } 100% { opacity: 0; transform: scale(1.6); } }
+  .demo-toast {
+    margin: 11px 0 0;
+    background: rgba(61,186,94,.14); border: 1px solid rgba(61,186,94,.4);
+    color: var(--text); border-radius: 12px; padding: 9px 12px;
+    font-size: 10.5px; font-weight: 600; display: flex; align-items: center; gap: 7px;
+    opacity: 0; transform: translateY(10px); pointer-events: none;
+    transition: opacity .4s cubic-bezier(.22,1,.36,1), transform .4s cubic-bezier(.22,1,.36,1);
+  }
+  .demo-toast.show { opacity: 1; transform: translateY(0); }
+  .demo-toast .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex: 0 0 auto; box-shadow: 0 0 8px var(--accent); }
+</style>
+<script>
+(function () {
+  function init() {
+    var phone = document.getElementById('demoPhone');
+    if (!phone) return;
+    var screen = phone.querySelector('.phone-screen');
+    var cards = Array.prototype.slice.call(phone.querySelectorAll('.game-card'));
+    if (!cards.length || !screen) return;
+    cards.forEach(function (c) { c.dataset.op = c.style.opacity || '1'; });
+
+    var target = cards[0];
+    var spotsEl = target.querySelector('.game-spots');
+    var origSpots = spotsEl ? spotsEl.textContent : '3 spots';
+
+    var joinBtn = document.createElement('button');
+    joinBtn.className = 'demo-join';
+    joinBtn.type = 'button';
+    joinBtn.textContent = 'Join';
+    var tap = document.createElement('span');
+    tap.className = 'demo-tap';
+    joinBtn.appendChild(tap);
+    var rightEl = target.querySelector('.game-right');
+    if (rightEl) rightEl.insertBefore(joinBtn, rightEl.firstChild);
+
+    var toast = document.createElement('div');
+    toast.className = 'demo-toast';
+    toast.innerHTML = '<span class="dot"></span><span>You’re in · see you at Bergeron Park 🏓</span>';
+    screen.appendChild(toast);
+
+    function setLabel(txt) {
+      if (joinBtn.childNodes[0] && joinBtn.childNodes[0].nodeType === 3) joinBtn.childNodes[0].nodeValue = txt;
+      else joinBtn.insertBefore(document.createTextNode(txt), joinBtn.firstChild);
+    }
+    function hideCards() { cards.forEach(function (c) { c.style.opacity = '0'; c.style.transform = 'translateY(14px)'; }); }
+    function reset() {
+      hideCards();
+      target.classList.remove('joined');
+      joinBtn.classList.remove('loading', 'joined');
+      setLabel('Join');
+      if (spotsEl) spotsEl.textContent = origSpots;
+      toast.classList.remove('show');
+      tap.classList.remove('go');
+    }
+    function join() {
+      joinBtn.classList.remove('loading');
+      joinBtn.classList.add('joined');
+      setLabel('You’re in ✓');
+      target.classList.add('joined');
+      if (spotsEl) spotsEl.textContent = '2 spots';
+    }
+    function resolved() {
+      cards.forEach(function (c) { c.style.opacity = c.dataset.op; c.style.transform = 'none'; });
+      join();
+    }
+
+    var timers = [], active = false, inView = false;
+    function clearAll() { timers.forEach(clearTimeout); timers = []; }
+    function at(off, fn) { timers.push(setTimeout(fn, off)); }
+    function play() {
+      clearAll();
+      reset();
+      cards.forEach(function (c, i) { at(150 + i * 140, function () { c.style.opacity = c.dataset.op; c.style.transform = 'translateY(0)'; }); });
+      at(1500, function () { tap.classList.remove('go'); void tap.offsetWidth; tap.classList.add('go'); });
+      at(1650, function () { joinBtn.classList.add('loading'); setLabel('Joining…'); });
+      at(2200, join);
+      at(2550, function () { toast.classList.add('show'); });
+      at(4700, function () { toast.classList.remove('show'); });
+      at(5150, hideCards);
+      at(5750, function () { if (active) play(); });
+    }
+    function start() { if (active) return; active = true; play(); }
+    function stop() { active = false; clearAll(); }
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { resolved(); return; }
+
+    reset();
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { inView = e.isIntersecting; if (inView && !document.hidden) start(); else stop(); });
+      }, { threshold: 0.3 }).observe(phone);
+    } else { inView = true; start(); }
+    document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else if (inView) start(); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+
 <div class="map-section" id="map">
   <div class="map-section-header section">
     <p class="section-label">Live near you</p>
