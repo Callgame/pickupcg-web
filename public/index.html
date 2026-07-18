@@ -449,6 +449,54 @@
   </div>
 </section>
 
+<!-- ── SEE IT IN ACTION (real app screens) ───────────────────────── -->
+<style>
+  .shots-section { padding-top: 40px; padding-bottom: 32px; }
+  .shots-scroll {
+    display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding: 34px 20px 24px; margin: 0 -20px; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .shots-scroll::-webkit-scrollbar { display: none; }
+  .shot {
+    flex: 0 0 auto; scroll-snap-align: center; margin: 0;
+    width: 248px; border-radius: 26px; overflow: hidden;
+    box-shadow: 0 22px 55px rgba(0,0,0,0.55);
+  }
+  .shot img { display: block; width: 100%; height: auto; }
+  .shots-hint { text-align: center; color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .shots-hint .swipe { display: none; }
+  @media (max-width: 600px) {
+    .shot { width: 74vw; max-width: 300px; }
+    .shots-hint .swipe { display: inline; }
+  }
+  .trust-strip {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 26px;
+    max-width: 780px; margin: 30px auto 0; padding: 0 20px;
+  }
+  .trust-strip span { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; font-weight: 500; }
+  .trust-strip span::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex: 0 0 auto; }
+</style>
+<section class="section shots-section">
+  <p class="section-label">See it in action</p>
+  <h2 class="section-title">The whole run,<br/>in your pocket.</h2>
+  <p class="section-subtitle">Open the map, see who's playing near you <span style="color:var(--accent)">right now</span>, tap in — and the group chat's already going. Scores, streaks, and live streams come standard.</p>
+  <div class="shots-scroll">
+    <figure class="shot"><img src="/assets/shots/shot-01.jpg" alt="Find a game near you on Pickup's live map" loading="lazy" width="640" height="1390" /></figure>
+    <figure class="shot"><img src="/assets/shots/shot-02.jpg" alt="Call your next run and get on the map" loading="lazy" width="640" height="1390" /></figure>
+    <figure class="shot"><img src="/assets/shots/shot-03.jpg" alt="Rally your crew in a group chat with polls" loading="lazy" width="640" height="1390" /></figure>
+    <figure class="shot"><img src="/assets/shots/shot-04.jpg" alt="Keep score and climb the local leaderboard" loading="lazy" width="640" height="1390" /></figure>
+    <figure class="shot"><img src="/assets/shots/shot-05.jpg" alt="Stream your game live to your followers" loading="lazy" width="640" height="1390" /></figure>
+  </div>
+  <p class="shots-hint">Real screens from the app.<span class="swipe"> · swipe →</span></p>
+  <div class="trust-strip">
+    <span>Live now in South Florida</span>
+    <span>Free to join &amp; post</span>
+    <span>No group texts, no spreadsheets</span>
+    <span>On the App Store</span>
+  </div>
+</section>
+
 <!-- ── PHONE MOCKUP ──────────────────────────────────────────────── -->
 <div class="mockup-section">
   <div class="phone-frame">
