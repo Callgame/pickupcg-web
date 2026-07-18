@@ -77,6 +77,7 @@
       text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
     }
     .sport { font-size: 40px; line-height: 1; margin-bottom: 10px; }
+    .sport svg { width: 42px; height: 42px; display: block; }
     h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 14px; }
 
     .meta { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
@@ -145,14 +146,14 @@
       <div id="loading" class="skeleton">Loading the game…</div>
 
       <div id="gone" class="gone">
-        <div class="big">😕</div>
+        <div class="big"><svg width="40" height="40" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="#888880" stroke-width="2"/><path d="M3 9H21" stroke="#888880" stroke-width="2"/><path d="M8 3V6M16 3V6" stroke="#888880" stroke-width="2" stroke-linecap="round"/><path d="M10 13L14 17M14 13L10 17" stroke="#888880" stroke-width="2" stroke-linecap="round"/></svg></div>
         <h1 style="font-size:20px">This game is no longer available</h1>
         <p>It may have been cancelled or already played.</p>
       </div>
 
       <div id="game" style="display:none">
         <div class="kicker">You're invited</div>
-        <div class="sport" id="g-emoji">🏀</div>
+        <div class="sport" id="g-emoji"></div>
         <h1 id="g-title"></h1>
         <div class="meta">
           <div class="meta-row"><span class="k">When</span><span class="v" id="g-when"></span></div>
@@ -171,13 +172,13 @@
           <input id="name" type="text" maxlength="40" autocomplete="given-name" placeholder="e.g. Mike" required />
           <label for="phone">Phone <span style="opacity:.6">(optional — so the host can reach you)</span></label>
           <input id="phone" type="tel" maxlength="24" autocomplete="tel" placeholder="Optional" />
-          <button class="btn" id="submit" type="submit">I'm in 🎟</button>
+          <button class="btn" id="submit" type="submit">I'm in</button>
           <div class="hint">No account needed. The host gets a heads-up with your name.</div>
           <div class="err" id="err"></div>
         </form>
 
         <div class="success" id="success">
-          <div class="big">🎟</div>
+          <div class="big"><svg width="42" height="42" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#3dba5e" stroke-width="2"/><path d="M8 12L11 15L16 9" stroke="#3dba5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h2>You're on the list!</h2>
           <p id="success-sub">The host just got a heads-up that you're in.<br/>Show up and play.</p>
         </div>
@@ -195,7 +196,26 @@
     (function () {
       var SUPA = 'https://pqwdmstmxwntuyityxin.supabase.co';
       var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxd2Rtc3RteHdudHV5aXR5eGluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzODg0NDMsImV4cCI6MjA5Mzk2NDQ0M30.0l5dxQzu2XjCA09DV35b4VS8nwXDFpJbY03o5bvhHUE';
-      var EMOJI = { basketball:'🏀', soccer:'⚽', tennis:'🎾', volleyball:'🏐', football:'🏈', running:'🏃', pickleball:'🏓', badminton:'🏸', golf:'⛳', baseball:'⚾', softball:'🥎', hockey:'🏒', cycling:'🚴', swimming:'🏊', futsal:'⚽', padel:'🎾' };
+      // ── Sport icon SVGs — identical to homepage (index.html SPORT_ICONS) ──
+      var SPORT_ICONS = {
+        basketball:   function (c) { return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="' + c + '" stroke-width="2"/><path d="M12 2C12 2 8 7 8 12C8 17 12 22 12 22" stroke="' + c + '" stroke-width="2"/><path d="M12 2C12 2 16 7 16 12C16 17 12 22 12 22" stroke="' + c + '" stroke-width="2"/><path d="M2 12H22" stroke="' + c + '" stroke-width="2"/></svg>'; },
+        pickleball:   function (c) { return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="' + c + '" stroke-width="2"/><circle cx="9" cy="9" r="1.5" fill="' + c + '"/><circle cx="15" cy="9" r="1.5" fill="' + c + '"/><circle cx="12" cy="15" r="1.5" fill="' + c + '"/><path d="M19 19L22 22" stroke="' + c + '" stroke-width="2" stroke-linecap="round"/></svg>'; },
+        tennis:       function (c) { return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="' + c + '" stroke-width="2"/><path d="M5.5 5.5C7.5 8 7.5 16 5.5 18.5" stroke="' + c + '" stroke-width="2" stroke-linecap="round"/><path d="M18.5 5.5C16.5 8 16.5 16 18.5 18.5" stroke="' + c + '" stroke-width="2" stroke-linecap="round"/></svg>'; },
+        soccer:       function (c) { return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="' + c + '" stroke-width="2"/><polygon points="12,7 14.5,9.5 13.5,12.5 10.5,12.5 9.5,9.5" stroke="' + c + '" stroke-width="1.5" fill="none"/><path d="M12 7L12 2" stroke="' + c + '" stroke-width="1.5" stroke-linecap="round"/></svg>'; },
+        volleyball:   function (c) { return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="' + c + '" stroke-width="2"/><path d="M12 2C12 2 17 6 17 12" stroke="' + c + '" stroke-width="2" stroke-linecap="round"/><path d="M12 2C12 2 7 6 7 12" stroke="' + c + '" stroke-width="2" stroke-linecap="round"/></svg>'; },
+        flagfootball: function (c) { return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 3L3 21" stroke="' + c + '" stroke-width="2" stroke-linecap="round"/><path d="M3 3L14 6L3 9Z" fill="' + c + '"/></svg>'; },
+        running:      function (c) { return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="15" cy="4" r="2" stroke="' + c + '" stroke-width="2"/><path d="M8 22L11 16L14 18L17 12" stroke="' + c + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 12L9 9L13 10L16 7" stroke="' + c + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'; },
+        cycling:      function (c) { return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="16" r="4" stroke="' + c + '" stroke-width="2"/><circle cx="18" cy="16" r="4" stroke="' + c + '" stroke-width="2"/><path d="M6 16L10 8L14 10L18 16" stroke="' + c + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+      };
+      // ── Sport colors — identical to homepage (index.html SPORT_COLORS) ──
+      var SPORT_COLORS = {
+        basketball: '#e8743a', pickleball: '#2fb86b', tennis: '#c9a227',
+        soccer: '#4a9fd4', volleyball: '#9b6fd4', flagfootball: '#d44a6e',
+        running: '#f472b6', cycling: '#38bdf8', softball: '#fb923c',
+        badminton: '#a78bfa', padel: '#fbbf24', skateboarding: '#84cc16'
+      };
+      // ── Generic fallback (unknown sport) — a location pin in the accent color ──
+      var GENERIC_SPORT_ICON = '<svg width="42" height="42" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="#3dba5e" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="9" r="2.5" stroke="#3dba5e" stroke-width="2"/></svg>';
 
       var gameId = (location.pathname.match(/\/game\/([^\/?#]+)/) || [])[1] || '';
       var $ = function (id) { return document.getElementById(id); };
@@ -214,7 +234,8 @@
         if (!g || g.cancelled) { showGone(); return; }
 
         document.title = g.title + ' — Pickup';
-        $('g-emoji').textContent = EMOJI[(g.sport || '').toLowerCase()] || '🏟️';
+        var sport = (g.sport || '').toLowerCase();
+        $('g-emoji').innerHTML = SPORT_ICONS[sport] ? SPORT_ICONS[sport](SPORT_COLORS[sport] || '#3dba5e') : GENERIC_SPORT_ICON;
         $('g-title').textContent = g.title || 'Pickup game';
         $('g-when').textContent = (g.day || '') + (g.time ? ' · ' + g.time : '');
         $('g-where').textContent = g.location || 'See host for details';
@@ -272,14 +293,14 @@
               $('err').textContent = (res.j && res.j.error) || 'Something went wrong — try again.';
               $('err').style.display = 'block';
               $('submit').disabled = false;
-              $('submit').textContent = "I'm in 🎟";
+              $('submit').textContent = "I'm in";
             }
           })
           .catch(function () {
             $('err').textContent = 'Network hiccup — try again.';
             $('err').style.display = 'block';
             $('submit').disabled = false;
-            $('submit').textContent = "I'm in 🎟";
+            $('submit').textContent = "I'm in";
           });
         });
       })
