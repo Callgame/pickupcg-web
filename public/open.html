@@ -62,8 +62,8 @@
     <img class="mark" src="/assets/favicon-180.png" alt="Pickup" />
     <h1 id="t">See it on Pickup</h1>
     <p class="sub" id="s">Real players. Real games. Real close.</p>
-    <a class="btn primary" id="openapp" href="#">Open in Pickup</a>
-    <a class="btn ghost" id="store" href="https://apps.apple.com/app/id6769906203">Get the app — it’s free</a>
+    <a class="btn primary" id="store" href="https://apps.apple.com/app/id6769906203">Get the app — it’s free</a>
+    <a class="btn ghost" id="openapp" href="#">Already have Pickup? Open it →</a>
     <div class="foot">PICKUP · CALL GAME.</div>
   </div>
 
@@ -94,7 +94,20 @@
 
       // Deep link into the installed app (universal links normally intercept
       // before this page even renders; the scheme is the manual fallback).
-      document.getElementById('openapp').href = 'pickup:/' + path;
+      var STORE = 'https://apps.apple.com/app/id6769906203';
+      var scheme = 'pickup:/' + path;
+      var openApp = document.getElementById('openapp');
+      openApp.href = scheme;
+
+      // When someone taps "Open it" but the app isn't installed, the scheme
+      // silently fails — so arm a ~1.5s fallback to the App Store, cancelled
+      // the moment the page is backgrounded (which means the app did open).
+      openApp.addEventListener('click', function () {
+        var t = setTimeout(function () { window.location.replace(STORE); }, 1500);
+        var cancel = function () { if (document.hidden) clearTimeout(t); };
+        document.addEventListener('visibilitychange', cancel);
+        window.addEventListener('pagehide', function () { clearTimeout(t); });
+      });
 
       // Referral logging — the App Store strips ?ref=, this is the last point it exists.
       if (ref) {

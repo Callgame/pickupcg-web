@@ -182,8 +182,8 @@
           <p id="success-sub">The host just got a heads-up that you're in.<br/>Show up and play.</p>
         </div>
 
-        <div class="appcta">
-          <p>Playing regularly? Get the app — find games near you, track your record, run it back with your crew.</p>
+        <div class="appcta" id="appcta">
+          <p id="cta-copy">Playing regularly? Get the app — find games near you, track your record, run it back with your crew.</p>
           <a class="storebtn" id="store" href="https://apps.apple.com/app/id6769906203">Get Pickup for iPhone</a>
           <p style="margin-top:12px"><a id="openapp" href="#" style="font-size:13px">Already have Pickup? Open this game →</a></p>
         </div>
@@ -264,6 +264,10 @@
               $('rsvp').style.display = 'none';
               $('success').style.display = 'block';
               $('success-sub').innerHTML = (g.host_name || 'The host') + ' just got a heads-up that you\'re in.<br/>Show up and play.';
+              // Post-RSVP: turn the app CTA into the contextual next step —
+              // reminders + never missing this crew's next game.
+              $('cta-copy').innerHTML = 'Get the app so you never miss ' + (g.host_name ? g.host_name + '’s' : 'the') + ' next game — a reminder before tip-off, plus your record and the group chat.';
+              $('store').textContent = 'Get reminders — download Pickup';
             } else {
               $('err').textContent = (res.j && res.j.error) || 'Something went wrong — try again.';
               $('err').style.display = 'block';

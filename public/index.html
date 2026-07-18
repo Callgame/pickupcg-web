@@ -24,14 +24,34 @@
   <!-- Apple Smart App Banner -->
   <meta name="apple-itunes-app" content="app-id=6769906203" />
 
-  <!-- Fonts -->
+  <!-- Canonical + browser chrome -->
+  <link rel="canonical" href="https://pickupcg.com/" />
+  <meta name="theme-color" content="#070706" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Fonts — DM Sans + one handwritten accent word (Dancing Script) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet" />
 
-  <!-- Leaflet map -->
+  <!-- Leaflet map — deferred: the map lives far down the page and inits on DOMContentLoaded -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MobileApplication",
+    "name": "Pickup — Call Game",
+    "operatingSystem": "iOS",
+    "applicationCategory": "SportsApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "downloadUrl": "https://apps.apple.com/app/id6769906203",
+    "publisher": { "@type": "Organization", "name": "Callgame Co.", "url": "https://pickupcg.com" }
+  }
+  </script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -49,6 +69,11 @@
     }
 
     html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
     body {
       background: var(--bg);
       color: var(--text);
@@ -195,11 +220,11 @@
     }
     /* Override Leaflet attribution to match dark theme */
     .leaflet-control-attribution {
-      background: rgba(7,7,6,0.75) !important;
-      color: #555 !important; font-size: 10px !important;
+      background: rgba(7,7,6,0.8) !important;
+      color: #9a9a92 !important; font-size: 10px !important;
       backdrop-filter: blur(8px);
     }
-    .leaflet-control-attribution a { color: #666 !important; }
+    .leaflet-control-attribution a { color: #b6c0b6 !important; }
     .leaflet-control-zoom a {
       background: #1a1a18 !important; color: #f0efe8 !important;
       border-color: rgba(255,255,255,.1) !important;
@@ -271,6 +296,7 @@
     .feature-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; transition: all .2s; }
     .feature-card:hover { border-color: rgba(61,186,94,.3); transform: translateY(-2px); }
     .feature-icon { width: 44px; height: 44px; background: rgba(61,186,94,.12); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+    .feature-icon svg { width: 23px; height: 23px; display: block; }
     .feature-title { font-weight: 700; font-size: 17px; margin-bottom: 8px; }
     .feature-text  { font-size: 14px; color: var(--muted); line-height: 1.6; }
     .feature-tag   { display: inline-block; margin-top: 10px; font-size: 11px; font-weight: 600; color: var(--accent); background: rgba(61,186,94,.1); border-radius: 6px; padding: 3px 8px; }
@@ -405,8 +431,8 @@
 <!-- ── HERO ─────────────────────────────────────────────────────── -->
 <section class="hero">
   <div class="badge"><span class="badge-dot"></span>Games happening near you right now</div>
-  <h1>Find your next<br/><span>game</span>, today.</h1>
-  <p>Pickup connects you with local players for basketball, pickleball, tennis, soccer, volleyball, and more — no teams, no leagues, just game.</p>
+  <h1>No group texts.<br/><span>Just games.</span></h1>
+  <p>Find and post pickup games near you — basketball, pickleball, tennis, soccer, volleyball, and more. Tap in, show up, run it back.</p>
   <div class="hero-buttons">
     <a href="https://apps.apple.com/app/id6769906203" class="btn-primary">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
@@ -415,11 +441,11 @@
     <a href="#map" class="btn-secondary">See live games →</a>
   </div>
   <div class="social-proof">
-    <div class="proof-item"><div class="proof-number" id="games-count">—</div><div class="proof-label">games posted</div></div>
-    <div class="proof-divider"></div>
-    <div class="proof-item"><div class="proof-number" id="players-count">—</div><div class="proof-label">players registered</div></div>
-    <div class="proof-divider"></div>
     <div class="proof-item"><div class="proof-number">12+</div><div class="proof-label">sports supported</div></div>
+    <div class="proof-divider"></div>
+    <div class="proof-item"><div class="proof-number">Free</div><div class="proof-label">to join &amp; post</div></div>
+    <div class="proof-divider"></div>
+    <div class="proof-item"><div class="proof-number">1 tap</div><div class="proof-label">to call a game</div></div>
   </div>
 </section>
 
@@ -592,14 +618,14 @@
   <h2 class="section-title">Built for players<br/>who just want to play.</h2>
   <p class="section-subtitle">No season commitments, no team tryouts. Open a map, find a game, show up.</p>
   <div class="features-grid">
-    <div class="feature-card"><div class="feature-icon">📍</div><div class="feature-title">Live map game discovery</div><div class="feature-text">Every open game pinned on a real-time map. See distance, skill level, spots left, and who's already in — before you commit.</div></div>
-    <div class="feature-card"><div class="feature-icon">⚡</div><div class="feature-title">Join in one tap</div><div class="feature-text">No forms, no approvals. Tap Join — your spot is reserved, the host is notified, and the group chat opens automatically.</div></div>
-    <div class="feature-card"><div class="feature-icon">📣</div><div class="feature-title">Sport-specific game posting</div><div class="feature-text">NTRP minimums for tennis. DUPR ratings and kitchen rules for pickleball. Format chips and house rules for basketball. Every sport gets its own fields.</div><span class="feature-tag">NTRP · DUPR · Format chips</span></div>
-    <div class="feature-card"><div class="feature-icon">🏟️</div><div class="feature-title">Court check-in</div><div class="feature-text">Tap "I'm here" when you arrive and see exactly who else is on the court right now. Real-time presence — no more "you here yet?" texts.</div></div>
-    <div class="feature-card"><div class="feature-icon">🏆</div><div class="feature-title">Scores, records & leaderboards</div><div class="feature-text">Track results across 12+ sports, build your W/L record, maintain a streak, and climb the local leaderboard.</div><span class="feature-tag">12+ sports · Streak · Leaderboard</span></div>
-    <div class="feature-card"><div class="feature-icon">💬</div><div class="feature-title">Message players directly</div><div class="feature-text">DM any player from their profile or from a game. Formal challenges and league creation are coming in an upcoming update.</div><span class="feature-tag">Challenges &amp; leagues coming soon</span></div>
-    <div class="feature-card"><div class="feature-icon">🎬</div><div class="feature-title">Share moments from the court</div><div class="feature-text">Post shout-outs and game highlights to your feed. Live streaming from the court is coming in an upcoming update.</div><span class="feature-tag">Live streaming coming soon</span></div>
-    <div class="feature-card"><div class="feature-icon">🔁</div><div class="feature-title">Recurring games</div><div class="feature-text">Post once as a recurring game — Pickup auto-reposts it weekly and keeps your regular crew notified.</div></div>
+    <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3dba5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="feature-title">Live map game discovery</div><div class="feature-text">Every open game pinned on a real-time map. See distance, skill level, spots left, and who's already in — before you commit.</div></div>
+    <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3dba5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg></div><div class="feature-title">Join in one tap</div><div class="feature-text">No forms, no approvals. Tap Join — your spot is reserved, the host is notified, and the group chat opens automatically.</div></div>
+    <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3dba5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="9" cy="8" r="2.5" fill="#070706"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.5" fill="#070706"/></svg></div><div class="feature-title">Sport-specific game posting</div><div class="feature-text">NTRP minimums for tennis. DUPR ratings and kitchen rules for pickleball. Format chips and house rules for basketball. Every sport gets its own fields.</div><span class="feature-tag">NTRP · DUPR · Format chips</span></div>
+    <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3dba5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><path d="m9 10 2 2 4-4"/></svg></div><div class="feature-title">Court check-in</div><div class="feature-text">Tap "I'm here" when you arrive and see exactly who else is on the court right now. Real-time presence — no more "you here yet?" texts.</div></div>
+    <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3dba5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="10" y1="18" x2="14" y2="18"/></svg></div><div class="feature-title">Scores, records &amp; leaderboards</div><div class="feature-text">Track results across 12+ sports, build your W/L record, maintain a streak, and climb the local leaderboard.</div><span class="feature-tag">12+ sports · Streak · Leaderboard</span></div>
+    <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3dba5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.5A8 8 0 1 1 21 12Z"/></svg></div><div class="feature-title">Message players directly</div><div class="feature-text">DM any player from their profile or from a game. Formal challenges and league creation are coming in an upcoming update.</div><span class="feature-tag">Challenges &amp; leagues coming soon</span></div>
+    <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3dba5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg></div><div class="feature-title">Share moments from the court</div><div class="feature-text">Post shout-outs and game highlights to your feed. Live streaming from the court is coming in an upcoming update.</div><span class="feature-tag">Live streaming coming soon</span></div>
+    <div class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3dba5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div><div class="feature-title">Recurring games</div><div class="feature-text">Post once as a recurring game — Pickup auto-reposts it weekly and keeps your regular crew notified.</div></div>
   </div>
 </section>
 
@@ -649,15 +675,14 @@
 
     <!-- Progress card -->
     <div class="launch-card launch-card-primary">
-      <div style="font-size:32px;margin-bottom:14px">🏟️</div>
+      <div style="margin-bottom:14px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#3dba5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6.5" rx="8.5" ry="3.5"/><path d="M3.5 6.5v5c0 1.9 3.8 3.5 8.5 3.5s8.5-1.6 8.5-3.5v-5"/><path d="M3.5 11.5v5c0 1.9 3.8 3.5 8.5 3.5s8.5-1.6 8.5-3.5v-5"/></svg></div>
       <div class="launch-card-title">South Florida is just getting started</div>
       <div class="launch-card-text">The first players in a city make games happen faster for everyone. Join early and help build South Florida's pickup scene from the ground up.</div>
       <div class="launch-progress">
         <div class="launch-progress-row">
-          <span><span id="community-count" style="font-weight:800;color:var(--text)">—</span> players registered</span>
-          <span class="launch-goal">Early access goal: 25</span>
+          <span><span class="badge-dot" style="display:inline-block;margin-right:8px"></span>Live now in South Florida</span>
+          <span class="launch-goal">Founding players get in first</span>
         </div>
-        <div class="launch-bar-track"><div class="launch-bar-fill" id="community-bar"></div></div>
       </div>
       <a href="https://apps.apple.com/app/id6769906203" class="nav-cta" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-size:15px;padding:12px 24px">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
@@ -667,14 +692,14 @@
 
     <!-- Info card 1 -->
     <div class="launch-card">
-      <div class="feature-icon">🆓</div>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3dba5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 12 22l-9-9V4h9l8.6 8.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1.3" fill="#3dba5e"/></svg></div>
       <div class="launch-card-title">Free to join, always</div>
       <div class="launch-card-text">Finding and joining games is always free. No subscription, no paywall, no catch. Pickup earns through venue partnerships — not your wallet.</div>
     </div>
 
     <!-- Info card 2 -->
     <div class="launch-card">
-      <div class="feature-icon">🎯</div>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3dba5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="#3dba5e"/></svg></div>
       <div class="launch-card-title">Skill-matched games only</div>
       <div class="launch-card-text">Every game shows the skill level before you commit — NTRP for tennis, DUPR for pickleball, ability levels for everything else. No more showing up to the wrong game.</div>
     </div>
@@ -706,10 +731,62 @@
   </div>
 </section>
 
+<!-- ── FAQ ───────────────────────────────────────────────────────── -->
+<style>
+  .faq-list { max-width: 720px; margin: 34px auto 0; text-align: left; }
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-item summary {
+    list-style: none; cursor: pointer; padding: 22px 4px; font-size: 18px;
+    font-weight: 600; color: var(--text); display: flex; align-items: center;
+    justify-content: space-between; gap: 16px;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: "+"; font-size: 24px; font-weight: 400; color: var(--muted);
+    line-height: 1; transition: transform .2s ease;
+  }
+  .faq-item[open] summary::after { content: "–"; }
+  .faq-item summary:hover { color: var(--accent); }
+  .faq-answer { padding: 0 4px 24px; color: var(--muted); font-size: 16px; line-height: 1.6; }
+  .faq-answer a { color: var(--accent); text-decoration: none; }
+  /* Sticky mobile download bar */
+  .mobile-cta { display: none; }
+  @media (max-width: 600px) {
+    .mobile-cta {
+      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 200;
+      align-items: center; justify-content: space-between; gap: 12px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      background: rgba(7,7,6,0.92); backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border);
+    }
+    .mobile-cta-label { font-size: 14px; font-weight: 600; color: var(--text); }
+    .mobile-cta-label span { display: block; font-size: 12px; font-weight: 400; color: var(--muted); }
+    .mobile-cta a {
+      flex: 0 0 auto; background: var(--accent); color: #04120a; font-weight: 700;
+      font-size: 15px; padding: 12px 20px; border-radius: 999px; text-decoration: none;
+      white-space: nowrap;
+    }
+    body { padding-bottom: 76px; }
+  }
+</style>
+<section class="section" id="faq">
+  <p class="section-label">Questions</p>
+  <h2 class="section-title">Good to know.</h2>
+  <div class="faq-list">
+    <details class="faq-item"><summary>Is Pickup free?</summary><div class="faq-answer">Yes. Finding, joining, and posting games is always free — no subscription and no paywall. Pickup earns through venue partnerships, not player fees.</div></details>
+    <details class="faq-item"><summary>What sports can I play?</summary><div class="faq-answer">12+ and counting — basketball, pickleball, tennis, soccer, volleyball, flag football, running, cycling, padel, badminton, and more. Each sport has its own fields and filters.</div></details>
+    <details class="faq-item"><summary>Where is Pickup available?</summary><div class="faq-answer">Pickup is live now across South Florida and expanding. Anyone with an iPhone can download it today and start posting games in their area.</div></details>
+    <details class="faq-item"><summary>Do I need a team or a full roster?</summary><div class="faq-answer">No. Pickup is built for open games — join solo, fill your own game one player at a time, and see the skill level before you commit.</div></details>
+    <details class="faq-item"><summary>Is there an Android version?</summary><div class="faq-answer">Pickup is on iPhone and iPad today. Android is on the way — <a href="mailto:info@callgame.co?subject=Android%20waitlist&body=Add%20me%20to%20the%20Android%20waitlist.">join the waitlist</a> and we'll let you know the moment it lands.</div></details>
+    <details class="faq-item"><summary>How do I post a game?</summary><div class="faq-answer">Tap the + button, pick your sport, set the court, time, and skill level, and post. Your game appears on the live map instantly and players can join in one tap.</div></details>
+  </div>
+</section>
+
 <!-- ── FINAL CTA ──────────────────────────────────────────────────── -->
 <section class="final-cta">
   <h2>Ready to find<br/>your next game?</h2>
   <p>Players near you are running games right now.</p>
+  <p style="font-family:'Dancing Script',cursive;font-size:32px;font-weight:700;color:var(--accent);margin:2px 0 26px;line-height:1">See you on the court.</p>
   <div class="hero-buttons" style="justify-content:center">
     <a href="https://apps.apple.com/app/id6769906203" class="btn-primary">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
@@ -737,6 +814,7 @@
     </a>
   </div>
   <div class="footer-links">
+    <a href="/support">Support</a>
     <a href="/privacy">Privacy Policy</a>
     <a href="/terms">Terms of Service</a>
     <a href="mailto:info@callgame.co">Contact</a>
@@ -744,6 +822,36 @@
   </div>
   <div class="footer-copy">© 2024–2026 Callgame Co. All rights reserved.</div>
 </footer>
+
+<!-- Sticky mobile download bar (mobile only, via CSS) -->
+<div class="mobile-cta" id="mobile-cta">
+  <div class="mobile-cta-label">Pickup — Call Game<span id="mobile-cta-sub">Free on the App Store</span></div>
+  <a href="https://apps.apple.com/app/id6769906203" id="mobile-cta-btn">Download</a>
+</div>
+
+<script>
+// ── Platform-aware CTAs — iOS gets the App Store; everyone else gets the
+// Android waitlist so the buttons never lead to a dead end. ──────────────
+(function () {
+  var ua = navigator.userAgent || '';
+  var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isAndroid = /Android/.test(ua);
+  if (isIOS || (!isAndroid && !/Mobile/.test(ua))) return; // iOS + desktop keep App Store CTAs
+  var WAITLIST = 'mailto:info@callgame.co?subject=Android%20waitlist&body=Add%20me%20to%20the%20Android%20waitlist.';
+  document.querySelectorAll('a[href="https://apps.apple.com/app/id6769906203"]').forEach(function (a) {
+    a.href = WAITLIST;
+    // Only relabel the plain-text download buttons, not the SVG-badge links.
+    var t = a.textContent.trim();
+    if (/Download/i.test(t) || /founding crew/i.test(t)) {
+      a.innerHTML = a.innerHTML.replace(/Download for iOS|Download|Join the founding crew/i, 'Join Android waitlist');
+    }
+  });
+  var sub = document.getElementById('mobile-cta-sub');
+  if (sub) sub.textContent = 'Android coming soon — join the waitlist';
+  var btn = document.getElementById('mobile-cta-btn');
+  if (btn) btn.textContent = 'Join waitlist';
+})();
+</script>
 
 <script>
 // ── Sport icon SVG paths (exact from app's SportIcon.tsx) ──────────────
@@ -896,10 +1004,12 @@ async function loadStats() {
     ]);
     const count = (res) => { const cr = res.headers.get('content-range'); if (!cr) return null; const n = parseInt(cr.split('/')[1], 10); return isNaN(n) ? null : n; };
     const gc = count(gr), pc = count(pr);
-    if (gc !== null && gc > 0) document.getElementById('games-count').textContent   = gc + '+';
+    // All targets are optional — the hero counters were retired, so guard every node.
+    const gce = document.getElementById('games-count');
+    if (gce && gc !== null && gc > 0) gce.textContent = gc + '+';
+    const pce = document.getElementById('players-count');
+    if (pce && pc !== null && pc > 0) pce.textContent = pc + '+';
     if (pc !== null && pc > 0) {
-      document.getElementById('players-count').textContent = pc + '+';
-      // Launch community progress bar (goal: 25 founding players)
       const cc = document.getElementById('community-count');
       const bar = document.getElementById('community-bar');
       if (cc) cc.textContent = pc;
