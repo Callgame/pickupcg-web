@@ -3,6 +3,7 @@
     { "source": "/privacy",      "destination": "/privacy.html" },
     { "source": "/terms",        "destination": "/terms.html"   },
     { "source": "/support",      "destination": "/support.html" },
+    { "source": "/delete",       "destination": "/delete.html"  },
     { "source": "/player/:slug",       "destination": "/open.html"  },
     { "source": "/game/:id",           "destination": "/game.html"  },
     { "source": "/court/:id",          "destination": "/index.html" },
