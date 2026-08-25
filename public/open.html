@@ -109,6 +109,17 @@
         window.addEventListener('pagehide', function () { clearTimeout(t); });
       });
 
+      // Deferred handoff: the App Store strips every parameter, so the link
+      // itself (destination path + ?ref) rides the clipboard across the
+      // install — the app's first launch reads it back once and routes there
+      // (lib/deferredLink.ts in the app repo). Inside the tap = a user
+      // gesture, which is what lets the browser allow the write.
+      var carry = function () {
+        try { if (navigator.clipboard) navigator.clipboard.writeText(window.location.href); } catch (e) {}
+      };
+      document.getElementById('store').addEventListener('click', carry);
+      openApp.addEventListener('click', carry);
+
       // Referral logging — the App Store strips ?ref=, this is the last point it exists.
       if (ref) {
         var storeEl = document.getElementById('store');

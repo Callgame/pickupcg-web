@@ -266,6 +266,21 @@
         $('game').style.display = 'block';
         $('openapp').href = 'pickup://game/' + encodeURIComponent(gameId);
 
+        // Deferred handoff: the App Store strips every parameter, so the game
+        // link itself rides the clipboard across the install — the app's first
+        // launch reads it back once and lands the new user on THIS game
+        // (lib/deferredLink.ts in the app repo). Inside the tap = a user
+        // gesture, which is what lets the browser allow the write.
+        var carry = function () {
+          try {
+            var link = 'https://pickupcg.com/game/' + encodeURIComponent(gameId) +
+                       (g.host_id ? '?ref=' + encodeURIComponent(g.host_id) : '');
+            if (navigator.clipboard) navigator.clipboard.writeText(link);
+          } catch (e) { /* best-effort */ }
+        };
+        $('store').addEventListener('click', carry);
+        $('openapp').addEventListener('click', carry);
+
         $('rsvp').addEventListener('submit', function (e) {
           e.preventDefault();
           var name = $('name').value.trim();
