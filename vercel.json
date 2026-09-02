@@ -1,5 +1,7 @@
 {
   "rewrites": [
+    { "source": "/", "has": [{ "type": "host", "value": "callgame.co" }],     "destination": "/company.html" },
+    { "source": "/", "has": [{ "type": "host", "value": "www.callgame.co" }], "destination": "/company.html" },
     { "source": "/privacy",      "destination": "/privacy.html" },
     { "source": "/terms",        "destination": "/terms.html"   },
     { "source": "/support",      "destination": "/support.html" },

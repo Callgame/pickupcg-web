@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Call Game LLC — We build software that gets people playing</title>
+  <meta name="description" content="Call Game LLC is a Florida software company building Pickup, the app for finding and hosting pickup sports games near you." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Call Game LLC" />
+  <meta property="og:description" content="A Florida software company building Pickup — find and host pickup games near you." />
+  <meta property="og:image" content="https://pickupcg.com/assets/og-home.png" />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/assets/favicon-180.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #070706; --card: #14140f; --line: #23231d;
+      --ink: #f0f0eb; --sub: #96a098; --dim: #6e7670;
+      --accent: #3dba5e; --on-accent: #062611;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+    header {
+      padding: 28px 0; border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { font-weight: 700; font-size: 18px; letter-spacing: 0.4px; }
+    .brand span { color: var(--accent); }
+    nav a {
+      color: var(--sub); text-decoration: none; font-size: 14px; margin-left: 22px;
+    }
+    nav a:hover { color: var(--ink); }
+
+    .hero { padding: 84px 0 64px; }
+    .hero h1 {
+      font-size: clamp(34px, 6vw, 52px); font-weight: 700; line-height: 1.12;
+      letter-spacing: -1px; max-width: 17ch;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p {
+      color: var(--sub); font-size: 18px; max-width: 54ch; margin-top: 18px;
+    }
+
+    h2 {
+      font-size: 13px; letter-spacing: 2.2px; text-transform: uppercase;
+      color: var(--accent); font-weight: 700; margin-bottom: 18px;
+    }
+    section { padding: 44px 0; border-top: 1px solid var(--line); }
+
+    .product {
+      background: var(--card); border: 1px solid var(--line); border-radius: 24px;
+      padding: 36px; display: flex; gap: 36px; align-items: center; flex-wrap: wrap;
+    }
+    .product .logo { flex-shrink: 0; }
+    .product h3 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+    .product p { color: var(--sub); font-size: 15.5px; max-width: 52ch; }
+    .product .links { margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block; text-decoration: none; border-radius: 14px;
+      padding: 12px 22px; font-size: 15px; font-weight: 700;
+    }
+    .btn.primary { background: var(--accent); color: var(--on-accent); }
+    .btn.ghost { border: 1px solid var(--line); color: var(--sub); font-weight: 500; }
+    .btn.ghost:hover { color: var(--ink); }
+
+    .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .fact {
+      background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px;
+    }
+    .fact b { display: block; font-size: 15px; margin-bottom: 6px; }
+    .fact p { color: var(--sub); font-size: 14px; }
+
+    .about p { color: var(--sub); font-size: 16px; max-width: 64ch; }
+    .about p + p { margin-top: 14px; }
+    .about b { color: var(--ink); }
+
+    .contact .card {
+      background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+      padding: 26px; max-width: 460px;
+    }
+    .contact .row { display: flex; gap: 10px; margin-bottom: 10px; font-size: 15px; }
+    .contact .row:last-child { margin-bottom: 0; }
+    .contact .k { color: var(--dim); min-width: 72px; }
+    .contact a { color: var(--accent); text-decoration: none; }
+
+    footer {
+      border-top: 1px solid var(--line); padding: 30px 0 48px; margin-top: 44px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      color: var(--dim); font-size: 13px;
+    }
+    footer a { color: var(--dim); text-decoration: none; margin-left: 16px; }
+    footer a:hover { color: var(--sub); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">CALL GAME <span>LLC</span></div>
+      <nav>
+        <a href="#product">Product</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <h1>We build software that gets people <em>playing.</em></h1>
+      <p>Call Game LLC is a Florida software company. We make products that turn "we should play sometime" into a game on the calendar — starting with Pickup, our app for finding and hosting pickup sports near you.</p>
+    </div>
+
+    <section id="product">
+      <h2>Our Product</h2>
+      <div class="product">
+        <svg class="logo" viewBox="0 0 148 86" width="168" height="98">
+          <defs>
+            <radialGradient id="wm_body" cx="37%" cy="32%" r="70%">
+              <stop offset="0%" stop-color="#6ee89c"/><stop offset="50%" stop-color="#3dba5e"/><stop offset="100%" stop-color="#2a8a44"/>
+            </radialGradient>
+          </defs>
+          <text x="0" y="42" font-family="DM Sans" font-weight="700" font-size="42" fill="#f0ece2" letter-spacing="-0.5">pickup</text>
+          <rect x="19" y="0" width="22" height="22" fill="#070706"/>
+          <line x1="7.07" y1="10.75" x2="16.49" y2="7.69"  stroke="#4dd97a" stroke-width="2.70" stroke-linecap="round" opacity="0.8"/>
+          <line x1="3.47" y1="17.12" x2="18.02" y2="12.39" stroke="#4dd97a" stroke-width="2.70" stroke-linecap="round" opacity="1.0"/>
+          <line x1="10.13" y1="20.16" x2="19.55" y2="17.10" stroke="#4dd97a" stroke-width="2.70" stroke-linecap="round" opacity="0.6"/>
+          <circle cx="30" cy="8.5" r="9" fill="url(#wm_body)"/>
+          <circle cx="26.7" cy="5.2" r="3" fill="rgba(255,255,255,0.45)"/>
+          <text x="1" y="66" font-family="DM Sans" font-weight="500" font-size="10" fill="#a39c92" letter-spacing="1.8">CALL GAME.</text>
+        </svg>
+        <div>
+          <h3>Pickup: Call Game</h3>
+          <p>Find a game near you, host your own weekly run, and keep your crew coming back — basketball, pickleball, soccer, tennis, flag football and more. Live on the App Store, with recurring games, guest RSVPs that need no account, live scoreboards, and an Apple&nbsp;Watch companion.</p>
+          <div class="links">
+            <a class="btn primary" href="https://apps.apple.com/app/id6769906203">Download on the App Store</a>
+            <a class="btn ghost" href="https://pickupcg.com">Visit pickupcg.com →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>What We Care About</h2>
+      <div class="facts">
+        <div class="fact"><b>Reliability first</b><p>A game that says it's on, is on. Automatic confirmations mean nobody drives to an empty court.</p></div>
+        <div class="fact"><b>Privacy by default</b><p>Location sharing is opt-in and coarse by default. No ads, no data sales — in our products, you are the customer, not the product.</p></div>
+        <div class="fact"><b>Real-world community</b><p>Software is the means, not the end. Success is measured in people showing up to play, week after week.</p></div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <h2>About</h2>
+      <p><b>Call Game LLC</b> is a Florida limited liability company headquartered in Weston, Florida. We design, build, and operate consumer software for local sports communities.</p>
+      <p>Our flagship product, <b>Pickup</b>, launched on the App Store in 2026 and supports twelve-plus sports with game discovery, recurring runs, crews, ladders, and live scoring across iPhone and Apple&nbsp;Watch, with Android on the way.</p>
+    </section>
+
+    <section id="contact" class="contact">
+      <h2>Contact</h2>
+      <div class="card">
+        <div class="row"><span class="k">Email</span> <a href="mailto:info@callgame.co">info@callgame.co</a></div>
+        <div class="row"><span class="k">Mail</span> <span>Call Game LLC · 135 Weston Rd, PO Box 177, Weston, FL 33331</span></div>
+        <div class="row"><span class="k">Support</span> <a href="https://pickupcg.com/support">pickupcg.com/support</a></div>
+      </div>
+    </section>
+
+    <footer>
+      <div>© 2026 Call Game LLC. All rights reserved.</div>
+      <div>
+        <a href="https://pickupcg.com/privacy">Privacy</a>
+        <a href="https://pickupcg.com/terms">Terms</a>
+        <a href="https://pickupcg.com">Pickup</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
