@@ -1,36 +1,119 @@
 {
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "callgame.co"
+        }
+      ],
+      "destination": "/company",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.callgame.co"
+        }
+      ],
+      "destination": "/company",
+      "permanent": false
+    }
+  ],
   "rewrites": [
-    { "source": "/", "has": [{ "type": "host", "value": "callgame.co" }],     "destination": "/company.html" },
-    { "source": "/", "has": [{ "type": "host", "value": "www.callgame.co" }], "destination": "/company.html" },
-    { "source": "/privacy",      "destination": "/privacy.html" },
-    { "source": "/terms",        "destination": "/terms.html"   },
-    { "source": "/support",      "destination": "/support.html" },
-    { "source": "/delete",       "destination": "/delete.html"  },
-    { "source": "/player/:slug",       "destination": "/open.html"  },
-    { "source": "/game/:id",           "destination": "/game.html"  },
-    { "source": "/court/:id",          "destination": "/index.html" },
-    { "source": "/join/:id",           "destination": "/index.html" },
-    { "source": "/group/:id",          "destination": "/open.html"  },
-    { "source": "/leaderboard/:sport", "destination": "/open.html"  },
-    { "source": "/live/:id",           "destination": "/open.html"  },
-    { "source": "/live",               "destination": "/open.html"  },
-    { "source": "/download",           "destination": "/index.html" },
-    { "source": "/poster",             "destination": "/qr.html"    }
+    {
+      "source": "/company",
+      "destination": "/company.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/support",
+      "destination": "/support.html"
+    },
+    {
+      "source": "/delete",
+      "destination": "/delete.html"
+    },
+    {
+      "source": "/player/:slug",
+      "destination": "/open.html"
+    },
+    {
+      "source": "/game/:id",
+      "destination": "/game.html"
+    },
+    {
+      "source": "/court/:id",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/join/:id",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/group/:id",
+      "destination": "/open.html"
+    },
+    {
+      "source": "/leaderboard/:sport",
+      "destination": "/open.html"
+    },
+    {
+      "source": "/live/:id",
+      "destination": "/open.html"
+    },
+    {
+      "source": "/live",
+      "destination": "/open.html"
+    },
+    {
+      "source": "/download",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/poster",
+      "destination": "/qr.html"
+    }
   ],
   "headers": [
     {
       "source": "/.well-known/apple-app-site-association",
       "headers": [
-        { "key": "Content-Type",  "value": "application/json" },
-        { "key": "Cache-Control", "value": "public, max-age=3600" }
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
       ]
     },
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options",        "value": "SAMEORIGIN" },
-        { "key": "Referrer-Policy",        "value": "strict-origin-when-cross-origin" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
       ]
     }
   ]
