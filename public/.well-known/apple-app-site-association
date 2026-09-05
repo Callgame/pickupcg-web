@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appIDs": ["LRX926A4R2.co.callgame.pickup"],
+        "appIDs": ["4M69V224V5.co.callgame.pickup", "LRX926A4R2.co.callgame.pickup"],
         "components": [
           {
             "/": "/game/*",
@@ -38,6 +38,6 @@
     ]
   },
   "webcredentials": {
-    "apps": ["LRX926A4R2.co.callgame.pickup"]
+    "apps": ["4M69V224V5.co.callgame.pickup", "LRX926A4R2.co.callgame.pickup"]
   }
 }
