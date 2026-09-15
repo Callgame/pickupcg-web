@@ -231,6 +231,22 @@
       .then(function (r) { return r.json(); })
       .then(function (rows) {
         var g = rows && rows[0];
+        if (g && !g.cancelled) return g;
+        // PRIVATE games are RLS-hidden from the anon key — the link is the
+        // credential, so ask the game-guest fn for the minimal card instead.
+        return fetch(SUPA + '/functions/v1/game-guest?gameId=' + encodeURIComponent(gameId), {
+          headers: { apikey: ANON, Authorization: 'Bearer ' + ANON }
+        })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (res) {
+          if (!res || !res.ok || !res.game) return null;
+          var m = res.game;
+          return { id: gameId, sport: m.sport, title: m.title, location: m.location,
+                   day: m.day, time: m.time, spots: m.spotsLeft, max_spots: null,
+                   host_name: null, host_id: null, fee: 0, cancelled: false };
+        });
+      })
+      .then(function (g) {
         if (!g || g.cancelled) { showGone(); return; }
 
         document.title = g.title + ' — Pickup';
