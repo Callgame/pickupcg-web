@@ -17,158 +17,257 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
+    /* ── The Playbook: Call Game LLC's own identity ─────────────────────
+       Paper, ink, chalk. The company is the front office behind the court:
+       diagrams, not neon. Deliberately light — the product site is the dark
+       one. Type: Fraunces (athletic-club serif) + Public Sans (the USWDS
+       face — half the pitch deck goes to public institutions). */
     :root {
-      --bg: #070706; --card: #14140f; --line: #23231d;
-      --ink: #f0f0eb; --sub: #96a098; --dim: #6e7670;
-      --accent: #3dba5e; --on-accent: #062611;
+      --paper: #f7f5f0;      /* warm paper, not pure white */
+      --card:  #fffdf8;
+      --ink:   #1c2b33;      /* deep slate-ink */
+      --sub:   #55636b;
+      --dim:   #8a949a;
+      --line:  #ddd8cb;      /* chalk-faded rule */
+      --court: #17694a;      /* forest court green — kin to Pickup, not its neon */
+      --chalk: #b4bfc5;
+      --darktile: #070706;   /* the Pickup mark's native ground — do not change */
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      background: var(--bg); color: var(--ink);
-      font-family: 'DM Sans', -apple-system, sans-serif;
-      line-height: 1.6;
+      background: var(--paper);
+      /* faint graph-paper grid — the coach's whiteboard */
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 56px 56px;
+      background-position: -1px -1px;
+      color: var(--ink);
+      font-family: 'Public Sans', -apple-system, sans-serif;
+      line-height: 1.65;
     }
-    .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 0 24px; }
 
     header {
-      padding: 28px 0; border-bottom: 1px solid var(--line);
-      display: flex; align-items: center; justify-content: space-between;
+      padding: 26px 0; border-bottom: 2px solid var(--ink);
+      display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+      background: var(--paper);
     }
-    .brand { font-weight: 700; font-size: 18px; letter-spacing: 0.4px; }
-    .brand span { color: var(--accent); }
-    nav a {
-      color: var(--sub); text-decoration: none; font-size: 14px; margin-left: 22px;
-    }
-    nav a:hover { color: var(--ink); }
+    .brand { font-family: 'Fraunces', serif; font-weight: 700; font-size: 21px; letter-spacing: 0.2px; white-space: nowrap; }
+    .brand .llc { color: var(--court); font-style: italic; }
+    nav { display: flex; gap: 20px; flex-wrap: wrap; }
+    nav a { color: var(--sub); text-decoration: none; font-size: 13.5px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; }
+    nav a:hover { color: var(--court); }
 
-    .hero { padding: 84px 0 64px; }
+    .hero { padding: 76px 0 30px; }
+    .whistle {
+      display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 2.6px;
+      text-transform: uppercase; color: var(--court); margin-bottom: 18px;
+    }
     .hero h1 {
-      font-size: clamp(34px, 6vw, 52px); font-weight: 700; line-height: 1.12;
-      letter-spacing: -1px; max-width: 17ch;
+      font-family: 'Fraunces', serif; font-weight: 600;
+      font-size: clamp(38px, 6.4vw, 62px); line-height: 1.06; letter-spacing: -0.5px;
+      max-width: 16ch; text-wrap: balance;
     }
-    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero h1 em { font-style: italic; color: var(--court); }
     .hero p {
-      color: var(--sub); font-size: 18px; max-width: 54ch; margin-top: 18px;
+      color: var(--sub); font-size: 18px; max-width: 56ch; margin-top: 22px;
     }
+    /* the play diagram — X's, O's, and the call */
+    .play { margin: 44px 0 8px; overflow-x: auto; }
+    .play svg { display: block; max-width: 100%; }
 
-    h2 {
-      font-size: 13px; letter-spacing: 2.2px; text-transform: uppercase;
-      color: var(--accent); font-weight: 700; margin-bottom: 18px;
+    h2.rule {
+      font-family: 'Fraunces', serif; font-weight: 600; font-size: 26px;
+      letter-spacing: -0.2px; margin-bottom: 6px;
     }
-    section { padding: 44px 0; border-top: 1px solid var(--line); }
+    .eyebrow {
+      font-size: 11.5px; font-weight: 700; letter-spacing: 2.4px; text-transform: uppercase;
+      color: var(--court); display: block; margin-bottom: 10px;
+    }
+    section { padding: 52px 0; border-top: 1px dashed var(--chalk); }
 
     .product {
-      background: var(--card); border: 1px solid var(--line); border-radius: 24px;
-      padding: 36px; display: flex; gap: 36px; align-items: center; flex-wrap: wrap;
+      background: var(--card); border: 1.5px solid var(--ink); border-radius: 4px;
+      box-shadow: 6px 6px 0 rgba(28,43,51,0.12);
+      padding: 34px; display: flex; gap: 34px; align-items: center; flex-wrap: wrap;
+      margin-top: 22px;
     }
-    .product .logo { flex-shrink: 0; }
-    .product h3 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+    .marktile {
+      background: var(--darktile); border-radius: 14px; padding: 22px 26px 14px;
+      flex-shrink: 0;
+    }
+    .product h3 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 27px; margin-bottom: 8px; }
     .product p { color: var(--sub); font-size: 15.5px; max-width: 52ch; }
-    .product .links { margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .product .links { margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap; }
     .btn {
-      display: inline-block; text-decoration: none; border-radius: 14px;
-      padding: 12px 22px; font-size: 15px; font-weight: 700;
+      display: inline-block; text-decoration: none; border-radius: 4px;
+      padding: 12px 20px; font-size: 14.5px; font-weight: 700; letter-spacing: 0.2px;
+      border: 1.5px solid var(--ink);
     }
-    .btn.primary { background: var(--accent); color: var(--on-accent); }
-    .btn.ghost { border: 1px solid var(--line); color: var(--sub); font-weight: 500; }
-    .btn.ghost:hover { color: var(--ink); }
+    .btn.primary { background: var(--ink); color: var(--paper); box-shadow: 3px 3px 0 rgba(23,105,74,0.55); }
+    .btn.primary:hover { background: var(--court); border-color: var(--court); }
+    .btn.ghost { color: var(--ink); background: transparent; }
+    .btn.ghost:hover { background: rgba(23,105,74,0.08); }
 
-    .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 24px; }
     .fact {
-      background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px;
+      background: var(--card); border: 1.5px solid var(--ink); border-radius: 4px; padding: 22px;
+      box-shadow: 4px 4px 0 rgba(28,43,51,0.10);
     }
-    .fact b { display: block; font-size: 15px; margin-bottom: 6px; }
+    .fact .num {
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 600;
+      color: var(--court); font-size: 15px; display: block; margin-bottom: 8px;
+    }
+    .fact b { display: block; font-size: 15.5px; margin-bottom: 6px; font-weight: 700; }
     .fact p { color: var(--sub); font-size: 14px; }
 
-    .about p { color: var(--sub); font-size: 16px; max-width: 64ch; }
+    .teams {
+      background: var(--ink); color: var(--paper); border-radius: 4px;
+      padding: 34px; margin-top: 24px;
+      background-image: linear-gradient(rgba(247,245,240,0.06) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(247,245,240,0.06) 1px, transparent 1px);
+      background-size: 56px 56px;
+    }
+    .teams .eyebrow { color: #7fd6ad; }
+    .teams h3 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 24px; margin-bottom: 10px; max-width: 24ch; }
+    .teams p { color: #c3ccc7; font-size: 15.5px; max-width: 62ch; }
+    .teams a { color: #7fd6ad; text-decoration: none; font-weight: 700; }
+
+    .about p { color: var(--sub); font-size: 16px; max-width: 66ch; }
     .about p + p { margin-top: 14px; }
     .about b { color: var(--ink); }
 
     .contact .card {
-      background: var(--card); border: 1px solid var(--line); border-radius: 18px;
-      padding: 26px; max-width: 460px;
+      background: var(--card); border: 1.5px solid var(--ink); border-radius: 4px;
+      box-shadow: 4px 4px 0 rgba(28,43,51,0.10);
+      padding: 26px; max-width: 480px; margin-top: 22px;
     }
-    .contact .row { display: flex; gap: 10px; margin-bottom: 10px; font-size: 15px; }
+    .contact .row { display: flex; gap: 12px; margin-bottom: 10px; font-size: 15px; }
     .contact .row:last-child { margin-bottom: 0; }
-    .contact .k { color: var(--dim); min-width: 72px; }
-    .contact a { color: var(--accent); text-decoration: none; }
+    .contact .k { color: var(--dim); min-width: 72px; font-weight: 600; font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; padding-top: 3px; }
+    .contact a { color: var(--court); text-decoration: none; font-weight: 600; }
 
     footer {
-      border-top: 1px solid var(--line); padding: 30px 0 48px; margin-top: 44px;
+      border-top: 2px solid var(--ink); padding: 28px 0 52px; margin-top: 52px;
       display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-      color: var(--dim); font-size: 13px;
+      color: var(--dim); font-size: 13px; background: var(--paper);
     }
-    footer a { color: var(--dim); text-decoration: none; margin-left: 16px; }
-    footer a:hover { color: var(--sub); }
+    footer a { color: var(--dim); text-decoration: none; margin-left: 16px; font-weight: 600; }
+    footer a:hover { color: var(--court); }
+
+    @media (max-width: 560px) {
+      .product { padding: 24px; }
+      .teams { padding: 26px 22px; }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <div class="brand">CALL GAME <span>LLC</span></div>
+      <div class="brand">Call Game <span class="llc">LLC</span></div>
       <nav>
         <a href="#product">Product</a>
+        <a href="#teams">For Teams</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
       </nav>
     </header>
 
     <div class="hero">
+      <span class="whistle">Est. 2026 · Weston, Florida</span>
       <h1>We build software that gets people <em>playing.</em></h1>
-      <p>Call Game LLC is a Florida software company. We make products that turn "we should play sometime" into a game on the calendar — starting with Pickup, our app for finding and hosting pickup sports near you.</p>
+      <p>“Calling game” is how the next run gets claimed on any court in America. Call Game LLC is a software company built on that instinct — we turn “we should play sometime” into a game on the calendar.</p>
+
+      <!-- The play: X's, O's, and the call -->
+      <div class="play" aria-hidden="true">
+        <svg viewBox="0 0 880 150" width="880" height="150" fill="none">
+          <!-- half-court arc + key -->
+          <path d="M60 130 A 150 150 0 0 1 360 130" stroke="#b4bfc5" stroke-width="2"/>
+          <rect x="165" y="60" width="90" height="70" stroke="#b4bfc5" stroke-width="2"/>
+          <circle cx="210" cy="60" r="26" stroke="#b4bfc5" stroke-width="2"/>
+          <!-- the O team -->
+          <circle cx="120" cy="112" r="11" stroke="#17694a" stroke-width="2.6"/>
+          <circle cx="306" cy="104" r="11" stroke="#17694a" stroke-width="2.6"/>
+          <circle cx="210" cy="34" r="11" stroke="#17694a" stroke-width="2.6"/>
+          <!-- the X team -->
+          <g stroke="#1c2b33" stroke-width="2.6" stroke-linecap="round">
+            <path d="M156 88 l16 16 M172 88 l-16 16"/>
+            <path d="M252 84 l16 16 M268 84 l-16 16"/>
+          </g>
+          <!-- the call: dashed play arrow across to the wordmark -->
+          <path d="M330 96 C 430 40, 560 120, 700 78" stroke="#17694a" stroke-width="2.6" stroke-dasharray="7 8" stroke-linecap="round"/>
+          <path d="M700 78 l-14 -3 M700 78 l-9 12" stroke="#17694a" stroke-width="2.6" stroke-linecap="round"/>
+          <text x="722" y="86" font-family="Fraunces, serif" font-style="italic" font-size="26" fill="#1c2b33">we got next.</text>
+        </svg>
+      </div>
     </div>
 
     <section id="product">
-      <h2>Our Product</h2>
+      <span class="eyebrow">The Product</span>
+      <h2 class="rule">One app. Every run.</h2>
       <div class="product">
-        <svg class="logo" viewBox="0 0 148 86" width="168" height="98">
-          <defs>
-            <radialGradient id="wm_body" cx="37%" cy="32%" r="70%">
-              <stop offset="0%" stop-color="#6ee89c"/><stop offset="50%" stop-color="#3dba5e"/><stop offset="100%" stop-color="#2a8a44"/>
-            </radialGradient>
-          </defs>
-          <text x="0" y="42" font-family="DM Sans" font-weight="700" font-size="42" fill="#f0ece2" letter-spacing="-0.5">pickup</text>
-          <rect x="19" y="0" width="22" height="22" fill="#070706"/>
-          <line x1="7.07" y1="10.75" x2="16.49" y2="7.69"  stroke="#4dd97a" stroke-width="2.70" stroke-linecap="round" opacity="0.8"/>
-          <line x1="3.47" y1="17.12" x2="18.02" y2="12.39" stroke="#4dd97a" stroke-width="2.70" stroke-linecap="round" opacity="1.0"/>
-          <line x1="10.13" y1="20.16" x2="19.55" y2="17.10" stroke="#4dd97a" stroke-width="2.70" stroke-linecap="round" opacity="0.6"/>
-          <circle cx="30" cy="8.5" r="9" fill="url(#wm_body)"/>
-          <circle cx="26.7" cy="5.2" r="3" fill="rgba(255,255,255,0.45)"/>
-          <text x="1" y="66" font-family="DM Sans" font-weight="500" font-size="10" fill="#a39c92" letter-spacing="1.8">CALL GAME.</text>
-        </svg>
+        <div class="marktile">
+          <svg class="logo" viewBox="0 0 148 86" width="168" height="98">
+            <defs>
+              <radialGradient id="wm_body" cx="37%" cy="32%" r="70%">
+                <stop offset="0%" stop-color="#6ee89c"/><stop offset="50%" stop-color="#3dba5e"/><stop offset="100%" stop-color="#2a8a44"/>
+              </radialGradient>
+            </defs>
+            <text x="0" y="42" font-family="DM Sans" font-weight="700" font-size="42" fill="#f0ece2" letter-spacing="-0.5">pickup</text>
+            <rect x="19" y="0" width="22" height="22" fill="#070706"/>
+            <line x1="7.07" y1="10.75" x2="16.49" y2="7.69"  stroke="#4dd97a" stroke-width="2.70" stroke-linecap="round" opacity="0.8"/>
+            <line x1="3.47" y1="17.12" x2="18.02" y2="12.39" stroke="#4dd97a" stroke-width="2.70" stroke-linecap="round" opacity="1.0"/>
+            <line x1="10.13" y1="20.16" x2="19.55" y2="17.10" stroke="#4dd97a" stroke-width="2.70" stroke-linecap="round" opacity="0.6"/>
+            <circle cx="30" cy="8.5" r="9" fill="url(#wm_body)"/>
+            <circle cx="26.7" cy="5.2" r="3" fill="rgba(255,255,255,0.45)"/>
+            <text x="1" y="66" font-family="DM Sans" font-weight="500" font-size="10" fill="#a39c92" letter-spacing="1.8">CALL GAME.</text>
+          </svg>
+        </div>
         <div>
           <h3>Pickup: Call Game</h3>
           <p>Find a game near you, host your own weekly run, and keep your crew coming back — basketball, pickleball, soccer, tennis, flag football and more. Live on the App&nbsp;Store and Google&nbsp;Play, with recurring games, private invite-only games and crews, one-link group invites, guest RSVPs that need no account, live scoreboards, and an Apple&nbsp;Watch companion.</p>
           <div class="links">
-            <a class="btn primary" href="https://apps.apple.com/app/id6769906203">Download on the App Store</a>
-            <a class="btn ghost" href="https://pickupcg.com">Visit pickupcg.com →</a>
+            <a class="btn primary" href="https://apps.apple.com/app/id6769906203">App Store</a>
+            <a class="btn primary" href="https://play.google.com/store/apps/details?id=co.callgame.pickup">Google Play</a>
+            <a class="btn ghost" href="https://pickupcg.com">pickupcg.com →</a>
           </div>
         </div>
       </div>
     </section>
 
     <section>
-      <h2>What We Care About</h2>
+      <span class="eyebrow">The Principles</span>
+      <h2 class="rule">How we play.</h2>
       <div class="facts">
-        <div class="fact"><b>Reliability first</b><p>A game that says it's on, is on. Automatic confirmations mean nobody drives to an empty court.</p></div>
-        <div class="fact"><b>Privacy by default</b><p>Location sharing is opt-in and coarse by default, and games and crews can be fully private — invite-only, off the public map. No ads, no data sales — in our products, you are the customer, not the product.</p></div>
-        <div class="fact"><b>Real-world community</b><p>Software is the means, not the end. Success is measured in people showing up to play, week after week.</p></div>
+        <div class="fact"><span class="num">Play No. 1</span><b>Reliability first</b><p>A game that says it's on, is on. Automatic confirmations mean nobody drives to an empty court.</p></div>
+        <div class="fact"><span class="num">Play No. 2</span><b>Privacy by default</b><p>Location sharing is opt-in and coarse by default, and games and crews can be fully private — invite-only, off the public map. No ads, no data sales.</p></div>
+        <div class="fact"><span class="num">Play No. 3</span><b>Real-world community</b><p>Software is the means, not the end. Success is measured in people showing up to play, week after week.</p></div>
+      </div>
+    </section>
+
+    <section id="teams">
+      <div class="teams">
+        <span class="eyebrow">Pickup for Teams &amp; Workplaces</span>
+        <h3>Another way to connect that isn't happy hour.</h3>
+        <p>Organizations use Pickup as a workplace-culture resource: a private crew, one join link, and a standing weekly run — an inclusive, alcohol-free way for colleagues to actually spend time together. We run structured pilot programs for companies and public agencies. Ask us at <a href="mailto:info@callgame.co">info@callgame.co</a>.</p>
       </div>
     </section>
 
     <section id="about" class="about">
-      <h2>About</h2>
-      <p><b>Call Game LLC</b> is a Florida limited liability company headquartered in Weston, Florida. We design, build, and operate consumer software for local sports communities.</p>
+      <span class="eyebrow">The Franchise</span>
+      <h2 class="rule">About Call Game LLC.</h2>
+      <p style="margin-top:14px"><b>Call Game LLC</b> is a Florida limited liability company headquartered in Weston, Florida. We design, build, and operate consumer software for local sports communities.</p>
       <p>Our flagship product, <b>Pickup</b>, launched in 2026 and supports twelve-plus sports with game discovery, recurring runs, private crews, ladders, and live scoring across iPhone, Android, and Apple&nbsp;Watch.</p>
-      <p>Teams and organizations use Pickup as a workplace-culture resource: a standing, alcohol-free way for colleagues to connect — a private crew, one join link, and a weekly run instead of another happy hour. Ask us about pilot programs at <a href="mailto:info@callgame.co" style="color:var(--accent);text-decoration:none">info@callgame.co</a>.</p>
     </section>
 
     <section id="contact" class="contact">
-      <h2>Contact</h2>
+      <span class="eyebrow">The Front Office</span>
+      <h2 class="rule">Contact.</h2>
       <div class="card">
         <div class="row"><span class="k">Email</span> <a href="mailto:info@callgame.co">info@callgame.co</a></div>
         <div class="row"><span class="k">Mail</span> <span>Call Game LLC · 135 Weston Rd, PO Box 177, Weston, FL 33331</span></div>
