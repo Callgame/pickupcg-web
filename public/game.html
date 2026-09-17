@@ -228,6 +228,16 @@
       var gameId = (location.pathname.match(/\/game\/([^\/?#]+)/) || [])[1] || '';
       var $ = function (id) { return document.getElementById(id); };
 
+      // Android visitors get Google Play; everyone else keeps the App Store.
+      var IS_ANDROID = /Android/.test(navigator.userAgent || '');
+      var STORE_URL = IS_ANDROID
+        ? 'https://play.google.com/store/apps/details?id=co.callgame.pickup'
+        : 'https://apps.apple.com/app/id6769906203';
+      if (IS_ANDROID) {
+        $('store').href = STORE_URL;
+        $('store').textContent = 'Get Pickup for Android';
+      }
+
       function showGone() { $('loading').style.display = 'none'; $('gone').style.display = 'block'; }
 
       if (!gameId) { showGone(); return; }
@@ -274,7 +284,7 @@
         $('g-fill').style.width = (max > 0 ? Math.min(100, (inCount / max) * 100) : 0) + '%';
 
         if (g.host_id) {
-          $('store').href = 'https://apps.apple.com/app/id6769906203?ref=' + encodeURIComponent(g.host_id);
+          $('store').href = STORE_URL + (STORE_URL.indexOf('?') >= 0 ? '&ref=' : '?ref=') + encodeURIComponent(g.host_id);
           // The App Store strips ?ref= — beacon the tap to ref_taps so the
           // host's invite is credited (growth panel loop-break #1).
           $('store').addEventListener('click', function () {

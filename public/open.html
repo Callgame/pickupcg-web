@@ -94,7 +94,12 @@
 
       // Deep link into the installed app (universal links normally intercept
       // before this page even renders; the scheme is the manual fallback).
-      var STORE = 'https://apps.apple.com/app/id6769906203';
+      // Android visitors get Google Play; everyone else the App Store.
+      var IS_ANDROID = /Android/.test(navigator.userAgent || '');
+      var STORE = IS_ANDROID
+        ? 'https://play.google.com/store/apps/details?id=co.callgame.pickup'
+        : 'https://apps.apple.com/app/id6769906203';
+      document.getElementById('store').href = STORE;
       var scheme = 'pickup:/' + path;
       var openApp = document.getElementById('openapp');
       openApp.href = scheme;
@@ -123,7 +128,7 @@
       // Referral logging — the App Store strips ?ref=, this is the last point it exists.
       if (ref) {
         var storeEl = document.getElementById('store');
-        storeEl.href = 'https://apps.apple.com/app/id6769906203';
+        storeEl.href = STORE;
         var logTap = function () {
           try {
             var url = SUPA + '/rest/v1/ref_taps?apikey=' + encodeURIComponent(ANON);
