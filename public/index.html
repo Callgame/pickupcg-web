@@ -438,6 +438,10 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
       Download for iOS
     </a>
+    <a href="https://play.google.com/store/apps/details?id=co.callgame.pickup" class="btn-primary play-explicit">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3.6 2.3a1 1 0 0 0-.5.9v17.6a1 1 0 0 0 .5.9l9.7-9.7L3.6 2.3Zm11.1 8.1 2.9-2.9-9.4-5.3a1 1 0 0 0-.4-.1l6.9 8.3Zm0 3.2-6.9 8.3c.14 0 .28-.03.4-.1l9.4-5.3-2.9-2.9Zm1.4-1.6 3.2-1.8a1 1 0 0 0 0-1.8l-3.2-1.8-2.1 2.7 2.1 2.7Z"/></svg>
+      Get it on Google Play
+    </a>
     <a href="#map" class="btn-secondary">See live games →</a>
   </div>
   <div class="social-proof">
@@ -965,7 +969,7 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
       Download for iOS
       </a>
-      <a href="https://play.google.com/store/apps/details?id=co.callgame.pickup" class="btn-primary" id="play-btn" style="display:none">
+      <a href="https://play.google.com/store/apps/details?id=co.callgame.pickup" class="btn-primary play-explicit" id="play-btn" style="display:none">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3.6 2.3a1 1 0 0 0-.5.9v17.6a1 1 0 0 0 .5.9l9.7-9.7L3.6 2.3Zm11.1 8.1 2.9-2.9-9.4-5.3a1 1 0 0 0-.4-.1l6.9 8.3Zm0 3.2-6.9 8.3c.14 0 .28-.03.4-.1l9.4-5.3-2.9-2.9Zm1.4-1.6 3.2-1.8a1 1 0 0 0 0-1.8l-3.2-1.8-2.1 2.7 2.1 2.7Z"/></svg>
         Get it on Google Play
       </a>
@@ -1034,6 +1038,9 @@ if (ANDROID_LIVE) {
   if (isIOS || (!isAndroid && !/Mobile/.test(ua))) return; // iOS + desktop keep App Store CTAs
   var WAITLIST = ANDROID_LIVE ? PLAY_URL : 'mailto:info@callgame.co?subject=Android%20waitlist&body=Add%20me%20to%20the%20Android%20waitlist.';
   var ANDROID_LABEL = ANDROID_LIVE ? 'Get it on Google Play' : 'Join Android waitlist';
+  // The Apple CTA below becomes the Play button on Android — hide the explicit
+  // Play twins so Android phones don't show two identical Play buttons.
+  document.querySelectorAll('.play-explicit').forEach(function (a) { a.style.display = 'none'; });
   document.querySelectorAll('a[href="https://apps.apple.com/app/id6769906203"]').forEach(function (a) {
     a.href = WAITLIST;
     // Only relabel the plain-text download buttons, not the SVG-badge links.
