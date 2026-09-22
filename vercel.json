@@ -54,7 +54,7 @@
     },
     {
       "source": "/court/:id",
-      "destination": "/index.html"
+      "destination": "/open.html"
     },
     {
       "source": "/join/:id",
