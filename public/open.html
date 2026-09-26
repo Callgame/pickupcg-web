@@ -101,7 +101,9 @@
         ? 'https://play.google.com/store/apps/details?id=co.callgame.pickup'
         : 'https://apps.apple.com/app/id6769906203';
       document.getElementById('store').href = STORE;
-      var scheme = 'pickup:/' + path;
+      // Carry the query too — a crew link's ?code= is the JOIN credential;
+      // dropping it opened the app to a crew you couldn't enter.
+      var scheme = 'pickup:/' + path + (window.location.search || '');
       var openApp = document.getElementById('openapp');
       openApp.href = scheme;
 
