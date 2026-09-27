@@ -93,6 +93,32 @@
         document.title = c[0] + ' — Pickup';
       }
 
+      // Crew links carry the invite code — fetch the crew card so the page
+      // names the crew (growth panel #4: the workplace onboarding artery
+      // landed on a generic "a friend wants you in their crew").
+      if (type === 'group') {
+        var gid = path.split('/')[2] || '';
+        var code = params.get('code') || '';
+        if (gid) {
+          fetch(SUPA + '/functions/v1/crew-peek?groupId=' + encodeURIComponent(gid) + '&code=' + encodeURIComponent(code), {
+            headers: { apikey: ANON, Authorization: 'Bearer ' + ANON }
+          })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (res) {
+            if (!res || !res.ok || !res.crew) return;
+            var crew = res.crew;
+            var sport = crew.sport ? crew.sport.charAt(0).toUpperCase() + crew.sport.slice(1) : '';
+            document.getElementById('t').textContent = 'Join ' + crew.name;
+            document.getElementById('s').textContent =
+              (sport ? sport + ' crew' : 'A crew') +
+              (crew.memberCount ? ' \u00b7 ' + crew.memberCount + ' member' + (crew.memberCount === 1 ? '' : 's') : '') +
+              ' \u2014 one tap in the app and you\u2019re in the thread.';
+            document.title = 'Join ' + crew.name + ' \u2014 Pickup';
+          })
+          .catch(function () {});
+        }
+      }
+
       // Deep link into the installed app (universal links normally intercept
       // before this page even renders; the scheme is the manual fallback).
       // Android visitors get Google Play; everyone else the App Store.
