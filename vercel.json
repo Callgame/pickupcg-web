@@ -81,6 +81,10 @@
       "destination": "/index.html"
     },
     {
+      "source": "/work",
+      "destination": "/work.html"
+    },
+    {
       "source": "/poster",
       "destination": "/qr.html"
     }

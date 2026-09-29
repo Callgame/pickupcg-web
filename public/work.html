@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pickup for Workplaces — run your office league without the spreadsheet</title><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png"><link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-180.png">
+  <meta name="description" content="Turn coworkers into a crew. Weekly runs, one-tap RSVPs, live scores and standings that write themselves — no spreadsheet, no group text, no commissioner burnout." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Pickup for Workplaces — the office run, organized" />
+  <meta property="og:description" content="Weekly runs, one-tap RSVPs, crew-vs-crew standings that write themselves. Retire the spreadsheet." />
+  <meta property="og:image" content="https://pickupcg.com/assets/og-home.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://pickupcg.com/work" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Pickup for Workplaces — the office run, organized" />
+  <meta name="twitter:description" content="Weekly runs, one-tap RSVPs, crew-vs-crew standings that write themselves. Retire the spreadsheet." />
+  <meta name="twitter:image" content="https://pickupcg.com/assets/og-home.png" />
+
+  <!-- Apple Smart App Banner -->
+  <meta name="apple-itunes-app" content="app-id=6769906203" />
+
+  <link rel="canonical" href="https://pickupcg.com/work" />
+  <meta name="theme-color" content="#070706" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Fonts — DM Sans + one handwritten accent word (Dancing Script), same as home -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #070706;
+      --surface: #111110;
+      --card:    #1a1a18;
+      --accent:  #3dba5e;
+      --accent2: #2ea04e;
+      --text:    #f0efe8;
+      --muted:   #888880;
+      --border:  rgba(255,255,255,0.08);
+      --radius:  16px;
+    }
+
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV (same chrome as home) ─────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 32px;
+      background: rgba(7,7,6,0.90);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-link { color: var(--muted); font-size: 14px; font-weight: 500; text-decoration: none; transition: color .15s; }
+    .nav-link:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: #000;
+      font-weight: 700; font-size: 14px;
+      padding: 10px 20px; border-radius: 100px;
+      text-decoration: none; transition: background .15s;
+    }
+    .nav-cta:hover { background: var(--accent2); }
+
+    /* ── HERO ──────────────────────────────────────────────────── */
+    .hero {
+      min-height: 88vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 140px 24px 72px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 10%, rgba(61,186,94,0.13) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(61,186,94,0.12); border: 1px solid rgba(61,186,94,0.3);
+      color: var(--accent); font-size: 13px; font-weight: 600;
+      padding: 6px 14px; border-radius: 100px; margin-bottom: 28px;
+    }
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.7)} }
+
+    h1 {
+      font-size: clamp(38px, 6.5vw, 68px);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 1.05;
+      max-width: 800px; text-wrap: balance;
+    }
+    .script { font-family: 'Dancing Script', cursive; color: var(--accent); font-weight: 700; }
+    .hero-sub {
+      color: var(--muted); font-size: clamp(16px, 2.2vw, 19px);
+      line-height: 1.6; max-width: 560px; margin-top: 22px; text-wrap: balance;
+    }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 34px; }
+    .btn-primary {
+      background: var(--accent); color: #000;
+      font-weight: 700; font-size: 16px;
+      padding: 15px 30px; border-radius: 100px;
+      text-decoration: none; transition: background .15s, transform .15s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-ghost {
+      border: 1px solid var(--border); color: var(--text);
+      font-weight: 600; font-size: 16px;
+      padding: 15px 30px; border-radius: 100px;
+      text-decoration: none; transition: border-color .15s, background .15s;
+      display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--accent); background: rgba(61,186,94,0.08); }
+    .hero-note { color: var(--muted); font-size: 13px; margin-top: 16px; }
+
+    /* ── SECTIONS ──────────────────────────────────────────────── */
+    section { padding: 88px 24px; max-width: 1080px; margin: 0 auto; }
+    .kicker {
+      color: var(--accent); font-size: 13px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px;
+    }
+    h2 {
+      font-size: clamp(28px, 4.5vw, 42px);
+      font-weight: 800; letter-spacing: -0.02em; line-height: 1.12;
+      max-width: 640px; text-wrap: balance;
+    }
+    .section-sub { color: var(--muted); font-size: 17px; line-height: 1.65; max-width: 600px; margin-top: 16px; }
+
+    /* Steps */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+    .step {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 24px;
+    }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: rgba(61,186,94,0.12); border: 1px solid rgba(61,186,94,0.35);
+      color: var(--accent); font-weight: 700; font-size: 15px;
+      margin-bottom: 16px;
+    }
+    .step h3 { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; }
+    .step p { color: var(--muted); font-size: 15px; line-height: 1.6; margin-top: 8px; }
+
+    /* Feature grid */
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 26px 24px;
+      transition: border-color .2s, transform .2s;
+    }
+    .card:hover { border-color: rgba(61,186,94,0.4); transform: translateY(-2px); }
+    .card-icon { font-size: 24px; margin-bottom: 14px; display: block; }
+    .card h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+    .card p { color: var(--muted); font-size: 14.5px; line-height: 1.6; margin-top: 7px; }
+
+    /* Pilot CTA band */
+    .band {
+      background: linear-gradient(180deg, rgba(61,186,94,0.10) 0%, rgba(61,186,94,0.03) 100%);
+      border: 1px solid rgba(61,186,94,0.25);
+      border-radius: 24px; text-align: center;
+      padding: 64px 28px; margin-top: 8px;
+    }
+    .band h2 { margin: 0 auto; }
+    .band .section-sub { margin-left: auto; margin-right: auto; }
+    .band .hero-ctas { margin-top: 30px; }
+
+    footer { border-top: 1px solid var(--border); padding: 40px 32px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: center; }
+    .footer-left { display: flex; align-items: center; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 20px; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: 14px; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { color: var(--muted); font-size: 13px; }
+
+    @media (max-width: 860px) {
+      .steps, .grid { grid-template-columns: 1fr; }
+      nav { padding: 12px 16px; }
+      section { padding: 64px 16px; }
+      .nav-link { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo" aria-label="Pickup home">
+    <!-- Exact SVG wordmark from PickupLogoMark component (size='sm') -->
+    <svg viewBox="0 0 148 58" width="120" height="48" aria-hidden="true">
+      <defs>
+        <radialGradient id="nav_dot" cx="37%" cy="32%" r="70%">
+          <stop offset="0%"   stop-color="#6ee89c"/>
+          <stop offset="50%"  stop-color="#3dba5e"/>
+          <stop offset="100%" stop-color="#2a8a44"/>
+        </radialGradient>
+      </defs>
+      <!-- "pickup" wordmark -->
+      <text x="0" y="28" font-family="DM Sans, sans-serif" font-weight="700" font-size="28" fill="#f0efe8" letter-spacing="-0.5">pickup</text>
+      <!-- Erase stock 'i' dot with bg color -->
+      <rect x="12" y="0" width="16" height="15" fill="#070706"/>
+      <!-- Motion speed lines + raised ball replacing 'i' dot -->
+      <line x1="4.71" y1="6.50" x2="10.99" y2="4.46" stroke="#4dd97a" stroke-width="1.68" stroke-linecap="round" opacity="0.8"/>
+      <line x1="2.31" y1="10.75" x2="12.01" y2="7.60" stroke="#4dd97a" stroke-width="1.68" stroke-linecap="round" opacity="1.0"/>
+      <line x1="6.75" y1="12.77" x2="13.03" y2="10.73" stroke="#4dd97a" stroke-width="1.68" stroke-linecap="round" opacity="0.6"/>
+      <circle cx="20" cy="5" r="6" fill="url(#nav_dot)"/>
+      <circle cx="17.8" cy="2.8" r="2" fill="rgba(255,255,255,0.45)"/>
+      <!-- Tagline -->
+      <text x="1" y="45" font-family="DM Sans, sans-serif" font-weight="500" font-size="8" fill="#6b7280" letter-spacing="1.8">CALL GAME.</text>
+    </svg>
+  </a>
+  <div class="nav-right">
+    <a href="/#features" class="nav-link">Features</a>
+    <a href="mailto:info@callgame.co?subject=Workplace%20Pilot" class="nav-link">Start a pilot</a>
+    <a href="https://apps.apple.com/app/id6769906203" class="nav-cta">Download</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="badge"><span class="badge-dot"></span>For workplaces</div>
+  <h1>Your office runs <span class="script">weekly</span> now.</h1>
+  <p class="hero-sub">
+    Turn coworkers into a crew. One link gets everyone in, RSVPs take one tap,
+    and the standings write themselves — no spreadsheet, no group text,
+    no commissioner burnout.
+  </p>
+  <div class="hero-ctas">
+    <a class="btn-primary" href="mailto:info@callgame.co?subject=Workplace%20Pilot">Bring Pickup to your office</a>
+    <a class="btn-ghost" href="https://apps.apple.com/app/id6769906203">Get the app — it’s free</a>
+  </div>
+  <p class="hero-note">Free for teams of any size. Set up your first run in under five minutes.</p>
+</header>
+
+<section>
+  <p class="kicker">How it works</p>
+  <h2>From “we should play sometime” to a standing run.</h2>
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">1</span>
+      <h3>Make your crew</h3>
+      <p>Create a private crew for your office and share one link — in Slack, on a poster, anywhere.
+         Colleagues land in the crew even before they have the app.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <h3>Set the weekly run</h3>
+      <p>Pick the day, time and court once. Everyone RSVPs in one tap, week after week,
+         and guests get a calendar invite that actually shows up.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span>
+      <h3>Play. The rest is automatic.</h3>
+      <p>Score it live from the court (or your wrist). Results post to the crew,
+         standings and streaks update themselves, and “run it back” is one tap.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">Built for the office run</p>
+  <h2>Everything the spreadsheet did, and everything it couldn’t.</h2>
+  <div class="grid">
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🔒</span>
+      <h3>Private by default</h3>
+      <p>Workplace crews and their games are invite-only and off the public map.
+         Your company run stays your company’s.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">⚡</span>
+      <h3>Crew vs crew</h3>
+      <p>Call out another team — engineering vs sales, office vs office. Teams sort
+         themselves by crew and results count toward the rivalry.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">📊</span>
+      <h3>Standings that write themselves</h3>
+      <p>Wins, losses, streaks and player ratings update from confirmed scores.
+         Nobody keys results into a sheet on Monday.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">💬</span>
+      <h3>One thread, everything in it</h3>
+      <p>The crew chat carries the next run, RSVPs, photos and final scores —
+         pinned at the top so nobody scrolls to find the plan.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">🎯</span>
+      <h3>Crew goals</h3>
+      <p>Set a games-per-month target and watch the crew chase it. A little shared
+         accountability keeps the run alive through busy weeks.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon" aria-hidden="true">📺</span>
+      <h3>Live scoreboard</h3>
+      <p>Courtside scorekeeping with an Apple Watch companion — spectating
+         colleagues follow along in real time.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="band">
+    <p class="kicker">Pilots</p>
+    <h2>Bring Pickup to your workplace.</h2>
+    <p class="section-sub">
+      Tell us your sport, your headcount and your city — we’ll help you set up the crew,
+      the first run and the office rivalry. Basketball, pickleball, tennis, soccer,
+      volleyball and more.
+    </p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="mailto:info@callgame.co?subject=Workplace%20Pilot">Start a pilot</a>
+      <a class="btn-ghost" href="/">See the app</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">
+    <a href="/" aria-label="Pickup home">
+      <svg viewBox="0 0 148 58" width="100" height="40" aria-hidden="true">
+        <defs>
+          <radialGradient id="ft_dot" cx="37%" cy="32%" r="70%">
+            <stop offset="0%" stop-color="#6ee89c"/><stop offset="50%" stop-color="#3dba5e"/><stop offset="100%" stop-color="#2a8a44"/>
+          </radialGradient>
+        </defs>
+        <text x="0" y="28" font-family="DM Sans,sans-serif" font-weight="700" font-size="28" fill="#f0efe8" letter-spacing="-0.5">pickup</text>
+        <rect x="12" y="0" width="16" height="15" fill="#070706"/>
+        <line x1="4.71" y1="6.50" x2="10.99" y2="4.46" stroke="#4dd97a" stroke-width="1.68" stroke-linecap="round" opacity="0.8"/>
+        <line x1="2.31" y1="10.75" x2="12.01" y2="7.60" stroke="#4dd97a" stroke-width="1.68" stroke-linecap="round" opacity="1.0"/>
+        <line x1="6.75" y1="12.77" x2="13.03" y2="10.73" stroke="#4dd97a" stroke-width="1.68" stroke-linecap="round" opacity="0.6"/>
+        <circle cx="20" cy="5" r="6" fill="url(#ft_dot)"/>
+        <circle cx="17.8" cy="2.8" r="2" fill="rgba(255,255,255,0.45)"/>
+        <text x="1" y="45" font-family="DM Sans,sans-serif" font-weight="500" font-size="8" fill="#6b7280" letter-spacing="1.8">CALL GAME.</text>
+      </svg>
+    </a>
+  </div>
+  <div class="footer-links">
+    <a href="/support">Support</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Service</a>
+    <a href="mailto:info@callgame.co">Contact</a>
+  </div>
+  <div class="footer-copy">© 2024–2026 Call Game LLC. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
