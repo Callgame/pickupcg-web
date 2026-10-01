@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "co.callgame.pickup",
+      "sha256_cert_fingerprints": [
+        "E5:72:FD:45:8E:AE:04:66:3A:10:61:32:99:03:14:4A:72:E2:7A:97:4B:81:0C:47:5F:EE:1C:3C:2A:11:8A:28"
+      ]
+    }
+  }
+]
