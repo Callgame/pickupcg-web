@@ -65,6 +65,10 @@
       "destination": "/open.html"
     },
     {
+      "source": "/org/:code",
+      "destination": "/open.html"
+    },
+    {
       "source": "/leaderboard/:sport",
       "destination": "/open.html"
     },
