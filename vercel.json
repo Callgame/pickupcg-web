@@ -89,6 +89,10 @@
       "destination": "/work.html"
     },
     {
+      "source": "/confirmed",
+      "destination": "/confirmed.html"
+    },
+    {
       "source": "/poster",
       "destination": "/qr.html"
     }
