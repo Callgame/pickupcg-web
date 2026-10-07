@@ -1223,7 +1223,12 @@ async function loadStats() {
 loadStats();
 
 // ── Deep link handling ─────────────────────────────────────────────────
+// Android users were sent to the Apple App Store on every /download and
+// ?ref= invite link (deep-dive route audit #3) — a dead end for half the
+// invite graph. STORE_URL picks the right store by user agent.
 const APP_STORE_URL = 'https://apps.apple.com/app/id6769906203';
+const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=co.callgame.pickup';
+const STORE_URL = /Android/i.test(navigator.userAgent || '') ? PLAY_STORE_URL : APP_STORE_URL;
 
 // Referral tap logging — the App Store strips ?ref=, so this is the LAST point
 // the inviter's id exists (growth panel loop-break #1). sendBeacon survives the
@@ -1245,14 +1250,14 @@ function parseDeepLink() {
   if (path.startsWith('/player/')) return { scheme: 'pickup:/' + path, path, type: 'player' };
   if (path.startsWith('/court/'))  return { scheme: 'pickup:/' + path, path, type: 'court' };
   if (path.startsWith('/join/'))   return { scheme: 'pickup:/' + path, path, type: 'join' };
-  if (path.startsWith('/download') || p.get('ref')) return { scheme: APP_STORE_URL, path, type: 'download', direct: true };
+  if (path.startsWith('/download') || p.get('ref')) return { scheme: STORE_URL, path, type: 'download', direct: true };
   return null;
 }
-function openApp() { const dl = parseDeepLink(); if (dl) window.location.href = dl.direct ? APP_STORE_URL : dl.scheme; }
+function openApp() { const dl = parseDeepLink(); if (dl) window.location.href = dl.direct ? STORE_URL : dl.scheme; }
 window.addEventListener('DOMContentLoaded', () => {
   const dl = parseDeepLink();
   if (!dl) return;
-  if (dl.type === 'download') { window.location.href = APP_STORE_URL; return; }
+  if (dl.type === 'download') { window.location.href = STORE_URL; return; }
   const overlay = document.getElementById('deeplink-overlay');
   const msgs = { game: ['Opening game…','Taking you to this game in the Pickup app'], player: ['Opening player profile…','Taking you to this player in the Pickup app'], court: ['Opening court…','Taking you to this court in the Pickup app'], join: ["You're invited!",'Open Pickup to join this game'] };
   const [t, s] = msgs[dl.type] || ['Opening Pickup…',''];
