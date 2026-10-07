@@ -93,6 +93,18 @@
       "destination": "/confirmed.html"
     },
     {
+      "source": "/pilot",
+      "destination": "/pilot.html"
+    },
+    {
+      "source": "/pilot-kit",
+      "destination": "/pilot-kit.html"
+    },
+    {
+      "source": "/security",
+      "destination": "/security.html"
+    },
+    {
       "source": "/poster",
       "destination": "/qr.html"
     }
@@ -108,6 +120,15 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=3600"
+        }
+      ]
+    },
+    {
+      "source": "/.well-known/security.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
         }
       ]
     },

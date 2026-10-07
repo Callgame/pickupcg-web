@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security & data handling — Pickup</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-180.png" />
+  <meta name="description" content="How Pickup handles data for workplaces and public agencies: what we collect, where it lives, retention, subprocessors, and our security contact." />
+  <meta property="og:title" content="Pickup — Security & data handling" />
+  <meta property="og:description" content="Data handling, subprocessors, retention and security contact for workplace and agency deployments." />
+  <meta property="og:url" content="https://pickupcg.com/security" />
+  <meta name="theme-color" content="#070706" />
+  <link rel="canonical" href="https://pickupcg.com/security" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root { --bg:#070706; --surface:#111110; --card:#1a1a18; --accent:#3dba5e; --accent2:#2ea04e; --text:#f0efe8; --muted:#888880; --border:rgba(255,255,255,0.08); --radius:16px; }
+    :focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:4px; }
+    body { background:var(--bg); color:var(--text); font-family:'DM Sans',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+    nav { position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:14px 32px; background:rgba(7,7,6,.92); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
+    .nav-right { display:flex; gap:16px; align-items:center; }
+    .nav-link { color:var(--muted); font-size:14px; font-weight:500; text-decoration:none; } .nav-link:hover { color:var(--text); }
+    .nav-cta { background:var(--accent); color:#000; font-weight:700; font-size:14px; padding:8px 16px; border-radius:100px; text-decoration:none; }
+    .wrap { max-width:780px; margin:0 auto; padding:56px 24px 90px; }
+    .eyebrow { color:var(--accent); font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
+    h1 { font-size:clamp(32px,5vw,46px); font-weight:800; letter-spacing:-.03em; line-height:1.08; margin-top:12px; }
+    .lead { color:var(--muted); font-size:17px; line-height:1.6; margin-top:16px; max-width:640px; }
+    .updated { color:var(--muted); font-size:13px; margin-top:12px; }
+    section { margin-top:44px; }
+    h2 { font-size:22px; font-weight:800; letter-spacing:-.02em; }
+    p.body, li { color:#c9c8c0; font-size:15px; line-height:1.68; }
+    p.body { margin-top:10px; }
+    ul { margin:12px 0 0 20px; } li { margin-bottom:7px; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px; }
+    .cell { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px 20px; }
+    .cell h3 { font-size:14px; font-weight:700; color:var(--text); }
+    .cell p { color:var(--muted); font-size:14px; line-height:1.55; margin-top:6px; }
+    table { width:100%; border-collapse:collapse; margin-top:16px; font-size:14px; }
+    th, td { text-align:left; padding:11px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+    th { color:var(--text); font-weight:700; } td { color:var(--muted); }
+    td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
+    .note { background:linear-gradient(180deg,rgba(61,186,94,.08),rgba(61,186,94,.02)); border:1px solid rgba(61,186,94,.22); border-radius:14px; padding:18px 20px; margin-top:16px; }
+    .note p { color:#c9c8c0; font-size:14.5px; line-height:1.6; }
+    a.inline { color:var(--accent); text-decoration:none; } a.inline:hover { text-decoration:underline; }
+    .contact { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:24px 26px; margin-top:16px; }
+    .contact a { color:var(--accent); text-decoration:none; font-weight:700; }
+    footer { border-top:1px solid var(--border); padding:32px; text-align:center; color:var(--muted); font-size:13px; margin-top:60px; }
+    footer a { color:var(--muted); text-decoration:none; } footer a:hover { color:var(--text); }
+    @media (max-width:560px){ .grid{grid-template-columns:1fr;} nav{padding:12px 16px;} }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" aria-label="Pickup home">
+    <svg viewBox="0 0 148 58" width="112" height="44" aria-hidden="true">
+      <defs><radialGradient id="nd" cx="37%" cy="32%" r="70%"><stop offset="0%" stop-color="#6ee89c"/><stop offset="50%" stop-color="#3dba5e"/><stop offset="100%" stop-color="#2a8a44"/></radialGradient></defs>
+      <text x="0" y="28" font-family="DM Sans,sans-serif" font-weight="700" font-size="28" fill="#f0efe8" letter-spacing="-0.5">pickup</text>
+      <rect x="12" y="0" width="16" height="15" fill="#070706"/>
+      <line x1="4.71" y1="6.5" x2="10.99" y2="4.46" stroke="#4dd97a" stroke-width="1.68" stroke-linecap="round" opacity="0.8"/>
+      <line x1="2.31" y1="10.75" x2="12.01" y2="7.6" stroke="#4dd97a" stroke-width="1.68" stroke-linecap="round"/>
+      <line x1="6.75" y1="12.77" x2="13.03" y2="10.73" stroke="#4dd97a" stroke-width="1.68" stroke-linecap="round" opacity="0.6"/>
+      <circle cx="20" cy="5" r="6" fill="url(#nd)"/><circle cx="17.8" cy="2.8" r="2" fill="rgba(255,255,255,0.45)"/>
+    </svg>
+  </a>
+  <div class="nav-right">
+    <a href="/work" class="nav-link">For workplaces</a>
+    <a href="/pilot" class="nav-cta">Start a pilot</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <p class="eyebrow">Security & data handling</p>
+  <h1>Built to be easy to say yes to.</h1>
+  <p class="lead">Pickup is operated by Call Game LLC. This page answers the questions a workplace or public-agency reviewer asks before a pilot. We keep it current and we're candid about what we do and don't have today.</p>
+  <p class="updated">Last updated: October 2026</p>
+
+  <section>
+    <h2>At a glance</h2>
+    <div class="grid">
+      <div class="cell"><h3>Where data lives</h3><p>United States (Supabase, US&nbsp;East / N. Virginia). Data is not stored outside the US.</p></div>
+      <div class="cell"><h3>Encryption</h3><p>In transit via TLS; at rest on managed, encrypted storage.</p></div>
+      <div class="cell"><h3>Authentication</h3><p>Sign in with Apple or email. Email sign-up requires confirmation. Passwords are hashed, never stored in plain text.</p></div>
+      <div class="cell"><h3>Access control</h3><p>Row-level security on every table — a user can read only the games, crews and organizations they belong to.</p></div>
+      <div class="cell"><h3>Age</h3><p>18+. The Service is not directed to children.</p></div>
+      <div class="cell"><h3>Cost</h3><p>Free to run a workplace or agency pilot. No per-seat fees.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What we collect</h2>
+    <p class="body">Account basics (name, the email or Apple relay you sign in with, optional photo), the sports and city you choose, the games and crews you take part in, and limited first-party product-usage events (which you can turn off in Settings). Location is coarse by default and used to show nearby games; precise location is session-only and not kept as a historical log. Full detail is in our <a class="inline" href="/privacy">privacy policy</a>.</p>
+    <div class="note"><p><strong>What an employer or champion can see:</strong> within a workplace league, a champion and coworkers see department games, who showed up, and the standings — the same information every member sees. Champions see participation totals, not individual tracking. Pickup never discloses an employee's location, personal games, or activity outside the organization's league to their employer.</p></div>
+  </section>
+
+  <section>
+    <h2>Subprocessors</h2>
+    <p class="body">We use a small set of trusted providers. Each receives only the data needed for its function.</p>
+    <table>
+      <tr><th>Provider</th><th>Purpose</th><th>Region</th></tr>
+      <tr><td>Supabase</td><td>Database, authentication, file storage</td><td>US&nbsp;East</td></tr>
+      <tr><td>Expo (EAS)</td><td>Push-notification delivery</td><td>US</td></tr>
+      <tr><td>Resend</td><td>Transactional email (sign-up confirmation)</td><td>US</td></tr>
+      <tr><td>Twilio</td><td>Optional SMS reminders to invited guests</td><td>US</td></tr>
+      <tr><td>Agora</td><td>Live audio/video when broadcasting a game</td><td>Global edge</td></tr>
+      <tr><td>Vercel</td><td>Hosting for this website</td><td>US / global CDN</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Retention & deletion</h2>
+    <ul>
+      <li>You can delete your account and personal data at any time in the app (Settings → Delete account), or by emailing us.</li>
+      <li>On deletion we purge personal data from live systems within 30 days; residual copies in encrypted backups rotate out within 90 days.</li>
+      <li>Organization owners can request export or deletion of their organization's league data by contacting us.</li>
+      <li>Precise, per-session location is not retained as a historical log.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Candid about what we have today</h2>
+    <p class="body">We're a small, focused company and we'd rather be straight with your reviewer than overstate.</p>
+    <ul>
+      <li><strong>Compliance:</strong> we do not yet hold a SOC 2 report or third-party penetration-test attestation. We build on SOC 2 / ISO 27001-certified infrastructure (Supabase, Vercel) and will support reasonable security questionnaires and a data-processing agreement for pilots.</li>
+      <li><strong>SSO / SCIM / MDM:</strong> not available today; sign-in is Apple or email. Enterprise SSO is on our roadmap and we're happy to discuss requirements for a deployment.</li>
+      <li><strong>Public records:</strong> league chat and content live in the app; agencies subject to public-records law should treat in-app messages as they would other messaging tools and can request an export.</li>
+      <li><strong>Accessibility:</strong> the app follows platform accessibility conventions; a formal VPAT is not yet published.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Reporting a vulnerability</h2>
+    <div class="contact">
+      <p class="body">Found a security issue? We want to hear from you. Email <a href="mailto:security@callgame.co">security@callgame.co</a> (or <a href="mailto:info@callgame.co">info@callgame.co</a>) with details and steps to reproduce. We'll acknowledge within three business days and keep you updated. Please don't publicly disclose until we've had a chance to fix it. We don't pursue good-faith researchers who follow this process.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Questions from procurement?</h2>
+    <p class="body">We'll complete a security questionnaire, sign a DPA, and provide a W-9 and certificate of insurance for a pilot. Start at <a class="inline" href="/pilot">pickupcg.com/pilot</a> or email <a class="inline" href="mailto:info@callgame.co">info@callgame.co</a>.</p>
+  </section>
+</div>
+
+<footer>
+  <a href="/work">For workplaces</a> &nbsp;·&nbsp; <a href="/pilot">Start a pilot</a> &nbsp;·&nbsp;
+  <a href="/privacy">Privacy</a> &nbsp;·&nbsp; <a href="/terms">Terms</a><br /><br />
+  © 2024–2026 Call Game LLC. All rights reserved.
+</footer>
+</body>
+</html>

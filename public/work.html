@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pickup for Workplaces — run your office league without the spreadsheet</title><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png"><link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-180.png">
-  <meta name="description" content="Turn coworkers into a crew. Weekly runs, one-tap RSVPs, live scores and standings that write themselves — no spreadsheet, no group text, no commissioner burnout." />
+  <title>Pickup for Workplaces & Agencies — the department-vs-department league</title><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png"><link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-180.png">
+  <meta name="description" content="Turn an organization into a league. Departments compete, agencies face off, standings and a monthly participation report write themselves. Built for government offices, companies and clubs. Free to run a pilot." />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Pickup for Workplaces — the office run, organized" />
@@ -180,6 +180,18 @@
     .card h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
     .card p { color: var(--muted); font-size: 14.5px; line-height: 1.6; margin-top: 7px; }
 
+    /* Standings mock (proof visual) */
+    .mock { max-width:560px; margin:0 auto; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.4); }
+    .mock-head { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:16px 20px; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+    .mock-title { font-weight:700; font-size:15px; }
+    .mock-season { color:var(--accent); font-size:12.5px; font-weight:600; }
+    .mock-row { display:flex; align-items:center; gap:14px; padding:13px 20px; border-bottom:1px solid var(--border); }
+    .mock-rank { color:var(--muted); font-weight:700; width:16px; }
+    .mock-name { flex:1; font-weight:600; font-size:15px; }
+    .mock-stat { color:var(--muted); font-weight:600; font-size:14px; font-variant-numeric:tabular-nums; }
+    .mock-foot { padding:14px 20px; color:var(--muted); font-size:13px; line-height:1.5; }
+    .mock-foot b { color:var(--text); }
+
     /* Pilot CTA band */
     .band {
       background: linear-gradient(180deg, rgba(61,186,94,0.10) 0%, rgba(61,186,94,0.03) 100%);
@@ -234,92 +246,123 @@
     </svg>
   </a>
   <div class="nav-right">
-    <a href="/#features" class="nav-link">Features</a>
-    <a href="mailto:info@callgame.co?subject=Workplace%20Pilot" class="nav-link">Start a pilot</a>
-    <a href="https://apps.apple.com/app/id6769906203" class="nav-cta">Download</a>
+    <a href="/security" class="nav-link">Security</a>
+    <a href="/pilot-kit" class="nav-link">Pilot kit</a>
+    <a href="/pilot" class="nav-cta">Start a pilot</a>
   </div>
 </nav>
 
 <header class="hero">
-  <div class="badge"><span class="badge-dot"></span>For workplaces</div>
-  <h1>Your office runs <span class="script">weekly</span> now.</h1>
+  <div class="badge"><span class="badge-dot"></span>For workplaces & agencies</div>
+  <h1>Department vs department. <span class="script">Agency</span> vs agency.</h1>
   <p class="hero-sub">
-    Turn coworkers into a crew. One link gets everyone in, RSVPs take one tap,
-    and the standings write themselves — no spreadsheet, no group text,
-    no commissioner burnout.
+    Pickup turns an organization into a league. Departments field crews, call each other
+    out, and climb standings that write themselves — with a monthly participation report
+    that lands on leadership's desk without anyone touching a spreadsheet.
   </p>
   <div class="hero-ctas">
-    <a class="btn-primary" href="mailto:info@callgame.co?subject=Workplace%20Pilot">Bring Pickup to your office</a>
-    <a class="btn-ghost" href="https://apps.apple.com/app/id6769906203">Get the app — it’s free</a>
+    <a class="btn-primary" href="/pilot">Start a pilot</a>
+    <a class="btn-ghost" href="/pilot-kit">See the pilot kit</a>
   </div>
-  <p class="hero-note">Free for teams of any size. Set up your first run in under five minutes.</p>
+  <p class="hero-note">Free to run a pilot · Built for government offices, companies and clubs.</p>
 </header>
+
+<section style="padding-top:24px;">
+  <div class="mock">
+    <div class="mock-head">
+      <span class="mock-title">Miami-Dade County · Department Cup</span>
+      <span class="mock-season">Season Q4 · 46 days left</span>
+    </div>
+    <div class="mock-row"><span class="mock-rank">1</span><span class="mock-name">Parks &amp; Rec</span><span class="mock-stat">6W–1L</span></div>
+    <div class="mock-row"><span class="mock-rank">2</span><span class="mock-name">Public Works</span><span class="mock-stat">5W–2L</span></div>
+    <div class="mock-row"><span class="mock-rank">3</span><span class="mock-name">Finance</span><span class="mock-stat">4W–3L</span></div>
+    <div class="mock-foot">Activity Cup leader: <b>Public Works</b> · 142 pts &nbsp;·&nbsp; 68% of staff played this month</div>
+  </div>
+</section>
 
 <section>
   <p class="kicker">How it works</p>
-  <h2>From “we should play sometime” to a standing run.</h2>
+  <h2>One organization, every department, a league that runs itself.</h2>
   <div class="steps">
     <div class="step">
       <span class="step-num">1</span>
-      <h3>Make your crew</h3>
-      <p>Create a private crew for your office and share one link — in Slack, on a poster, anywhere.
-         Colleagues land in the crew even before they have the app.</p>
+      <h3>Create your organization</h3>
+      <p>Spin up your agency or company in the app and share one join link — in Teams, on a
+         break-room poster, anywhere. Work-email domains verify colleagues automatically.</p>
     </div>
     <div class="step">
       <span class="step-num">2</span>
-      <h3>Set the weekly run</h3>
-      <p>Pick the day, time and court once. Everyone RSVPs in one tap, week after week,
-         and guests get a calendar invite that actually shows up.</p>
+      <h3>Departments field crews</h3>
+      <p>Parks vs Public Works. Engineering vs Sales. Each department runs its own weekly games
+         and calls out another with one tap — both teams get the challenge.</p>
     </div>
     <div class="step">
       <span class="step-num">3</span>
-      <h3>Play. The rest is automatic.</h3>
-      <p>Score it live from the court (or your wrist). Results post to the crew,
-         standings and streaks update themselves, and “run it back” is one tap.</p>
+      <h3>Standings & reports write themselves</h3>
+      <p>The Department Cup, the Activity Cup and the player board update from confirmed scores.
+         Every month, a participation report builds itself for leadership — one tap to share.</p>
     </div>
   </div>
 </section>
 
 <section>
-  <p class="kicker">Built for the office run</p>
-  <h2>Everything the spreadsheet did, and everything it couldn’t.</h2>
+  <p class="kicker">Built for the organization</p>
+  <h2>The whole league layer — not just a group chat with a scoreboard.</h2>
   <div class="grid">
     <div class="card">
-      <span class="card-icon" aria-hidden="true">🔒</span>
-      <h3>Private by default</h3>
-      <p>Workplace crews and their games are invite-only and off the public map.
-         Your company run stays your company’s.</p>
+      <span class="card-icon" aria-hidden="true">🏆</span>
+      <h3>Department Cup</h3>
+      <p>Wins and losses by department, every season. The office rivalry that
+         actually gets people off their chairs — tracked without anyone keeping a sheet.</p>
     </div>
     <div class="card">
       <span class="card-icon" aria-hidden="true">⚡</span>
-      <h3>Crew vs crew</h3>
-      <p>Call out another team — engineering vs sales, office vs office. Teams sort
-         themselves by crew and results count toward the rivalry.</p>
+      <h3>Activity Cup — turnout wins</h3>
+      <p>Points for <em>showing up</em>, not just winning. Every department can lead it,
+         so the least athletic team still has a reason to field players.</p>
     </div>
     <div class="card">
       <span class="card-icon" aria-hidden="true">📊</span>
-      <h3>Standings that write themselves</h3>
-      <p>Wins, losses, streaks and player ratings update from confirmed scores.
-         Nobody keys results into a sheet on Monday.</p>
+      <h3>Monthly participation report</h3>
+      <p>Participation %, month-over-month trend, and a per-department breakdown —
+         the numbers HR and leadership ask for, built and shared in one tap.</p>
     </div>
     <div class="card">
-      <span class="card-icon" aria-hidden="true">💬</span>
-      <h3>One thread, everything in it</h3>
-      <p>The crew chat carries the next run, RSVPs, photos and final scores —
-         pinned at the top so nobody scrolls to find the plan.</p>
+      <span class="card-icon" aria-hidden="true">🏛️</span>
+      <h3>Agency vs agency</h3>
+      <p>Opt in and your county can face the next one on a shared inter-agency table.
+         Verified organizations only — a rivalry no other app offers.</p>
     </div>
     <div class="card">
-      <span class="card-icon" aria-hidden="true">🎯</span>
-      <h3>Crew goals</h3>
-      <p>Set a games-per-month target and watch the crew chase it. A little shared
-         accountability keeps the run alive through busy weeks.</p>
+      <span class="card-icon" aria-hidden="true">✓</span>
+      <h3>Verified by work email</h3>
+      <p>Set your domain once and colleagues who sign in with their work address are
+         verified automatically — real coworkers, not randoms.</p>
     </div>
     <div class="card">
-      <span class="card-icon" aria-hidden="true">📺</span>
-      <h3>Live scoreboard</h3>
-      <p>Courtside scorekeeping with an Apple Watch companion — spectating
-         colleagues follow along in real time.</p>
+      <span class="card-icon" aria-hidden="true">🔒</span>
+      <h3>Private by default</h3>
+      <p>Department crews and their games are invite-only and off the public map.
+         Your organization's league stays inside your organization.</p>
     </div>
+  </div>
+</section>
+
+<section>
+  <div class="band" style="text-align:left; padding:48px 36px;">
+    <p class="kicker">For government & public agencies</p>
+    <h2 style="margin:0;">Office culture that shows up in the numbers.</h2>
+    <p class="section-sub" style="margin-left:0;">
+      Agencies use Pickup to build camaraderie across departments — and to prove it.
+      Employees compete department-to-department or against other agencies, leaderboards
+      keep it honest, and the monthly report gives leadership a participation metric that
+      isn't a survey nobody answers.
+    </p>
+    <ul style="margin:22px 0 0 18px; color:var(--muted); font-size:15.5px; line-height:1.9; max-width:620px;">
+      <li>Data stays in the US. Row-level access control. <a href="/security" style="color:var(--accent);text-decoration:none;">Full security details →</a></li>
+      <li>Verified-agency badge, founder-reviewed — no one can impersonate your agency.</li>
+      <li>Free to run a pilot; we'll complete a security questionnaire and sign a DPA.</li>
+    </ul>
   </div>
 </section>
 
@@ -328,13 +371,12 @@
     <p class="kicker">Pilots</p>
     <h2>Bring Pickup to your workplace.</h2>
     <p class="section-sub">
-      Tell us your sport, your headcount and your city — we’ll help you set up the crew,
-      the first run and the office rivalry. Basketball, pickleball, tennis, soccer,
-      volleyball and more.
+      Tell us your sport, your headcount and your city — we’ll help you set up the departments,
+      the first run and the standings. Basketball, pickleball, tennis, soccer, volleyball and more.
     </p>
     <div class="hero-ctas">
-      <a class="btn-primary" href="mailto:info@callgame.co?subject=Workplace%20Pilot">Start a pilot</a>
-      <a class="btn-ghost" href="/">See the app</a>
+      <a class="btn-primary" href="/pilot">Request a pilot</a>
+      <a class="btn-ghost" href="/pilot-kit">Get the pilot kit</a>
     </div>
   </div>
 </section>
@@ -360,10 +402,12 @@
     </a>
   </div>
   <div class="footer-links">
+    <a href="/pilot">Start a pilot</a>
+    <a href="/pilot-kit">Pilot kit</a>
+    <a href="/security">Security</a>
     <a href="/support">Support</a>
     <a href="/privacy">Privacy Policy</a>
     <a href="/terms">Terms of Service</a>
-    <a href="mailto:info@callgame.co">Contact</a>
   </div>
   <div class="footer-copy">© 2024–2026 Call Game LLC. All rights reserved.</div>
 </footer>
