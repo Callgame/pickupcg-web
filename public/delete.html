@@ -64,11 +64,11 @@
   <strong>Delete from inside the app — takes about 30 seconds</strong>
   <ol class="steps">
     <li>Open <strong>Pickup</strong> and sign in.</li>
-    <li>Go to the <strong>Me</strong> tab.</li>
+    <li>Tap your <strong>avatar</strong> at the top of the screen.</li>
     <li>Scroll to <strong>Settings</strong>.</li>
     <li>Tap <strong>Delete Account</strong> and confirm.</li>
   </ol>
-  <p style="margin-top:14px;">Your account and data are deleted immediately. This cannot be undone.</p>
+  <p style="margin-top:14px;">Your account and data are deleted immediately, except crash and error reports, which follow within 31 days (see Retention period). This cannot be undone.</p>
 </div>
 
 <div class="card">
@@ -92,12 +92,13 @@
 <p>Two narrow exceptions exist so that deleting an account can't be used to erase a safety record or evade a ban:</p>
 <ul>
   <li><strong>Safety reports you filed about other people</strong> are kept, but your identity is removed from them — the report becomes anonymous. Reports filed <em>about</em> you are also kept. Without this, anyone could erase evidence of harmful behaviour by deleting their account.</li>
-  <li><strong>A one-way hashed version of your email address</strong> is kept only if your account was suspended, or had reports filed against it. It cannot be reversed to recover your email; it exists solely to stop a suspended account from being recreated. If your account was in good standing, nothing is kept.</li>
+  <li><strong>A one-way hashed version of your email address</strong> is kept only if your account was suspended, or had reports filed against it. It cannot be reversed to recover your email; it exists solely to stop a suspended account from being recreated. If your account was in good standing, no hash is kept.</li>
 </ul>
 
 <h2>Retention period</h2>
 <ul>
   <li><strong>Immediately:</strong> your account and the data listed above are deleted from our live systems as soon as you confirm.</li>
+  <li><strong>Within 31 days:</strong> crash and error reports linked to your account. They aren't removed when you confirm; a daily cleanup deletes each one once it is 30 days old.</li>
   <li><strong>Within 90 days:</strong> residual copies in encrypted database backups are purged as backups rotate out.</li>
   <li><strong>Indefinitely:</strong> only the anonymised safety reports and, where applicable, the hashed identifier described above.</li>
 </ul>
