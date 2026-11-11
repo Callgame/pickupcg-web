@@ -330,7 +330,7 @@
           var going = $('g-going');
           going.textContent = '';
           var b = document.createElement('b');
-          b.textContent = 'Going: ';
+          b.textContent = g.closed ? 'Roster: ' : 'Going: ';
           going.appendChild(b);
           var parts = g.going.slice();
           if (g.going_more) parts.push(g.going_more + ' more');
