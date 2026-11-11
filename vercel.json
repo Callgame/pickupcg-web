@@ -50,7 +50,7 @@
     },
     {
       "source": "/game/:id",
-      "destination": "/game.html"
+      "destination": "/api/page?kind=game&id=:id"
     },
     {
       "source": "/court/:id",
@@ -62,7 +62,7 @@
     },
     {
       "source": "/group/:id",
-      "destination": "/open.html"
+      "destination": "/api/page?kind=crew&id=:id"
     },
     {
       "source": "/org/:code",
@@ -149,5 +149,11 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/page.mjs": {
+      "includeFiles": "public/{game,open}.html",
+      "maxDuration": 10
+    }
+  }
 }
