@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- og:start -->
+  <!-- Static fallback. /game/:id is served by api/page.mjs, which replaces everything
+       between og:start and og:end with tags written from the game itself (crawlers
+       never run JS). These stay for /game.html itself and if that function fails. -->
   <title>You're invited — Pickup</title>
   <meta name="description" content="A friend invited you to a pickup game. Say you're in — no account needed." />
-  <meta name="robots" content="noindex" />
-
-  <!-- Open Graph — a designed 1200x630 invite card, not the square app icon.
-       Unfurl crawlers never run JS, so this static card is what every game link
-       looks like in a group chat (creator panel: "the envelope was a text blob"). -->
   <meta property="og:title" content="You're invited to a pickup game" />
   <meta property="og:description" content="Tap to see the details and say you're in — no account needed." />
   <meta property="og:image" content="https://pickupcg.com/assets/og-game.png" />
@@ -20,6 +19,8 @@
   <meta name="twitter:title" content="You're invited to a pickup game" />
   <meta name="twitter:description" content="Tap to see the details and say you're in — no account needed." />
   <meta name="twitter:image" content="https://pickupcg.com/assets/og-game.png" />
+  <!-- og:end -->
+  <meta name="robots" content="noindex" />
 
   <!-- Apple Smart App Banner -->
   <meta name="apple-itunes-app" content="app-id=6769906203" />
@@ -133,6 +134,13 @@
       font-weight: 700; font-size: 14px; border-radius: 999px; padding: 11px 22px;
     }
 
+    .going { font-size: 13.5px; color: var(--muted); margin: -8px 2px 18px; line-height: 1.5; }
+    .going b { color: var(--text); font-weight: 600; }
+    .closed { text-align: center; background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px 14px; margin-bottom: 6px; display: none; }
+    .closed .final { font-size: 34px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+    .closed p { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
     .skeleton { text-align: center; padding: 40px 0; color: var(--muted); font-size: 14px; }
     .gone { text-align: center; padding: 30px 0; display: none; }
     .gone .big { font-size: 40px; margin-bottom: 12px; }
@@ -151,24 +159,31 @@
 
       <div id="gone" class="gone">
         <div class="big"><svg width="40" height="40" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="#888880" stroke-width="2"/><path d="M3 9H21" stroke="#888880" stroke-width="2"/><path d="M8 3V6M16 3V6" stroke="#888880" stroke-width="2" stroke-linecap="round"/><path d="M10 13L14 17M14 13L10 17" stroke="#888880" stroke-width="2" stroke-linecap="round"/></svg></div>
-        <h1 style="font-size:20px">This game is no longer available</h1>
-        <p>It may have been cancelled or already played.</p>
+        <h1 style="font-size:20px" id="gone-title">This game is no longer available</h1>
+        <p id="gone-sub">It may have been cancelled or already played.</p>
       </div>
 
       <div id="game" style="display:none">
-        <div class="kicker">You're invited</div>
+        <div class="kicker" id="g-kicker">You're invited</div>
         <div class="sport" id="g-emoji"></div>
         <h1 id="g-title"></h1>
         <div class="meta">
           <div class="meta-row"><span class="k">When</span><span class="v" id="g-when"></span></div>
           <div class="meta-row"><span class="k">Where</span><span class="v" id="g-where"></span></div>
-          <div class="meta-row"><span class="k">Host</span><span class="v" id="g-host"></span></div>
+          <div class="meta-row" id="g-host-row"><span class="k">Host</span><span class="v" id="g-host"></span></div>
           <div class="meta-row" id="g-fee-row" style="display:none"><span class="k">Fee</span><span class="v" id="g-fee"></span></div>
         </div>
 
-        <div class="spots">
+        <div class="spots" id="g-spots">
           <div class="label"><b id="g-in"></b> <span id="g-of"></span></div>
           <div class="bar"><div class="fill" id="g-fill" style="width:0%"></div></div>
+        </div>
+        <!-- Public games only: first name + last initial (founder decision 2026-11-11). -->
+        <div class="going" id="g-going" style="display:none"></div>
+
+        <div class="closed" id="closed">
+          <div class="final" id="g-final" style="display:none"></div>
+          <p id="closed-copy">This game already happened, so the guest list is closed.</p>
         </div>
 
         <form id="rsvp">
@@ -238,50 +253,109 @@
         $('store').textContent = 'Get Pickup for Android';
       }
 
-      function showGone() { $('loading').style.display = 'none'; $('gone').style.display = 'block'; }
+      function showGone(title, sub) {
+        if (title) $('gone-title').textContent = title;
+        if (sub) $('gone-sub').textContent = sub;
+        $('loading').style.display = 'none'; $('gone').style.display = 'block';
+      }
 
       if (!gameId) { showGone(); return; }
 
-      fetch(SUPA + '/rest/v1/games?id=eq.' + encodeURIComponent(gameId) +
-            '&select=id,sport,title,location,day,time,spots,max_spots,host_name,host_id,fee,cancelled,starts_at', {
-        headers: { apikey: ANON, Authorization: 'Bearer ' + ANON }
-      })
-      .then(function (r) { return r.json(); })
-      .then(function (rows) {
-        var g = rows && rows[0];
-        if (g && !g.cancelled) return g;
-        // PRIVATE games are RLS-hidden from the anon key — the link is the
-        // credential, so ask the game-guest fn for the minimal card instead.
+      // ONE source for the card: the game-guest function (see its header in the app repo).
+      // /game/:id is served by api/page.mjs, which already asked it and put the reply in the
+      // page (#game-data); /game.html itself, or a page whose lookup failed, asks here.
+      function load() {
+        var el = document.getElementById('game-data');
+        if (el) {
+          try {
+            var d = JSON.parse(el.textContent);
+            if (d && d.gameId === gameId.toLowerCase() && d.body) return Promise.resolve({ status: d.status, body: d.body });
+          } catch (e) { /* fall through to the network */ }
+        }
         return fetch(SUPA + '/functions/v1/game-guest?gameId=' + encodeURIComponent(gameId), {
           headers: { apikey: ANON, Authorization: 'Bearer ' + ANON }
-        })
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (res) {
-          if (!res || !res.ok || !res.game) return null;
-          var m = res.game;
-          return { id: gameId, sport: m.sport, title: m.title, location: m.location,
-                   day: m.day, time: m.time, spots: m.spotsLeft, max_spots: null,
-                   host_name: null, host_id: null, fee: 0, cancelled: false,
-                   starts_at: m.startsAt || null };
+        }).then(function (r) {
+          return r.json().then(function (j) { return { status: r.status, body: j }; }, function () { return null; });
         });
+      }
+
+      load()
+      .then(function (res) {
+        if (res && res.status === 404 && res.body && res.body.state === 'cancelled') {
+          showGone('This game was cancelled', 'The host called it off. Find another game near you in the app.');
+          return null;
+        }
+        if (!res || !res.body || !res.body.ok || !res.body.game) { showGone(); return null; }
+        var m = res.body.game;
+        // Names, host, capacity, fee and score arrive for PUBLIC games only; a private or
+        // workplace game's card has none of them (game-guest decides, not this page).
+        return {
+          title: m.title, sport: m.sport, location: m.location, day: m.day, time: m.time,
+          spots: Number(m.spotsLeft) || 0, max_spots: Number(m.maxSpots) || 0,
+          host_name: m.hostName || null, host_id: m.hostRef || null, fee: Number(m.fee) || 0,
+          starts_at: m.startsAt || null, guests: Number(m.guestCount) || 0,
+          going: Array.isArray(m.going) ? m.going : [], going_more: Number(m.goingMore) || 0,
+          final: m.final || null,
+          is_public: m.access === 'public',
+          // An older game-guest sends no rsvpOpen: keep the form, as before.
+          closed: m.rsvpOpen === false
+        };
       })
       .then(function (g) {
-        if (!g || g.cancelled) { showGone(); return; }
+        if (!g) return;
 
-        document.title = g.title + ' — Pickup';
+        // The tab title is something a JS-running unfurler could read: a private or workplace
+        // game keeps the server's generic one.
+        if (g.is_public) document.title = (g.title || 'Pickup game') + ' — Pickup';
         var sport = (g.sport || '').toLowerCase();
-        $('g-emoji').innerHTML = SPORT_ICONS[sport] ? SPORT_ICONS[sport](SPORT_COLORS[sport] || '#3dba5e') : GENERIC_SPORT_ICON;
+        var hasIcon = Object.prototype.hasOwnProperty.call(SPORT_ICONS, sport);
+        $('g-emoji').innerHTML = hasIcon ? SPORT_ICONS[sport](SPORT_COLORS[sport] || '#3dba5e') : GENERIC_SPORT_ICON;
         $('g-title').textContent = g.title || 'Pickup game';
         $('g-when').textContent = (g.day || '') + (g.time ? ' · ' + g.time : '');
         $('g-where').textContent = g.location || 'See host for details';
-        $('g-host').textContent = g.host_name || 'Host';
+        if (g.host_name) $('g-host').textContent = g.host_name;
+        else $('g-host-row').style.display = 'none';
         if (g.fee > 0) { $('g-fee-row').style.display = 'flex'; $('g-fee').textContent = '$' + g.fee; }
 
-        var max = Number(g.max_spots) || 0, open = Number(g.spots) || 0;
-        var inCount = Math.max(0, max - open);
-        $('g-in').textContent = inCount + ' in';
-        $('g-of').textContent = max > 0 ? '· ' + open + ' of ' + max + ' spots open' : '';
-        $('g-fill').style.width = (max > 0 ? Math.min(100, (inCount / max) * 100) : 0) + '%';
+        // Bodies at the game: app players who took a seat, plus web guests (game-guest
+        // counts both against capacity). The host never takes a seat.
+        var max = g.max_spots, open = Math.max(0, g.spots);
+        var inCount = max > 0 ? Math.min(max, Math.max(0, max - open) + g.guests) : 0;
+        if (max > 0) {
+          $('g-in').textContent = inCount + ' in';
+          $('g-of').textContent = '· ' + Math.max(0, max - inCount) + ' of ' + max + ' spots open';
+          $('g-fill').style.width = Math.min(100, (inCount / max) * 100) + '%';
+        } else {
+          $('g-spots').style.display = 'none';
+        }
+
+        // Who's going: public games only, and only until the game is played (game-guest stops
+        // sending names then). textContent only.
+        if (!g.closed && (g.going.length || g.going_more || g.guests)) {
+          var going = $('g-going');
+          going.textContent = '';
+          var b = document.createElement('b');
+          b.textContent = 'Going: ';
+          going.appendChild(b);
+          var parts = g.going.slice();
+          if (g.going_more) parts.push(g.going_more + ' more');
+          if (g.guests) parts.push(g.guests + ' guest' + (g.guests === 1 ? '' : 's'));
+          going.appendChild(document.createTextNode(parts.join(', ')));
+          going.style.display = 'block';
+        }
+
+        // Played: the guest list is closed (game-guest refuses an RSVP too).
+        if (g.closed) {
+          $('g-kicker').textContent = g.final ? 'Final' : 'Played';
+          $('rsvp').style.display = 'none';
+          $('g-spots').style.display = 'none';
+          if (g.final && isFinite(g.final.high) && isFinite(g.final.low)) {
+            $('g-final').textContent = g.final.high + '–' + g.final.low;
+            $('g-final').style.display = 'block';
+          }
+          $('closed').style.display = 'block';
+          $('cta-copy').textContent = 'Want the next one? Get the app — find games near you, track your record, run it back with your crew.';
+        }
 
         if (g.host_id) {
           $('store').href = STORE_URL + (STORE_URL.indexOf('?') >= 0 ? '&ref=' : '?ref=') + encodeURIComponent(g.host_id);
@@ -358,10 +432,13 @@
                   cal.style.display = 'inline-flex';
                 }
               }
-              $('success-sub').innerHTML = (g.host_name || 'The host') + ' just got a heads-up that you\'re in.<br/>Show up and play.';
+              var sub = $('success-sub');
+              sub.textContent = (g.host_name || 'The host') + ' just got a heads-up that you\'re in.';
+              sub.appendChild(document.createElement('br'));
+              sub.appendChild(document.createTextNode('Show up and play.'));
               // Post-RSVP: turn the app CTA into the contextual next step —
               // reminders + never missing this crew's next game.
-              $('cta-copy').innerHTML = 'Get the app so you never miss ' + (g.host_name ? g.host_name + '’s' : 'the') + ' next game — a reminder before tip-off, plus your record and the group chat.';
+              $('cta-copy').textContent = 'Get the app so you never miss ' + (g.host_name ? g.host_name + '’s' : 'the') + ' next game — a reminder before tip-off, plus your record and the group chat.';
               $('store').textContent = 'Get reminders — download Pickup';
             } else {
               $('err').textContent = (res.j && res.j.error) || 'Something went wrong — try again.';
@@ -378,7 +455,7 @@
           });
         });
       })
-      .catch(showGone);
+      .catch(function () { showGone(); });
     })();
   </script>
 </body>
