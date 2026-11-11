@@ -26,7 +26,7 @@ async function call(url, anon) {
   try {
     const res = await fetch(url, {
       headers: { apikey: anon, Authorization: `Bearer ${anon}` },
-      signal: AbortSignal.timeout(3000),
+      signal: AbortSignal.timeout(4500),
     });
     const body = await res.json().catch(() => null);
     return { status: res.status, body };
@@ -48,27 +48,40 @@ function page(html, { cacheable }) {
   });
 }
 
+// The function's own answers: 200 { ok: true } or 404 { ok: false }. Anything else (a gateway
+// 404 while a function is missing or mid-deploy, a 401, a 5xx, a timeout) is a failure: the
+// page gets the static tags, nothing is embedded, nothing is cached.
+const answeredBy = (reply) => !!reply && !!reply.body
+  && ((reply.status === 200 && reply.body.ok === true) || (reply.status === 404 && reply.body.ok === false));
+
 export async function render(request, env = process.env) {
   const url = new URL(request.url);
+  const backend = backendFor(env.VERCEL_ENV, env.PICKUP_PREVIEW_ANON_KEY);
+  // The rewrite puts kind and id in the query. A link that carries its own ?id= or ?kind= could
+  // make them ambiguous (which one wins is Vercel's call): then preview nothing specific.
+  const ambiguous = url.searchParams.getAll('id').length !== 1 || url.searchParams.getAll('kind').length > 1;
   const kind = url.searchParams.get('kind');
-  const id = url.searchParams.get('id') || '';
-  const backend = backendFor(env.VERCEL_ENV);
+  const id = ambiguous ? '' : (url.searchParams.get('id') || '').toLowerCase();
 
   if (kind === 'crew') {
     const reply = isUuid(id)
       ? await call(`${backend.url}/functions/v1/crew-peek?groupId=${encodeURIComponent(id)}&preview=1`, backend.anon)
       : null;
     // A 404 is an answer (private, workplace or gone): cache it. A failed call is not.
-    const preview = reply ? crewPreview(reply) : FALLBACK_CREW;
+    const answered = answeredBy(reply);
+    const preview = answered ? crewPreview(reply) : FALLBACK_CREW;
     const html = injectHead(useBackend(template('open.html'), backend), headTags(preview, isUuid(id) ? `${SITE}/group/${id}` : null));
-    return page(html, { cacheable: !!reply });
+    return page(html, { cacheable: answered });
   }
 
   // kind=game (the default)
+  if (ambiguous) {
+    return page(injectHead(useBackend(template('game.html'), backend), headTags(FALLBACK_GAME, null)), { cacheable: false });
+  }
   const reply = isUuid(id)
     ? await call(`${backend.url}/functions/v1/game-guest?gameId=${encodeURIComponent(id)}`, backend.anon)
     : { status: 404, body: { ok: false, error: 'not found' } };
-  const answered = !!reply && (reply.status === 200 || reply.status === 404) && !!reply.body;
+  const answered = answeredBy(reply);
   const preview = answered ? gamePreview(reply) : FALLBACK_GAME;
   let html = injectHead(useBackend(template('game.html'), backend), headTags(preview, isUuid(id) ? `${SITE}/game/${id}` : null));
   if (answered && isUuid(id)) html = embedData(html, 'game-data', { gameId: id, status: reply.status, body: reply.body });
@@ -79,9 +92,14 @@ export async function GET(request) {
   try {
     return await render(request);
   } catch {
-    // Never break the page over a preview: serve the static file as it always was.
+    // Never break the page over a preview: serve the static file (on its environment's backend).
     const kind = new URL(request.url).searchParams.get('kind');
-    return page(template(kind === 'crew' ? 'open.html' : 'game.html'), { cacheable: false });
+    const html = template(kind === 'crew' ? 'open.html' : 'game.html');
+    try {
+      return page(useBackend(html, backendFor(process.env.VERCEL_ENV, process.env.PICKUP_PREVIEW_ANON_KEY)), { cacheable: false });
+    } catch {
+      return page(html, { cacheable: false });
+    }
   }
 }
 

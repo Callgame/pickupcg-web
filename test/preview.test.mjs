@@ -73,6 +73,17 @@ test('played public game without a score', () => {
   assert.equal(p.image, IMG_BRAND);
 });
 
+test('a final logged inside the live window already previews as the result', () => {
+  const p = gamePreview(publicGame({ state: 'live', final: { high: 11, low: 7 } }), NOW);
+  assert.equal(p.title, 'Final 11–7 · Pickleball · Bergeron Park');
+  assert.equal(p.image, IMG_BRAND);
+});
+
+test('only game-guest\'s own 404 means gone; a gateway 404 is a failure', () => {
+  assert.deepEqual(gamePreview({ status: 404, body: { code: 'NOT_FOUND', message: 'Requested function was not found' } }, NOW), FALLBACK_GAME);
+  assert.deepEqual(gamePreview({ status: 404, body: { state: 'cancelled' } }, NOW), FALLBACK_GAME);
+});
+
 test('cancelled says so, with nothing else', () => {
   const p = gamePreview({ status: 404, body: { ok: false, error: 'not found', state: 'cancelled' } }, NOW);
   assert.equal(p.title, 'This game was cancelled');
@@ -114,6 +125,16 @@ test('unknown or failed replies fall back to the old static invite', () => {
   assert.deepEqual(gamePreview(null, NOW), FALLBACK_GAME);
   assert.deepEqual(gamePreview({ status: 500, body: { ok: false } }, NOW), FALLBACK_GAME);
   assert.deepEqual(gamePreview({ status: 200, body: { ok: true } }, NOW), FALLBACK_GAME);
+});
+
+test('a private game\'s free-text sport never reaches its preview', () => {
+  assert.equal(gamePreview(limitedGame({ sport: 'Sams birthday' }), NOW).title, "You're invited to a game");
+  assert.equal(gamePreview(limitedGame({ sport: 'Spikeball' }), NOW).title, "You're invited to a game");
+  assert.equal(gamePreview(limitedGame({ sport: 'ultimate' }), NOW).title, "You're invited to an ultimate game");
+  assert.equal(gamePreview(limitedGame({ sport: 'ultimate', state: 'played' }), NOW).title, 'An ultimate game on Pickup');
+  assert.equal(gamePreview(limitedGame({ sport: '__proto__' }), NOW).title, "You're invited to a game");
+  // A public game may show its own words.
+  assert.match(gamePreview(publicGame({ sport: 'Spikeball' }), NOW).title, /Spikeball/);
 });
 
 test('workplace activity ids and odd sports get no label', () => {

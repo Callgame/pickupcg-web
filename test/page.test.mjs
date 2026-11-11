@@ -2,7 +2,7 @@
 import { test, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { render } from '../api/page.mjs';
-import { PRODUCTION, STAGING } from '../lib/preview.mjs';
+import { PRODUCTION, STAGING_URL } from '../lib/preview.mjs';
 
 const ID = '3f2b1c4d-1111-4222-8333-444455556666';
 const realFetch = globalThis.fetch;
@@ -47,15 +47,45 @@ test('production: a public game gets its own tags, the reply is embedded, the pa
   assert.equal((head(html).match(/property="og:title"/g) || []).length, 1, 'exactly one og:title');
   assert.match(html, /<script id="game-data" type="application\/json">/);
   assert.equal(res.headers.get('cache-control'), 'public, max-age=0, s-maxage=30');
-  assert.ok(html.includes(PRODUCTION.anon) && !html.includes(STAGING.url));
+  assert.ok(html.includes(PRODUCTION.anon) && !html.includes(STAGING_URL));
 });
 
-test('preview deploys talk to staging, in the function and in the page script', async () => {
+test('preview deploys talk to staging, in the function and in the page script, with no key in the repo', async () => {
   const calls = stub(() => PUBLIC);
   const html = await (await render(req(`kind=game&id=${ID}`), { VERCEL_ENV: 'preview' })).text();
-  assert.ok(calls[0].url.startsWith(`${STAGING.url}/functions/v1/game-guest`));
-  assert.ok(html.includes(STAGING.url) && html.includes(STAGING.anon));
+  assert.ok(calls[0].url.startsWith(`${STAGING_URL}/functions/v1/game-guest`));
+  assert.equal(calls[0].headers.apikey, '');
+  assert.ok(html.includes(STAGING_URL) && html.includes("var ANON = '';"));
   assert.ok(!html.includes(PRODUCTION.url) && !html.includes(PRODUCTION.anon));
+  stub(() => PUBLIC);
+  const keyed = await (await render(req(`kind=game&id=${ID}`), { VERCEL_ENV: 'preview', PICKUP_PREVIEW_ANON_KEY: 'k.e.y' })).text();
+  assert.ok(keyed.includes("var ANON = 'k.e.y';"));
+});
+
+test('a gateway 404 (function missing or mid-deploy) is a failure, not "gone"', async () => {
+  stub(() => ({ status: 404, body: { code: 'NOT_FOUND', message: 'Requested function was not found' } }));
+  const res = await render(req(`kind=game&id=${ID}`), { VERCEL_ENV: 'production' });
+  const html = await res.text();
+  assert.equal(meta(html, 'og:title'), 'You&#39;re invited to a pickup game');
+  assert.equal(res.headers.get('cache-control'), 'no-store');
+  assert.ok(!html.includes('id="game-data"'));
+});
+
+test('a link carrying its own ?id= gets no specific preview and calls nothing', async () => {
+  const calls = stub(() => PUBLIC);
+  const other = '11111111-2222-4333-8444-555555555555';
+  const res = await render(new Request(`https://pickupcg.com/api/page?kind=game&id=${ID}&id=${other}`), { VERCEL_ENV: 'production' });
+  const html = await res.text();
+  assert.equal(calls.length, 0);
+  assert.equal(meta(html, 'og:title'), 'You&#39;re invited to a pickup game');
+  assert.equal(res.headers.get('cache-control'), 'no-store');
+});
+
+test('an uppercase id is read as the canonical lowercase one', async () => {
+  const calls = stub(() => PUBLIC);
+  const html = await (await render(req(`kind=game&id=${ID.toUpperCase()}`), { VERCEL_ENV: 'production' })).text();
+  assert.equal(calls[0].url, `${PRODUCTION.url}/functions/v1/game-guest?gameId=${ID}`);
+  assert.match(html, new RegExp(`"gameId":"${ID}"`));
 });
 
 test('an unset VERCEL_ENV is production, never staging', async () => {
@@ -102,6 +132,14 @@ test('crew links ask crew-peek in preview mode and never pass the invite code', 
   assert.ok(!calls[0].url.includes('SECRET1'));
   assert.equal(meta(html, 'og:title'), 'Join Tuesday Hoopers');
   stub(() => ({ status: 404, body: { ok: false } }));
-  const generic = await (await render(req(`kind=crew&id=${ID}`), { VERCEL_ENV: 'production' })).text();
-  assert.equal(meta(generic, 'og:title'), 'You&#39;re invited to a crew');
+  const res404 = await render(req(`kind=crew&id=${ID}`), { VERCEL_ENV: 'production' });
+  assert.equal(meta(await res404.text(), 'og:title'), 'You&#39;re invited to a crew');
+  assert.equal(res404.headers.get('cache-control'), 'public, max-age=0, s-maxage=30');
+  // A refused or failed call (e.g. a preview deploy with no staging key: 401) is generic and uncached.
+  for (const r of [{ status: 401, body: { msg: 'Invalid JWT' } }, { status: 500, body: { ok: false } }]) {
+    stub(() => r);
+    const res = await render(req(`kind=crew&id=${ID}`), { VERCEL_ENV: 'preview' });
+    assert.equal(meta(await res.text(), 'og:title'), 'You&#39;re invited to a crew');
+    assert.equal(res.headers.get('cache-control'), 'no-store');
+  }
 });

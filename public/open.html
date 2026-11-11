@@ -116,7 +116,8 @@
               (sport ? sport + ' crew' : 'A crew') +
               (crew.memberCount ? ' \u00b7 ' + crew.memberCount + ' member' + (crew.memberCount === 1 ? '' : 's') : '') +
               ' \u2014 one tap in the app and you\u2019re in the thread.';
-            document.title = 'Join ' + crew.name + ' \u2014 Pickup';
+            // No document.title: the crew may be private (the code is the credential), and a
+            // JS-running unfurler could read the tab title. The server names public crews.
           })
           .catch(function () {});
         }

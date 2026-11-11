@@ -269,7 +269,7 @@
         if (el) {
           try {
             var d = JSON.parse(el.textContent);
-            if (d && d.gameId === gameId && d.body) return Promise.resolve({ status: d.status, body: d.body });
+            if (d && d.gameId === gameId.toLowerCase() && d.body) return Promise.resolve({ status: d.status, body: d.body });
           } catch (e) { /* fall through to the network */ }
         }
         return fetch(SUPA + '/functions/v1/game-guest?gameId=' + encodeURIComponent(gameId), {
@@ -296,6 +296,7 @@
           starts_at: m.startsAt || null, guests: Number(m.guestCount) || 0,
           going: Array.isArray(m.going) ? m.going : [], going_more: Number(m.goingMore) || 0,
           final: m.final || null,
+          is_public: m.access === 'public',
           // An older game-guest sends no rsvpOpen: keep the form, as before.
           closed: m.rsvpOpen === false
         };
@@ -303,9 +304,12 @@
       .then(function (g) {
         if (!g) return;
 
-        document.title = (g.title || 'Pickup game') + ' — Pickup';
+        // The tab title is something a JS-running unfurler could read: a private or workplace
+        // game keeps the server's generic one.
+        if (g.is_public) document.title = (g.title || 'Pickup game') + ' — Pickup';
         var sport = (g.sport || '').toLowerCase();
-        $('g-emoji').innerHTML = SPORT_ICONS[sport] ? SPORT_ICONS[sport](SPORT_COLORS[sport] || '#3dba5e') : GENERIC_SPORT_ICON;
+        var hasIcon = Object.prototype.hasOwnProperty.call(SPORT_ICONS, sport);
+        $('g-emoji').innerHTML = hasIcon ? SPORT_ICONS[sport](SPORT_COLORS[sport] || '#3dba5e') : GENERIC_SPORT_ICON;
         $('g-title').textContent = g.title || 'Pickup game';
         $('g-when').textContent = (g.day || '') + (g.time ? ' · ' + g.time : '');
         $('g-where').textContent = g.location || 'See host for details';
