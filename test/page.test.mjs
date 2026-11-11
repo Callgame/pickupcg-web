@@ -58,8 +58,13 @@ test('preview deploys talk to staging, in the function and in the page script, w
   assert.ok(html.includes(STAGING_URL) && html.includes("var ANON = '';"));
   assert.ok(!html.includes(PRODUCTION.url) && !html.includes(PRODUCTION.anon));
   stub(() => PUBLIC);
-  const keyed = await (await render(req(`kind=game&id=${ID}`), { VERCEL_ENV: 'preview', PICKUP_PREVIEW_ANON_KEY: 'k.e.y' })).text();
-  assert.ok(keyed.includes("var ANON = 'k.e.y';"));
+  const anonKey = ['e30', Buffer.from(JSON.stringify({ role: 'anon' })).toString('base64url'), 'sig'].join('.');
+  const keyed = await (await render(req(`kind=game&id=${ID}`), { VERCEL_ENV: 'preview', PICKUP_PREVIEW_ANON_KEY: anonKey })).text();
+  assert.ok(keyed.includes(`var ANON = '${anonKey}';`));
+  stub(() => PUBLIC);
+  const serviceKey = ['e30', Buffer.from(JSON.stringify({ role: 'service_role' })).toString('base64url'), 'sig'].join('.');
+  const refused = await (await render(req(`kind=game&id=${ID}`), { VERCEL_ENV: 'preview', PICKUP_PREVIEW_ANON_KEY: serviceKey })).text();
+  assert.ok(!refused.includes(serviceKey) && refused.includes("var ANON = '';"));
 });
 
 test('a gateway 404 (function missing or mid-deploy) is a failure, not "gone"', async () => {

@@ -329,12 +329,13 @@
           $('g-spots').style.display = 'none';
         }
 
-        // Who's going: public games only (the list is empty otherwise). textContent only.
-        if (g.going.length || g.going_more || g.guests) {
+        // Who's going: public games only, and only until the game is played (game-guest stops
+        // sending names then). textContent only.
+        if (!g.closed && (g.going.length || g.going_more || g.guests)) {
           var going = $('g-going');
           going.textContent = '';
           var b = document.createElement('b');
-          b.textContent = g.closed ? 'Roster: ' : 'Going: ';
+          b.textContent = 'Going: ';
           going.appendChild(b);
           var parts = g.going.slice();
           if (g.going_more) parts.push(g.going_more + ' more');

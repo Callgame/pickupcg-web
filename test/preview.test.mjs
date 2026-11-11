@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  clip, crewPreview, embedData, escapeHtml, FALLBACK_CREW, FALLBACK_GAME, gamePreview, headTags,
+  backendFor, clip, crewPreview, publicKeyOrNothing, PRODUCTION, STAGING_URL, embedData, escapeHtml, FALLBACK_CREW, FALLBACK_GAME, gamePreview, headTags,
   IMG_BRAND, IMG_INVITE, injectHead, jsonForScript, sportLabel, whenParts,
 } from '../lib/preview.mjs';
 
@@ -73,10 +73,12 @@ test('played public game without a score', () => {
   assert.equal(p.image, IMG_BRAND);
 });
 
-test('a final logged inside the live window already previews as the result', () => {
-  const p = gamePreview(publicGame({ state: 'live', final: { high: 11, low: 7 } }), NOW);
-  assert.equal(p.title, 'Final 11–7 · Pickleball · Bergeron Park');
-  assert.equal(p.image, IMG_BRAND);
+test('a recap typed during the game never replaces the invite (anyone who joins can type one)', () => {
+  for (const state of ['upcoming', 'live']) {
+    const p = gamePreview(publicGame({ state, final: { high: 99, low: 0 } }), NOW);
+    assert.equal(p.title, 'Wed 7:00 PM · Pickleball · Bergeron Park', state);
+    assert.doesNotMatch(p.title + p.description, /99|Final/);
+  }
 });
 
 test('only game-guest\'s own 404 means gone; a gateway 404 is a failure', () => {
@@ -201,4 +203,18 @@ test('injectHead swaps exactly the marked block; embedded JSON cannot close its 
   assert.deepEqual(JSON.parse(json), { t: '</script><script>alert(1)</script>' });
   const page = embedData(html, 'game-data', { a: '</script>' });
   assert.equal(page.match(/<\/script>/g).length, 1);
+});
+
+test('only a public key ever reaches a preview page', () => {
+  const jwt = (role) => ['e30', Buffer.from(JSON.stringify({ role })).toString('base64url'), 'sig'].join('.');
+  assert.equal(publicKeyOrNothing(jwt('anon')), jwt('anon'));
+  assert.equal(publicKeyOrNothing(jwt('service_role')), '');
+  assert.equal(publicKeyOrNothing('sb_publishable_abc-123'), 'sb_publishable_abc-123');
+  assert.equal(publicKeyOrNothing('sb_secret_abc'), '');
+  assert.equal(publicKeyOrNothing('garbage'), '');
+  assert.equal(publicKeyOrNothing(undefined), '');
+  assert.equal(backendFor('preview', jwt('service_role')).anon, '');
+  assert.equal(backendFor('preview', jwt('anon')).url, STAGING_URL);
+  assert.equal(backendFor('production', jwt('anon')), PRODUCTION);
+  assert.equal(backendFor(undefined), PRODUCTION);
 });
