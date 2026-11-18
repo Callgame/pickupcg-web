@@ -1102,7 +1102,11 @@ const FALLBACK_SPOTS = [
   { lat: 25.8210, lng: -80.3560, sport: 'cycling',      title: 'Group Ride',             detail: 'Padel Club Miami · 7:00 AM', spots: 10, level: 'All levels' },
 ];
 
-// ── Real upcoming games — same anon REST the live stats use ────────────
+// ── Real upcoming games — public_games(), the public key's door to games ──
+// (app repo: supabase/migrations/20261111j_public_games_feed.sql). Public games only,
+// coordinates rounded to ~1 km, and no host details: the games table itself stops
+// giving the public key lat/lng (20261111k). Pins sit within ~1 km of the court;
+// the popup names the place.
 const SPORT_NAMES = {
   basketball: 'Basketball', pickleball: 'Pickleball', tennis: 'Tennis',
   soccer: 'Soccer', volleyball: 'Volleyball', flagfootball: 'Flag Football',
@@ -1112,7 +1116,7 @@ const SPORT_NAMES = {
 async function loadUpcomingGames() {
   try {
     const h = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` };
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/games?select=title,sport,location,day,time,spots,lat,lng,cancelled&order=created_at.desc&limit=60`, { headers: h });
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/public_games?select=title,sport,location,day,time,spots,lat,lng,cancelled,created_at&order=created_at.desc&limit=60`, { headers: h });
     if (!r.ok) return [];
     const rows = await r.json();
     const MONTHS = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 };
