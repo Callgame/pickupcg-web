@@ -227,6 +227,8 @@
 
       var gameId = (location.pathname.match(/\/game\/([^\/?#]+)/) || [])[1] || '';
       var $ = function (id) { return document.getElementById(id); };
+      // The same money() as venue.html: "$12", "$7.50".
+      var money = function (n) { return '$' + (Math.round(n) === n ? n : n.toFixed(2)); };
 
       // Android visitors get Google Play; everyone else keeps the App Store.
       var IS_ANDROID = /Android/.test(navigator.userAgent || '');
@@ -275,7 +277,9 @@
         $('g-when').textContent = (g.day || '') + (g.time ? ' · ' + g.time : '');
         $('g-where').textContent = g.location || 'See host for details';
         $('g-host').textContent = g.host_name || 'Host';
-        if (g.fee > 0) { $('g-fee-row').style.display = 'flex'; $('g-fee').textContent = '$' + g.fee; }
+        // This page can't tell a venue's game from a host's, so it never says who to pay.
+        var fee = Number(g.fee) || 0;
+        if (fee > 0) { $('g-fee-row').style.display = 'flex'; $('g-fee').textContent = money(fee) + ' · paid when you arrive'; }
 
         var max = Number(g.max_spots) || 0, open = Number(g.spots) || 0;
         var inCount = Math.max(0, max - open);
