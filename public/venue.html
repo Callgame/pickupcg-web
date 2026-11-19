@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>A venue on Pickup</title>
+  <meta name="description" content="Pop-up games at a partner venue, on Pickup." />
+  <meta name="robots" content="noindex" />
+
+  <meta property="og:title" content="Pop-up games on Pickup" />
+  <meta property="og:description" content="Follow a partner venue and hear when it posts a game." />
+  <meta property="og:image" content="https://pickupcg.com/assets/og-home.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://pickupcg.com/assets/og-home.png" />
+
+  <meta name="apple-itunes-app" content="app-id=6769906203" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/assets/favicon-180.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!--
+    Two links land here (vercel.json), both under /game because that is a path the Android app
+    already claims for app links, so the app opens them without a new build:
+      /game/venue/<venue id>  a partner venue's page: its name, place and coming pop-ups, read from
+                              venue_page() with the public key (only a verified venue has one);
+      /game/desk/<code>       the QR code at a venue's front desk. This page never checks the code:
+                              it only hands it to the app, where the player is signed in.
+    When the app is installed the universal link opens it before this page renders; the buttons
+    are the fallback. Everything from the database is written with textContent, never as HTML.
+  -->
+  <style>
+    :root {
+      --bg: #070706; --card: #14140f; --line: #23231d;
+      --ink: #f0f0eb; --sub: #96a098; --dim: #6e7670;
+      --accent: #3dba5e; --on-accent: #062611; --venue: #2dd4bf; --warn: #ff9f0a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; align-items: center; justify-content: center; padding: 24px 16px;
+    }
+    .card {
+      width: 100%; max-width: 440px; background: var(--card);
+      border: 1px solid var(--line); border-radius: 24px; padding: 32px 24px;
+    }
+    .mark { width: 56px; height: 56px; border-radius: 16px; display: block; margin-bottom: 18px;
+      background: rgba(45,212,191,0.12); border: 1px solid rgba(45,212,191,0.35);
+      display: flex; align-items: center; justify-content: center; }
+    .pill { display: inline-block; border-radius: 999px; padding: 4px 10px; margin-bottom: 10px;
+      background: rgba(45,212,191,0.12); color: var(--venue); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; }
+    h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; overflow-wrap: anywhere; }
+    p.sub { color: var(--sub); font-size: 15px; line-height: 1.55; margin-bottom: 22px; }
+    p.meta { color: var(--sub); font-size: 14px; margin-bottom: 18px; overflow-wrap: anywhere; }
+    .label { color: var(--dim); font-size: 11px; font-weight: 700; letter-spacing: 1px; margin: 4px 0 8px; }
+    ul.games { list-style: none; border: 1px solid var(--line); border-radius: 14px; margin-bottom: 22px; }
+    ul.games li { display: flex; gap: 12px; align-items: center; padding: 12px 14px; }
+    ul.games li + li { border-top: 1px solid var(--line); }
+    .when { width: 52px; flex: none; text-align: center; }
+    .dow { color: var(--dim); font-size: 10px; font-weight: 700; letter-spacing: 0.8px; }
+    .clock { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .what { min-width: 0; }
+    .title { font-size: 14px; font-weight: 700; overflow-wrap: anywhere; }
+    .status { color: var(--sub); font-size: 12px; margin-top: 2px; }
+    .status.warn { color: var(--warn); font-weight: 700; }
+    a.btn {
+      display: block; text-align: center; text-decoration: none; border-radius: 16px;
+      padding: 15px 16px; font-size: 16px; font-weight: 700; margin-bottom: 10px;
+    }
+    a.primary { background: var(--accent); color: var(--on-accent); }
+    a.ghost { border: 1px solid var(--line); color: var(--sub); font-weight: 500; font-size: 14px; }
+    .foot { margin-top: 18px; color: var(--dim); font-size: 12px; letter-spacing: 2px; font-weight: 700; text-align: center; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="mark" aria-hidden="true">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 20V9l8-5 8 5v11M9 20v-6h6v6" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <span class="pill" id="pill" hidden>✓ VERIFIED VENUE</span>
+    <h1 id="t">A venue on Pickup</h1>
+    <p class="sub" id="s">Pop-up games at a partner venue. Follow it in the app to hear when it posts one.</p>
+    <p class="meta" id="meta" hidden></p>
+    <div id="list" hidden>
+      <div class="label">POP-UPS</div>
+      <ul class="games" id="games"></ul>
+    </div>
+    <a class="btn primary" id="openapp" href="#">Open in Pickup</a>
+    <a class="btn ghost" id="store" href="https://apps.apple.com/app/id6769906203">Don’t have Pickup? Get it free</a>
+    <div class="foot">PICKUP · CALL GAME.</div>
+  </div>
+
+  <script>
+    (function () {
+      var SUPA = 'https://pqwdmstmxwntuyityxin.supabase.co';
+      var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxd2Rtc3RteHdudHV5aXR5eGluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzODg0NDMsImV4cCI6MjA5Mzk2NDQ0M30.0l5dxQzu2XjCA09DV35b4VS8nwXDFpJbY03o5bvhHUE';
+      var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      var parts = window.location.pathname.split('/').filter(Boolean); // ['game', 'venue'|'desk', x]
+      var mode = parts[1];
+      var key = parts[2] || '';
+      var $ = function (id) { return document.getElementById(id); };
+      var setText = function (id, text) { $(id).textContent = text; };
+
+      var IS_ANDROID = /Android/.test(navigator.userAgent || '');
+      var STORE = IS_ANDROID
+        ? 'https://play.google.com/store/apps/details?id=co.callgame.pickup'
+        : 'https://apps.apple.com/app/id6769906203';
+      $('store').href = STORE;
+
+      // The app scheme carries the same path: pickup://game/venue/<id>, pickup://game/desk/<code>.
+      var scheme = 'pickup://game/' + (mode === 'desk' ? 'desk/' : 'venue/') + encodeURIComponent(key);
+      var openApp = $('openapp');
+      openApp.href = scheme;
+      openApp.addEventListener('click', function () {
+        // The scheme fails silently without the app: fall back to the store unless the page was left.
+        var t = setTimeout(function () { window.location.replace(STORE); }, 1500);
+        document.addEventListener('visibilitychange', function () { if (document.hidden) clearTimeout(t); });
+        window.addEventListener('pagehide', function () { clearTimeout(t); });
+      });
+      // The App Store strips the link on the way in; the app reads it back from the clipboard once
+      // on its first launch (lib/deferredLink.ts in the app).
+      var carry = function () {
+        try { if (navigator.clipboard) navigator.clipboard.writeText(window.location.href); } catch (e) {}
+      };
+      $('store').addEventListener('click', carry);
+      openApp.addEventListener('click', carry);
+
+      if (mode === 'desk') {
+        document.title = 'Check in — Pickup';
+        setText('t', 'Check in at the desk');
+        setText('s', 'Open Pickup to check in for tonight’s game. Use the account you joined it with.');
+        setText('openapp', 'Open Pickup to check in');
+        return;
+      }
+
+      setText('openapp', 'Open in Pickup to follow');
+      if (!UUID.test(key)) { setText('s', 'This link isn’t right. Ask the venue for its Pickup link.'); return; }
+
+      var DOW = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+      var clock = function (d) {
+        var h = d.getHours(), m = d.getMinutes();
+        return (h % 12 || 12) + ':' + (m < 10 ? '0' : '') + m + (h >= 12 ? ' PM' : ' AM');
+      };
+      var money = function (n) { return '$' + (Math.round(n) === n ? n : n.toFixed(2)); };
+
+      fetch(SUPA + '/rest/v1/rpc/venue_page', {
+        method: 'POST',
+        headers: { apikey: ANON, Authorization: 'Bearer ' + ANON, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ p_venue: key })
+      })
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+        .then(function (v) {
+          if (!v || typeof v.name !== 'string') {
+            setText('t', 'This venue isn’t on Pickup right now');
+            setText('s', 'Find pop-up games and runs near you in the app.');
+            setText('openapp', 'Open Pickup');
+            return;
+          }
+          document.title = v.name + ' — Pickup';
+          $('pill').hidden = false;
+          setText('t', v.name);
+          setText('s', 'Follow ' + v.name + ' in the app to hear when it posts a game, never more than twice a day.');
+          // The address usually names the city already; the city alone when there's no address.
+          var meta = (typeof v.address === 'string' && v.address) ? v.address : (typeof v.city === 'string' ? v.city : '');
+          if (meta) { $('meta').hidden = false; setText('meta', meta); }
+          var games = Array.isArray(v.games) ? v.games : [];
+          if (!games.length) return;
+          var ul = $('games');
+          games.forEach(function (g) {
+            var li = document.createElement('li');
+            var when = document.createElement('div'); when.className = 'when';
+            var dow = document.createElement('div'); dow.className = 'dow';
+            var tm = document.createElement('div'); tm.className = 'clock';
+            var start = g.starts_at ? new Date(g.starts_at) : null;
+            if (start && !isNaN(start.getTime())) { dow.textContent = DOW[start.getDay()]; tm.textContent = clock(start); }
+            else { dow.textContent = String(g.day || '').slice(0, 3).toUpperCase(); tm.textContent = String(g.time || ''); }
+            when.appendChild(dow); when.appendChild(tm);
+            var what = document.createElement('div'); what.className = 'what';
+            var title = document.createElement('div'); title.className = 'title';
+            title.textContent = 'Pop-up · ' + String(g.title || 'Game');
+            var status = document.createElement('div'); status.className = 'status';
+            var max = Number(g.max_spots) || 0, open = Number(g.spots) || 0, min = Number(g.min_players) || 0;
+            var taken = Math.max(0, max - open), fee = Number(g.fee) || 0, cut = Number(g.cutoff_minutes) || 0;
+            var cutAt = start && cut ? new Date(start.getTime() - cut * 60000) : null;
+            if (cutAt && cutAt > new Date() && min > taken && open > 0) {
+              status.className = 'status warn';
+              status.textContent = 'Needs ' + (min - taken) + ' more by ' + clock(cutAt);
+            } else {
+              status.textContent = (max > 0 && open <= 0 ? 'Full' : taken + ' of ' + max + ' in') + (fee > 0 ? ' · ' + money(fee) + ' at the desk' : '');
+            }
+            what.appendChild(title); what.appendChild(status);
+            li.appendChild(when); li.appendChild(what);
+            ul.appendChild(li);
+          });
+          $('list').hidden = false;
+        })
+        .catch(function () { /* the generic copy stays; the buttons still work */ });
+    })();
+  </script>
+</body>
+</html>
