@@ -97,6 +97,10 @@
       "destination": "/work.html"
     },
     {
+      "source": "/venues",
+      "destination": "/venues.html"
+    },
+    {
       "source": "/confirmed",
       "destination": "/confirmed.html"
     },
