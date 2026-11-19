@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pickup for Venues — pop-up games and league nights at your courts</title><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png"><link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-180.png">
-  <meta name="description" content="For gyms, clubs and rec centers: post pop-up games players can find and follow, check them in at the front desk, and run a weekly league night with standings that keep themselves. Free for pilot partners." />
+  <meta name="description" content="For gyms, clubs and rec centers: post pop-up games players near you can find, give them a venue page to follow, check them in at the front desk, and run a weekly league night. Free for pilot partners." />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Pickup for Venues — fill your courts, run your own league" />
-  <meta property="og:description" content="Pop-up games players can follow, front-desk check-in, and weekly league nights with standings that keep themselves. Free for pilot partners." />
+  <meta property="og:description" content="Pop-up games, a venue page players follow, front-desk check-in and weekly league nights. Free for pilot partners." />
   <meta property="og:image" content="https://pickupcg.com/assets/og-home.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -18,7 +18,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Pickup for Venues — fill your courts, run your own league" />
-  <meta name="twitter:description" content="Pop-up games players can follow, front-desk check-in, and weekly league nights with standings that keep themselves." />
+  <meta name="twitter:description" content="Pop-up games, a venue page players follow, front-desk check-in and weekly league nights." />
   <meta name="twitter:image" content="https://pickupcg.com/assets/og-home.png" />
 
   <!-- Apple Smart App Banner -->
@@ -141,6 +141,7 @@
 
     /* ── SECTIONS ──────────────────────────────────────────────── */
     section { padding: 88px 24px; max-width: 1080px; margin: 0 auto; }
+    section[id] { scroll-margin-top: 80px; } /* the fixed nav covers a jumped-to heading otherwise */
     .kicker {
       color: var(--accent); font-size: 13px; font-weight: 700;
       letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px;
@@ -185,26 +186,28 @@
     .proof-cap { color: var(--muted); font-size: 13px; text-align: center; margin-top: 18px; }
     .mock { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
     .mock-label { display: block; padding: 12px 20px 0; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
-    .mock-head { padding: 12px 20px 16px; border-bottom: 1px solid var(--border); }
-    .mock-verified { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-size: 12px; font-weight: 700; }
-    .mock-title { display: block; font-weight: 800; font-size: 22px; letter-spacing: -0.02em; margin-top: 6px; }
+    .mock-head { display: flex; flex-direction: column; padding: 12px 20px 16px; border-bottom: 1px solid var(--border); }
+    /* The app's verified mark is teal, its one accent kept apart from the brand green. */
+    .mock-verified { display: inline-flex; align-self: flex-start; margin-top: 8px; border-radius: 100px; padding: 3px 10px; background: rgba(45,212,191,0.12); color: #2dd4bf; font-size: 12px; font-weight: 700; }
+    .mock-title { display: block; font-weight: 800; font-size: 22px; letter-spacing: -0.02em; }
     .mock-where { display: block; color: var(--muted); font-size: 13.5px; margin-top: 3px; }
     .mock-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .chip { display: inline-flex; align-items: center; gap: 6px; border-radius: 100px; padding: 8px 14px; font-size: 13px; font-weight: 700; border: 1px solid var(--border); color: var(--text); }
-    .chip.on { background: rgba(61,186,94,0.14); border-color: rgba(61,186,94,0.4); color: var(--accent); }
-    .mock-note { color: var(--muted); font-size: 12.5px; line-height: 1.5; margin-top: 10px; }
     .mock-sec { padding: 14px 20px 4px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: 1.4px; }
     .mock-game { display: flex; align-items: center; gap: 14px; padding: 12px 20px; border-top: 1px solid var(--border); }
     .mock-game:first-of-type { border-top: 0; }
-    .mock-when { width: 64px; flex: none; font-size: 12.5px; font-weight: 700; color: var(--accent); line-height: 1.3; }
+    .mock-when { width: 44px; flex: none; font-size: 11px; font-weight: 700; letter-spacing: 0.8px; color: var(--muted); line-height: 1.35; text-align: center; }
+    .mock-clock { font-size: 15px; letter-spacing: 0; color: var(--text); font-variant-numeric: tabular-nums; }
     .mock-what { flex: 1; min-width: 0; }
     .mock-what b { display: block; font-size: 14.5px; }
     .mock-what span { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
-    .mock-fee { color: var(--muted); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .mock-what span.warn { color: #ff9f0a; }
+    .mock-chev { flex: none; }
+    .mock-sec-row { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 10px; }
+    .mock-me { letter-spacing: 0; font-weight: 600; text-transform: none; font-size: 12px; }
     .mock-row { display: flex; align-items: center; gap: 14px; padding: 12px 20px; border-top: 1px solid var(--border); font-variant-numeric: tabular-nums; }
     .mock-rank { color: var(--muted); font-weight: 700; width: 16px; }
     .mock-name { flex: 1; font-weight: 600; font-size: 15px; }
-    .mock-stat { color: var(--muted); font-weight: 600; font-size: 13.5px; width: 64px; text-align: right; }
     .mock-pts { font-weight: 800; font-size: 15px; width: 28px; text-align: right; }
     .mock-row.you { background: rgba(61,186,94,0.08); }
     .mock-row.you .mock-rank, .mock-row.you .mock-pts { color: var(--accent); }
@@ -281,7 +284,7 @@
   <div class="nav-right">
     <a href="#how" class="nav-link">How it works</a>
     <a href="#leagues" class="nav-link">League nights</a>
-    <a href="mailto:info@callgame.co?subject=Venue%20partner%20inquiry" class="nav-cta">Become a partner</a>
+    <a href="mailto:info@callgame.co?subject=Venue%20Partnership%20Inquiry" class="nav-cta">Become a partner</a>
   </div>
 </nav>
 
@@ -289,51 +292,47 @@
   <div class="badge"><span class="badge-dot"></span>For gyms, clubs &amp; rec centers</div>
   <h1>Fill your courts. Run your <span class="script">own</span> league.</h1>
   <p class="hero-sub">
-    Post pop-up games that players near you can find, follow and join. Check them in at the
-    front desk. Then run a weekly league night with standings that keep themselves.
+    Post pop-up games that players near you can find and join, and give them a venue page to
+    follow. Check them in at the front desk. Then run a weekly league night, and let the app keep
+    the table.
   </p>
   <div class="hero-ctas">
-    <a class="btn-primary" href="mailto:info@callgame.co?subject=Venue%20partner%20inquiry">Become a partner venue</a>
+    <a class="btn-primary" href="mailto:info@callgame.co?subject=Venue%20Partnership%20Inquiry">Become a partner venue</a>
     <a class="btn-ghost" href="#how">See how it works</a>
   </div>
-  <p class="hero-note">Free for pilot partners · You set the fee, players pay at your desk</p>
+  <p class="hero-note">Free for pilot partners · No payments in the app</p>
 </header>
 
 <section style="padding-top:24px;" aria-label="What players see">
   <div class="proof">
-    <div class="mock" role="img" aria-label="Example venue page in the Pickup app: Westside Rec, a verified venue in Austin, with Following, Directions and Share buttons, and two pop-up games coming up.">
-      <span class="mock-label">Your venue page</span>
+    <div class="mock" role="img" aria-label="Example venue page in the Pickup app: Westside Rec, a verified venue in Austin for basketball and pickleball, with Following and Directions buttons and two pop-ups: Tuesday at 7:00, 8 of 10 in, and Thursday at 6:30, which needs 2 more by 3:30 PM.">
+      <span class="mock-label">Example · your venue page</span>
       <div class="mock-head">
-        <span class="mock-verified">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3dba5e" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Verified venue
-        </span>
         <span class="mock-title">Westside Rec</span>
-        <span class="mock-where">Austin · 1200 W Main St</span>
+        <span class="mock-verified">✓ Verified venue</span>
+        <span class="mock-where">Austin · Basketball, Pickleball</span>
         <div class="mock-actions">
-          <span class="chip on">✓ Following</span>
+          <span class="chip">Following</span>
           <span class="chip">Directions</span>
-          <span class="chip">Share this venue</span>
         </div>
-        <p class="mock-note">Followers hear when you post a game, never more than twice a day.</p>
       </div>
-      <div class="mock-sec">COMING UP</div>
+      <div class="mock-sec">POP-UPS</div>
       <div>
         <div class="mock-game">
-          <span class="mock-when">Tonight<br/>7:00 PM</span>
-          <span class="mock-what"><b>Basketball 5v5</b><span>8 of 10 in · Hosted by Westside Rec ✓</span></span>
-          <span class="mock-fee">$10</span>
+          <span class="mock-when">TUE<br/><span class="mock-clock">7:00</span></span>
+          <span class="mock-what"><b>Pop-up · Basketball 5v5</b><span>8 of 10 in</span></span>
+          <svg class="mock-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="#8f8c84" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div class="mock-game">
-          <span class="mock-when">Thu<br/>6:30 PM</span>
-          <span class="mock-what"><b>Pickleball doubles</b><span>4 of 8 in · needs 6 to go ahead</span></span>
-          <span class="mock-fee">$8</span>
+          <span class="mock-when">THU<br/><span class="mock-clock">6:30</span></span>
+          <span class="mock-what"><b>Pop-up · Pickleball doubles</b><span class="warn">Needs 2 more by 3:30 PM</span></span>
+          <svg class="mock-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="#8f8c84" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
     </div>
 
-    <div class="mock" role="img" aria-label="Example league standings: Tuesday League Nights, week 3 of 8. Sam R. 6 points, Ana P. 5, Lee W. 5, you 4.">
-      <span class="mock-label">Your league night</span>
+    <div class="mock" role="img" aria-label="Example League tab: Tuesday League Nights at Westside Rec, season 1, week 3 of 8. Standings: Sam R. 4 points, Ana P. 3, Lee W. 3, you 2.">
+      <span class="mock-label">Example · your league on the League tab</span>
       <div class="mock-head" style="border-bottom:0; padding-bottom:12px;">
         <span class="mock-title">Tuesday League Nights</span>
         <span class="mock-where">Westside Rec · Season 1 · Week 3 of 8</span>
@@ -341,14 +340,15 @@
       <div class="mock-week" aria-hidden="true">
         <span class="done"></span><span class="done"></span><span class="now"></span><span></span><span></span><span></span><span></span><span></span>
       </div>
-      <div class="mock-row"><span class="mock-rank">1</span><span class="mock-name">Sam R.</span><span class="mock-stat">3 nights</span><span class="mock-pts">6</span></div>
-      <div class="mock-row"><span class="mock-rank">2</span><span class="mock-name">Ana P.</span><span class="mock-stat">3 nights</span><span class="mock-pts">5</span></div>
-      <div class="mock-row"><span class="mock-rank">2</span><span class="mock-name">Lee W.</span><span class="mock-stat">3 nights</span><span class="mock-pts">5</span></div>
-      <div class="mock-row you"><span class="mock-rank">4</span><span class="mock-name">You</span><span class="mock-stat">3 nights</span><span class="mock-pts">4</span></div>
-      <div class="mock-foot">1 point for showing up, 1 for a win. Ties go to whoever played more nights. Only people in this league can see it.</div>
+      <div class="mock-sec mock-sec-row"><span>STANDINGS</span><span class="mock-me">You: 2 nights · 2 pts</span></div>
+      <div class="mock-row"><span class="mock-rank">1</span><span class="mock-name">Sam R.</span><span class="mock-pts">4</span></div>
+      <div class="mock-row"><span class="mock-rank">2</span><span class="mock-name">Ana P.</span><span class="mock-pts">3</span></div>
+      <div class="mock-row"><span class="mock-rank">2</span><span class="mock-name">Lee W.</span><span class="mock-pts">3</span></div>
+      <div class="mock-row you"><span class="mock-rank">4</span><span class="mock-name">You</span><span class="mock-pts">2</span></div>
+      <div class="mock-foot">1 point for showing up, 1 for a win; ties go to whoever played more nights.</div>
     </div>
   </div>
-  <p class="proof-cap">An example venue, drawn from the screens in the Pickup app.</p>
+  <p class="proof-cap">An example venue, simplified from the screens in the Pickup app.</p>
 </section>
 
 <section id="how">
@@ -364,14 +364,14 @@
     <div class="step">
       <span class="step-num">2</span>
       <h3>Post pop-up games</h3>
-      <p>Open runs, doubles nights, drop-in clinics. Set the spots, the fee and a minimum.
-         Your followers hear about it, and players nearby find it in the app.</p>
+      <p>Open runs, doubles nights, drop-in clinics. Set the spots and a minimum. Players nearby
+         find it in the app, and your followers get a push.</p>
     </div>
     <div class="step">
       <span class="step-num">3</span>
       <h3>Run league nights</h3>
       <p>A season of 6 to 8 weekly nights. Players sign up once and say each week if they're in.
-         Teams are made on the night, and the standings keep themselves.</p>
+         Teams are made on the night, and the app keeps the table.</p>
     </div>
   </div>
 </section>
@@ -383,14 +383,15 @@
     <div class="card">
       <span class="card-icon" aria-hidden="true">✓</span>
       <h3>Hosted by your venue</h3>
-      <p>Every game your staff post says “Hosted by” your venue with a check mark, so players
+      <p>Pop-ups your staff post as your venue say “Hosted by” it with a check mark, so players
          know it's the real thing. Only venues we've verified get it.</p>
     </div>
     <div class="card">
       <span class="card-icon" aria-hidden="true">🔔</span>
       <h3>Players follow you</h3>
-      <p>Your venue page has directions, a share link and a Follow button. Followers hear when
-         you post, never more than twice a day.</p>
+      <p>Your venue page has a Follow button, a share link and directions. Followers get a push
+         when you post: at most one a day from your venue, never overnight, and only if they have
+         new-game alerts on.</p>
     </div>
     <div class="card">
       <span class="card-icon" aria-hidden="true">📱</span>
@@ -402,18 +403,18 @@
       <span class="card-icon" aria-hidden="true">⏱</span>
       <h3>A minimum and a cut-off</h3>
       <p>Set the fewest players a game needs and a cut-off 1, 2 or 3 hours before. If it's
-         short by then, it's called off and everyone signed up hears.</p>
+         short by then, it's called off, and everyone signed up or on the waitlist hears.</p>
     </div>
     <div class="card">
       <span class="card-icon" aria-hidden="true">↻</span>
       <h3>Run it again</h3>
-      <p>A game that worked? Post it again for the next week in one tap, with the same time,
-         spots, fee and cut-off.</p>
+      <p>A game that worked? Post it again a week later in one tap, with the same time, spots,
+         minimum and cut-off.</p>
     </div>
     <div class="card">
       <span class="card-icon" aria-hidden="true">📊</span>
       <h3>Your venue, in numbers</h3>
-      <p>Your followers, plus pop-ups posted, desk check-ins and first-time visitors over the
+      <p>Your followers, plus pop-ups posted, desk check-ins and first-time check-ins over the
          last 30 days. Counts only, never a list of players' names.</p>
     </div>
   </div>
@@ -423,8 +424,9 @@
   <p class="kicker">League nights</p>
   <h2>An in-house league without the clipboard.</h2>
   <p class="section-sub">
-    Pick a night, a time, how many players and the fee. Pickup posts every night of the season,
-    tells your followers and league members, and keeps the table.
+    Pick a night, a time, how many players and a fee per night. Pickup posts every night of the
+    season, announces it to your followers and league members, and keeps the table from desk
+    check-ins and the results your staff record.
   </p>
   <div class="split">
     <ul class="ticks">
@@ -434,10 +436,10 @@
       <li><span><b>Paid at your desk.</b> Set a fee per night. Players pay you when they come, as they do today. There are no payments in the app.</span></li>
     </ul>
     <ul class="ticks">
-      <li><span><b>Members only.</b> Only people in the league see its standings.</span></li>
+      <li><span><b>Kept in the venue.</b> Only league members and your staff see the standings.</span></li>
       <li><span><b>A league chat.</b> One group chat for everyone in the league.</span></li>
-      <li><span><b>Keep me in.</b> When a season wraps, one tap carries a player into the next.</span></li>
-      <li><span><b>Your staff run it.</b> Record each night's winners, call off a night and start the next season, all in the app.</span></li>
+      <li><span><b>Keep me in.</b> Once you post the next season, one tap signs a player up again.</span></li>
+      <li><span><b>Your staff run it.</b> Record each night's winners, call off a night ahead of time and post the next season, all in the app.</span></li>
     </ul>
   </div>
 </section>
@@ -451,7 +453,7 @@
       venue, walk your staff through it and help you post the first game.
     </p>
     <div class="hero-ctas">
-      <a class="btn-primary" href="mailto:info@callgame.co?subject=Venue%20partner%20inquiry">Become a partner venue</a>
+      <a class="btn-primary" href="mailto:info@callgame.co?subject=Venue%20Partnership%20Inquiry">Become a partner venue</a>
     </div>
     <div class="band-facts">
       <span>Free during the pilot</span>
