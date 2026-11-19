@@ -49,6 +49,14 @@
       "destination": "/open.html"
     },
     {
+      "source": "/game/venue/:id",
+      "destination": "/venue.html"
+    },
+    {
+      "source": "/game/desk/:code",
+      "destination": "/venue.html"
+    },
+    {
       "source": "/game/:id",
       "destination": "/game.html"
     },
