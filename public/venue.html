@@ -166,7 +166,8 @@
           document.title = v.name + ' — Pickup';
           $('pill').hidden = false;
           setText('t', v.name);
-          setText('s', 'Follow ' + v.name + ' in the app to hear when it posts a game, never more than twice a day.');
+          // The app's rule (pickup-native PR 70): a follower gets at most one push a day from a venue.
+          setText('s', 'Follow ' + v.name + ' in the app: followers can get a push when it posts a game, at most one a day.');
           // The address usually names the city already; the city alone when there's no address.
           var meta = (typeof v.address === 'string' && v.address) ? v.address : (typeof v.city === 'string' ? v.city : '');
           if (meta) { $('meta').hidden = false; setText('meta', meta); }

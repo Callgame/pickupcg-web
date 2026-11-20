@@ -68,27 +68,90 @@
 </head>
 <body>
   <div class="controls">
-    <label for="url">Link this poster opens (a game, a court, or the app)</label>
+    <label for="url">Link this poster opens (a game, a court, a venue, or the app)</label>
     <input id="url" type="url" value="https://pickupcg.com/download" spellcheck="false" />
-    <div class="hint">Paste a game link from the app’s Share button (pickupcg.com/game/…) to point a poster at your standing run — the QR keeps working week to week. Then hit ⌘P / print.</div>
+    <div class="hint">Paste a game link from the app’s Share button (pickupcg.com/game/…) to point a poster at your standing run — the QR keeps working week to week. A partner venue’s page link (pickupcg.com/game/venue/…) makes a poster for the venue. Then hit ⌘P / print.</div>
     <button id="make">Update poster</button>
   </div>
 
   <div class="poster" id="poster">
     <div class="brand">PICKUP</div>
-    <h1>GOT<br/><span class="green">NEXT?</span></h1>
+    <h1 id="headline">GOT<br/><span class="green">NEXT?</span></h1>
     <div class="qr-frame"><img id="qr" alt="QR code — scan to join" src="" /></div>
-    <div class="scan"><strong>Scan to join the run.</strong><br/>Games at this court, who’s in, and when it runs — no group text needed.</div>
+    <div class="scan" id="scan"><strong>Scan to join the run.</strong><br/>Games at this court, who’s in, and when it runs — no group text needed.</div>
     <div class="foot">CALL GAME. · pickupcg.com</div>
   </div>
-  <div class="print-note">Print on letter paper · tape it courtside · every scan lands on your game page</div>
+  <div class="print-note" id="note">Print on letter paper · tape it courtside · every scan lands on your game page</div>
 
   <script>
     (function () {
       var input = document.getElementById('url');
       var img = document.getElementById('qr');
+      var headline = document.getElementById('headline');
+      var scan = document.getElementById('scan');
+      var note = document.getElementById('note');
+      // The court poster's words, put back whenever the link isn't a venue's.
+      var COURT = { headline: headline.innerHTML, scan: scan.innerHTML, note: note.textContent, alt: img.alt };
+
+      // A partner venue's page link (the app's venueUrl): the poster names the venue, read the way
+      // venue.html reads it, with the site's public key. Only a verified venue answers; anything else
+      // keeps the court poster, and the QR works either way.
+      var SUPA = 'https://pqwdmstmxwntuyityxin.supabase.co';
+      var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxd2Rtc3RteHdudHV5aXR5eGluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzODg0NDMsImV4cCI6MjA5Mzk2NDQ0M30.0l5dxQzu2XjCA09DV35b4VS8nwXDFpJbY03o5bvhHUE';
+      var VENUE_PATH = /^\/game\/venue\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\/?$/i;
+      var asked = 0; // only the latest link's answer may change the words
+
+      function courtWords() {
+        headline.innerHTML = COURT.headline;
+        scan.innerHTML = COURT.scan;
+        note.textContent = COURT.note;
+        img.alt = COURT.alt;
+      }
+      // The venue's name only ever goes in as text, never as markup.
+      function venueWords(name) {
+        headline.textContent = '';
+        headline.appendChild(document.createTextNode('PLAY'));
+        headline.appendChild(document.createElement('br'));
+        var green = document.createElement('span');
+        green.className = 'green';
+        green.textContent = 'HERE.';
+        headline.appendChild(green);
+        scan.textContent = '';
+        var strong = document.createElement('strong');
+        strong.textContent = 'Follow ' + name + ' on Pickup.';
+        scan.appendChild(strong);
+        scan.appendChild(document.createElement('br'));
+        scan.appendChild(document.createTextNode('See its pop-up games and who’s in, and join in a tap. Followers can get a push when it posts one.'));
+        note.textContent = 'Print on letter paper · put it by the front desk · check-ins still use the code on your desk screen (it changes every day)';
+        img.alt = 'QR code: scan to see ' + name + ' on Pickup';
+      }
+      function venueIdOf(u) {
+        try {
+          var p = new URL(u);
+          if (!/^(www\.)?pickupcg\.com$/i.test(p.hostname)) return null;
+          var m = VENUE_PATH.exec(p.pathname);
+          return m ? m[1].toLowerCase() : null;
+        } catch (e) { return null; }
+      }
+
       function render() {
         var u = (input.value || 'https://pickupcg.com/download').trim();
+        var venueId = venueIdOf(u);
+        var mine = ++asked;
+        courtWords();
+        if (venueId) {
+          fetch(SUPA + '/rest/v1/rpc/venue_page', {
+            method: 'POST',
+            headers: { apikey: ANON, Authorization: 'Bearer ' + ANON, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ p_venue: venueId })
+          })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (v) {
+              if (mine !== asked || !v || typeof v.name !== 'string' || !v.name.trim()) return;
+              venueWords(v.name.trim());
+            })
+            .catch(function () { /* the court poster stays: the QR still opens the venue's page */ });
+        }
         // Poster scans are court-channel taps — tag them so ref_taps/analytics
         // can tell posters apart from chat shares.
         try {
