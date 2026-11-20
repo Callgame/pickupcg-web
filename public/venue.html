@@ -8,7 +8,7 @@
   <meta name="robots" content="noindex" />
 
   <meta property="og:title" content="Pop-up games on Pickup" />
-  <meta property="og:description" content="Follow a partner venue and hear when it posts a game." />
+  <meta property="og:description" content="Pop-up games at a partner venue. Follow it in the app to see what it posts." />
   <meta property="og:image" content="https://pickupcg.com/assets/og-home.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -86,7 +86,7 @@
     </div>
     <span class="pill" id="pill" hidden>✓ VERIFIED VENUE</span>
     <h1 id="t">A venue on Pickup</h1>
-    <p class="sub" id="s">Pop-up games at a partner venue. Follow it in the app to hear when it posts one.</p>
+    <p class="sub" id="s">Pop-up games at a partner venue. Follow it in the app: followers can get a push when it posts one, at most one a day.</p>
     <p class="meta" id="meta" hidden></p>
     <div id="list" hidden>
       <div class="label">POP-UPS</div>
@@ -166,7 +166,9 @@
           document.title = v.name + ' — Pickup';
           $('pill').hidden = false;
           setText('t', v.name);
-          setText('s', 'Follow ' + v.name + ' in the app to hear when it posts a game, never more than twice a day.');
+          // The server's rule: at most one push a day per venue to any player (reserve_nearby_recipients_v2,
+          // pickup-native 20261117_venue_popups.sql), and none with alerts off or in quiet hours.
+          setText('s', 'Follow ' + v.name + ' in the app: followers can get a push when it posts a game, at most one a day.');
           // The address usually names the city already; the city alone when there's no address.
           var meta = (typeof v.address === 'string' && v.address) ? v.address : (typeof v.city === 'string' ? v.city : '');
           if (meta) { $('meta').hidden = false; setText('meta', meta); }
