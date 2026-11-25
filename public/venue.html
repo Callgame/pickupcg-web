@@ -148,7 +148,6 @@
         var h = d.getHours(), m = d.getMinutes();
         return (h % 12 || 12) + ':' + (m < 10 ? '0' : '') + m + (h >= 12 ? ' PM' : ' AM');
       };
-      var money = function (n) { return '$' + (Math.round(n) === n ? n : n.toFixed(2)); };
 
       fetch(SUPA + '/rest/v1/rpc/venue_page', {
         method: 'POST',
@@ -189,13 +188,14 @@
             title.textContent = 'Pop-up · ' + String(g.title || 'Game');
             var status = document.createElement('div'); status.className = 'status';
             var max = Number(g.max_spots) || 0, open = Number(g.spots) || 0, min = Number(g.min_players) || 0;
-            var taken = Math.max(0, max - open), fee = Number(g.fee) || 0, cut = Number(g.cutoff_minutes) || 0;
+            var taken = Math.max(0, max - open), cut = Number(g.cutoff_minutes) || 0;
             var cutAt = start && cut ? new Date(start.getTime() - cut * 60000) : null;
             if (cutAt && cutAt > new Date() && min > taken && open > 0) {
               status.className = 'status warn';
               status.textContent = 'Needs ' + (min - taken) + ' more by ' + clock(cutAt);
             } else {
-              status.textContent = (max > 0 && open <= 0 ? 'Full' : taken + ' of ' + max + ' in') + (fee > 0 ? ' · ' + money(fee) + ' at the desk' : '');
+              // No price: Pickup sets none for a venue's game (2026-11-25). A venue that asks players to be members says so.
+              status.textContent = (max > 0 && open <= 0 ? 'Full' : taken + ' of ' + max + ' in') + (g.membership_required === true ? ' · Membership required' : '');
             }
             what.appendChild(title); what.appendChild(status);
             li.appendChild(when); li.appendChild(what);

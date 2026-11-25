@@ -227,7 +227,7 @@
 
       var gameId = (location.pathname.match(/\/game\/([^\/?#]+)/) || [])[1] || '';
       var $ = function (id) { return document.getElementById(id); };
-      // The same money() as venue.html: "$12", "$7.50".
+      // "$12", "$7.50" (an older game's own fee; Pickup sets no price for a venue's).
       var money = function (n) { return '$' + (Math.round(n) === n ? n : n.toFixed(2)); };
 
       // Android visitors get Google Play; everyone else keeps the App Store.
